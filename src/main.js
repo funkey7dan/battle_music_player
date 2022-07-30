@@ -3,7 +3,14 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
-const { Howl, Howler } = require('howler');
+const electronReload = require('electron-reload')
+
+
+require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, '../node_modules', '.bin', 'electron'),
+    awaitWriteFinish: true,
+});
+
 
 const createWindow = () => {
     // Create the browser window.
@@ -16,7 +23,7 @@ const createWindow = () => {
     })
 
     // and load the index.html of the app.
-    mainWindow.loadFile('index.html')
+    mainWindow.loadFile(path.join(__dirname, '../public/index.html'));
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
@@ -41,6 +48,7 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })
+
 
 
 // In this file you can include the rest of your app's specific main process

@@ -1,20 +1,36 @@
 {
   "dependencies": {
-    "howler": "^2.2.3"
+    "bootstrap": "^5.2.0",
+    "concurrently": "^7.3.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "howler": "^2.2.3",
+    "sirv-cli": "^2.0.0",
+    "sveltestrap": "^5.9.0"
   },
   "name": "player",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "./src/main.js",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
     "electron": "^19.0.10",
     "electron-builder": "^23.1.0",
-    "electron-packager": "^15.5.1"
+    "electron-packager": "^15.5.1",
+    "rollup": "^2.3.4",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.49.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
+    "start": "concurrently \"npm:svelte-dev\" \"electron .\"",
     "packager": "electron-packager ./ --platform=win32",
-    "build": "electron-builder build -w portable"
+    "build": "electron-builder build -w portable",
+    "svelte-build": "rollup -c",
+    "svelte-dev": "rollup -c -w",
+    "svelte-start": "sirv public --no-clear"
   },
   "author": "",
   "license": "ISC",
