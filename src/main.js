@@ -4,16 +4,19 @@
 const { app, BrowserWindow, dialog, Menu } = require('electron')
 const path = require('path')
 const fs = require('fs')
-const electronReload = require('electron-reload')
+if (isDev) {
+    require('electron-reload')(__dirname, {
+        electron: path.join(__dirname, '../node_modules', '.bin', 'electron'),
+        awaitWriteFinish: true,
+    });
+}
 const storage = require('electron-json-storage')
+var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 dataPath = storage.getDataPath();
 var musicPath
 var filelist
 
-require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, '../node_modules', '.bin', 'electron'),
-    awaitWriteFinish: true,
-});
+
 
 const template = [
     // { role: 'fileMenu' }
@@ -55,7 +58,10 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, '../public/index.html'));
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    if (isDev) {
+        mainWindow.webContents.openDevTools()
+
+    }
 }
 const loadSettings = () => {
     storage.has('folder', function (error, hasKey) {
