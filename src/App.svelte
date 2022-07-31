@@ -1,5 +1,7 @@
 <script>
 	import MusicPlaye from "./MusicPlaye.svelte";
+	let dialog = window.dialog;
+	const ipc = require("electron").ipcRenderer;
 </script>
 
 <main>
