@@ -1,7 +1,7 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, dialog, Menu } = require('electron')
+const { app, BrowserWindow, dialog, Menu, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
 if (isDev) {
@@ -13,10 +13,17 @@ if (isDev) {
 const storage = require('electron-json-storage')
 var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 dataPath = storage.getDataPath();
-var musicPath
-var filelist
+var musicPath // the path of the music library
+var filelist // list of all intensity folders
+let mainWindow
 
 
+class intesityPlaylist {
+    constructor(name, trackList) {
+        this.name = name;
+        this.trackList = trackList;
+    }
+}
 
 const template = [
     // { role: 'fileMenu' }
@@ -45,11 +52,12 @@ const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
 const createWindow = () => {
     // Create the browser window.
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false
         }
@@ -60,7 +68,6 @@ const createWindow = () => {
     // Open the DevTools.
     if (isDev) {
         mainWindow.webContents.openDevTools()
-
     }
 }
 const loadSettings = () => {
@@ -77,6 +84,7 @@ const loadSettings = () => {
         }
         if (hasKey) {
             filelist = storage.getSync('filelist')
+            mainWindow.webContents.send("music_files", filelist)
             console.log("loaded filelist from storage" + filelist)
         }
     })
@@ -84,11 +92,14 @@ const loadSettings = () => {
 
 // function for walking over the folders in the music folder
 function walkSync(filelist, dir) {
-    files = fs.readdirSync(dir);
-    filelist = filelist || [];
+    var files = fs.readdirSync(dir);
+    var filelist = filelist || [];
     files.forEach(function (file) {
-        if (fs.statSync(path.join(dir, file)).isDirectory()) {
-            filelist = walkSync(path.join(dir, file), filelist);
+        let filepath = path.join(dir, file)
+        if (fs.statSync(filepath).isDirectory()) {
+            console.log(file)
+            let temp = new intesityPlaylist(file, (walkSync(null, filepath)))
+            filelist.push(temp);
         } else {
             if (
                 file.endsWith('.mp3') ||
@@ -109,8 +120,14 @@ const openFolderDialog = () => {
     else musicPath = musicPath[0];
     console.log(musicPath)
     storage.set('folder', musicPath)
-    storage.set('filelist', walkSync(null, musicPath))
+    var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+    filelist = walkSync(null, musicPath).sort((a, b) => {
 
+        return collator.compare(a.name, b.name);
+    })
+    storage.set('filelist', filelist);
+    mainWindow.webContents.send("music_files", filelist)
+    //console.log(filelist)
 }
 
 // This method will be called when Electron has finished
@@ -135,6 +152,10 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })
 
+ipcMain.on("request_files", function (event, arg) {
+    console.log("received request for files ipc")
+    mainWindow.webContents.send("music_files", filelist)
+});
 
 
 // In this file you can include the rest of your app's specific main process

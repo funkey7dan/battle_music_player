@@ -26,7 +26,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm:svelte-dev\" \"APP_DEV=true electron .\"",
+    "start": "set APP_DEV=true && concurrently \"npm:svelte-dev\" \" electron .\"",
     "packager": "electron-packager ./ --platform=win32",
     "build": "electron-builder build -w portable",
     "svelte-build": "rollup -c",
