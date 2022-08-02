@@ -11,20 +11,29 @@
 		Icon,
 	} from "sveltestrap";
 	import { writable } from "svelte/store";
-	import { createEventDispatcher } from "svelte";
 	import { get } from "svelte/store";
 	import { filelist_store, current_howl } from "./stores";
-	const { App } = require("electron");
 	import { Howl, Howler } from "howler";
 	import Marquee from "svelte-fast-marquee";
+	import Buttons from "./Control.svelte";
+	const ipc = require("electron").ipcRenderer;
 	const fs = require("fs");
 	const path = require("path");
 	const Store = require("electron-store");
+
 	/**##################### DECLARATIONS ######################*/
 	const store = new Store();
-	let barWidth;
-	let nameWidth;
+	let barWidth; // the width of the progress bar
+	let nameWidth; // the width of the trackname
+	let currentIntensity; // a 'pointer' to the currently chosen intesityPlaylist
 
+	var filelist; // a list of intesityPlaylists that we populate
+	filelist_store.set(filelist); // svelte store to listen for changes in file list value
+
+	/**
+	 * A class to represent an intesity level
+	 *
+	 */
 	class intesityPlaylist {
 		constructor(name, trackList) {
 			this.name = name;
@@ -34,47 +43,81 @@
 		}
 	}
 
+	/**
+	 * A class to represent a music track with metadata
+	 */
 	class musicTrack {
 		constructor(name, file, howl) {
 			this.name = name;
-			this.file = file;
-			this.howl = howl;
+			this.file = file; // the path to the file
+			this.howl = howl; // the howl object
 		}
 	}
 	var isPlaying = false;
 
-	var myInterval;
+	var updateInterval; // variable to save the interval we set for the progress update, so we can clear it
 	Howler.preload = true;
-	var filelist;
-	filelist_store.set(filelist);
 
+	// a variable to hold the initial,default sound
 	var sound = {
 		name: "track",
 		file: "track.mp3",
 		howl: new Howl({
 			src: ["track.mp3"],
+			// we set a function to update the progress-bar every 100 ms
 			onplay: function () {
-				myInterval = setInterval(() => {
+				updateInterval = setInterval(() => {
 					requestAnimationFrame(updateProgress);
 				}, 100);
 			},
 		}),
 	};
-	current_howl.set(sound.howl);
-	let seekStatus = $current_howl.seek() || 0;
+
+	current_howl.set(sound.howl); // save the initial sound in a store, so we can listen for changes and access the currently playing track
+	let seekStatus = $current_howl.seek() || 0; // the seek location in the track, in seconds
 	let timerLeft = $current_howl.duration();
-	// let trackProgress =
-	// 	($current_howl.seek() / $current_howl.duration()) * 100 || 0;
+	// another store, the precentage of the progress-bar that passed
 	const trackProgress = writable(
 		($current_howl.seek() / $current_howl.duration()) * 100 || 0
 	);
+
+	// subscribe to listen for track changes
 	current_howl.subscribe((value) => {
-		console.log("current track updated");
+		// when the track is changed updates it's progress
 		seekStatus = $current_howl.seek() || 0;
 		timerLeft = $current_howl.duration();
 		$trackProgress =
 			($current_howl.seek() / $current_howl.duration()) * 100 || 0;
 	});
+
+	// TODO check if needed:
+	// ipc.on("music_files", function (event, arg) {
+	// 	console.log(event);
+	// 	filelist = arg;
+	// 	console.log("ipc got " + arg);
+	// });
+
+	// send the list of files to the controller
+	ipc.on("request_files", function (event, arg) {
+		ipc.send("music_files", filelist);
+	});
+
+	// on folder change we receive an event from the electron main so we update our store, and we use the passed path to build the list
+	ipc.on("file_path", function (event, arg) {
+		createPlaylist(arg);
+		store.set("music-path", arg);
+	});
+
+	// TODO: check if needed:
+	// if (store.has("filelist")) {
+	// 	filelist = store.get("filelist");
+	// 	console.log("loaded filelist from storage" + filelist);
+	// }
+
+	// if we have a previously saved music path rebuild the filelist from it
+	if (store.has("music-path") && !filelist) {
+		createPlaylist(store.get("music-path"));
+	}
 
 	/**##################### FUNCTIONS ######################*/
 	function getRandomInt(min, max) {
@@ -84,16 +127,23 @@
 	}
 
 	function crossfadeTracks(old, next) {
-		let ms = 200;
+		let ms;
+		if (store.has("fade-ms")) {
+			ms = store.get("fade-ms");
+		} else {
+			ms = 200;
+			store.set("fade-ms", ms);
+		}
+
 		old.fade(1, 0, ms);
 		setTimeout(() => {
 			old.stop();
 			old.volume(1);
 		}, ms);
-		//next.volume(0);
 		next.play();
 		next.fade(0, 1, ms);
 	}
+
 	// get time in second and format to mm:ss
 	function timeFormatter(secs) {
 		Math.floor(secs);
@@ -108,7 +158,7 @@
 		//console.log(sound);
 		console.log(sound.howl);
 		$current_howl.on("play", function () {
-			myInterval = setInterval(() => {
+			updateInterval = setInterval(() => {
 				requestAnimationFrame(updateProgress);
 			}, 300);
 		});
@@ -156,53 +206,6 @@
 			//console.log(trackProgress);
 		}
 	}
-
-	import Buttons from "./Control.svelte";
-	import { electron } from "process";
-	import { randomInt } from "crypto";
-	//import MyProgressBar from "./MyProgressBar.svelte";
-	let dialog = window.dialog;
-
-	const ipc = require("electron").ipcRenderer;
-	// ipc.on("data_path", function (event, arg) {
-	// 	storage.setDataPath(arg);
-	// });
-
-	ipc.on("music_files", function (event, arg) {
-		console.log(event);
-		filelist = arg;
-		console.log("ipc got " + arg);
-	});
-
-	ipc.on("request_files", function (event, arg) {
-		console.log("received request for files ipc");
-		ipc.send("music_files", filelist);
-	});
-
-	ipc.on("file_path", function (event, arg) {
-		console.log("ipc got " + arg);
-		createPlaylist(arg);
-		//storage.set("filelist", filelist);
-		store.set("music-path", arg);
-	});
-
-	if (store.has("filelist")) {
-		filelist = store.get("filelist");
-		console.log("loaded filelist from storage" + filelist);
-	}
-	if (store.has("music-path") && !filelist) {
-		createPlaylist(store.get("music-path"));
-	}
-	// storage.has("filelist", function (error, hasKey) {
-	// 	if (error) {
-	// 		console.error(error);
-	// 	}
-	// 	if (hasKey) {
-	// 		filelist = storage.getSync("filelist");
-	// 		console.log("loaded filelist from storage" + filelist);
-	// 	}
-	// });
-	let currentIntensity;
 
 	// received intesity change event push from controller
 	function handleMessage(event) {
@@ -256,7 +259,7 @@
 								},
 								onend: function () {
 									$trackProgress = 100;
-									clearInterval(myInterval);
+									clearInterval(updateInterval);
 									changeTrack(1);
 								},
 							})
