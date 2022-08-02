@@ -50,15 +50,6 @@
     }
 
     function playNext() {
-        dialog.showOpenDialog({
-            properties: ["openFile", "multiSelections", "showHiddenFiles"],
-            filters: [
-                { name: "CSV files", extensions: ["csv"] },
-                { name: "All Files", extensions: ["*"] },
-            ],
-            message: "Select a CSV file to open",
-            defaultPath: `${__dirname}/samples`,
-        });
     }
 
     function updateProgress() {

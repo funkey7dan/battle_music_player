@@ -4,12 +4,17 @@
     "concurrently": "^7.3.0",
     "electron-json-storage": "^4.5.0",
     "electron-reload": "^2.0.0-alpha.1",
+    "electron-store": "^8.1.0",
     "howler": "^2.2.3",
     "sirv-cli": "^2.0.0",
+    "svelte-fast-marquee": "^0.4.1",
     "sveltestrap": "^5.9.0"
   },
-  "name": "player",
+  "name": "BMIR",
   "version": "1.0.0",
+  "description": "A compact player to influence the mood of your tabletop game",
+  "author": "",
+  "license": "ISC",
   "main": "./src/main.js",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -18,6 +23,7 @@
     "electron-builder": "^23.1.0",
     "electron-packager": "^15.5.1",
     "rollup": "^2.3.4",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
@@ -28,12 +34,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set APP_DEV=true && concurrently \"npm:svelte-dev\" \" electron .\"",
     "packager": "electron-packager ./ --platform=win32",
-    "build": "electron-builder build -w portable",
+    "build": "rollup -c && electron-builder build -w portable",
     "svelte-build": "rollup -c",
     "svelte-dev": "rollup -c -w",
     "svelte-start": "sirv public --no-clear"
   },
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "build": {
+    "directories": {
+      "buildResources": "build"
+    },
+    "win": {
+      "icon": "build/icon.ico"
+    }
+  }
 }
