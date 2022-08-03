@@ -117,37 +117,6 @@ const loadSettings = () => {
     // })
 }
 
-// function for walking over the folders in the music folder
-function walkSync(filelist, dir) {
-    var files = fs.readdirSync(dir);
-    var filelist = filelist || [];
-    files.forEach(function (file) {
-        let filepath = path.join(dir, file)
-        if (fs.statSync(filepath).isDirectory()) {
-            console.log(file)
-            let temp = new intesityPlaylist(file, (walkSync(null, filepath)))
-            filelist.push(temp);
-        } else {
-            if (
-                file.endsWith('.mp3') ||
-                file.endsWith('.m4a') ||
-                file.endsWith('.wav') ||
-                file.endsWith('.ogg')
-            ) {
-                console.log(path.join(dir, file))
-                filelist.push(
-                    new musicTrack(file, path.join(dir, file),
-                        new Howl({
-                            src: [path.join(dir, file)],
-                            html5: true,
-                        }))
-                );
-            }
-        }
-    });
-    return filelist;
-}
-
 // function for the open folder menu item
 const openFolderDialog = () => {
     if (!(musicPath = dialog.showOpenDialogSync({ properties: ['openDirectory'] }))) return;// if canceled or didn't choose

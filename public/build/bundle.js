@@ -1,6 +1,6 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
-var app = (function (process, crypto) {
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+var app = (function () {
     'use strict';
 
     function noop() { }
@@ -742,7 +742,7 @@ var app = (function (process, crypto) {
     const file$a = "node_modules\\sveltestrap\\src\\Button.svelte";
 
     // (54:0) {:else}
-    function create_else_block_1$2(ctx) {
+    function create_else_block_1$1(ctx) {
     	let button;
     	let button_aria_label_value;
     	let current;
@@ -841,7 +841,7 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block: block_1,
-    		id: create_else_block_1$2.name,
+    		id: create_else_block_1$1.name,
     		type: "else",
     		source: "(54:0) {:else}",
     		ctx
@@ -1029,7 +1029,7 @@ var app = (function (process, crypto) {
     }
 
     // (66:6) {#if children}
-    function create_if_block_2$2(ctx) {
+    function create_if_block_2$1(ctx) {
     	let t;
 
     	const block_1 = {
@@ -1051,7 +1051,7 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block: block_1,
-    		id: create_if_block_2$2.name,
+    		id: create_if_block_2$1.name,
     		type: "if",
     		source: "(66:6) {#if children}",
     		ctx
@@ -1066,7 +1066,7 @@ var app = (function (process, crypto) {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block_2$2, create_else_block_2$1];
+    	const if_block_creators = [create_if_block_2$1, create_else_block_2$1];
     	const if_blocks = [];
 
     	function select_block_type_2(ctx, dirty) {
@@ -1235,7 +1235,7 @@ var app = (function (process, crypto) {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$4, create_else_block_1$2];
+    	const if_block_creators = [create_if_block$4, create_else_block_1$1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -2402,12 +2402,12 @@ var app = (function (process, crypto) {
     const file$5 = "node_modules\\sveltestrap\\src\\Progress.svelte";
 
     // (44:0) {:else}
-    function create_else_block_1$1(ctx) {
+    function create_else_block_1(ctx) {
     	let div;
     	let current_block_type_index;
     	let if_block;
     	let current;
-    	const if_block_creators = [create_if_block_2$1, create_else_block_2];
+    	const if_block_creators = [create_if_block_2, create_else_block_2];
     	const if_blocks = [];
 
     	function select_block_type_2(ctx, dirty) {
@@ -2485,7 +2485,7 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block_1$1.name,
+    		id: create_else_block_1.name,
     		type: "else",
     		source: "(44:0) {:else}",
     		ctx
@@ -2661,7 +2661,7 @@ var app = (function (process, crypto) {
     }
 
     // (46:4) {#if multi}
-    function create_if_block_2$1(ctx) {
+    function create_if_block_2(ctx) {
     	let current;
     	const default_slot_template = /*#slots*/ ctx[14].default;
     	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[13], null);
@@ -2709,7 +2709,7 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_2$1.name,
+    		id: create_if_block_2.name,
     		type: "if",
     		source: "(46:4) {#if multi}",
     		ctx
@@ -2875,7 +2875,7 @@ var app = (function (process, crypto) {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$3, create_else_block_1$1];
+    	const if_block_creators = [create_if_block$3, create_else_block_1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -7411,11 +7411,11 @@ var app = (function (process, crypto) {
     const { console: console_1 } = globals;
     const file = "src\\App.svelte";
 
-    // (290:1) {#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
-    function create_if_block_2(ctx) {
+    // (301:1) {#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
+    function create_if_block_1(ctx) {
     	let h2;
     	let t0;
-    	let t1_value = /*currentIntensity*/ ctx[6].name.replace(/\D/g, "") + "";
+    	let t1_value = /*currentIntensity*/ ctx[2].name.replace(/\D/g, "") + "";
     	let t1;
 
     	const block = {
@@ -7424,7 +7424,7 @@ var app = (function (process, crypto) {
     			t0 = text("Current intesity is: ");
     			t1 = text(t1_value);
     			attr_dev(h2, "class", "svelte-1wm39n8");
-    			add_location(h2, file, 290, 2, 7374);
+    			add_location(h2, file, 301, 2, 8151);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -7432,7 +7432,7 @@ var app = (function (process, crypto) {
     			append_dev(h2, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*currentIntensity*/ 64 && t1_value !== (t1_value = /*currentIntensity*/ ctx[6].name.replace(/\D/g, "") + "")) set_data_dev(t1, t1_value);
+    			if (dirty[0] & /*currentIntensity*/ 4 && t1_value !== (t1_value = /*currentIntensity*/ ctx[2].name.replace(/\D/g, "") + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h2);
@@ -7441,25 +7441,57 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_2.name,
+    		id: create_if_block_1.name,
     		type: "if",
-    		source: "(290:1) {#if currentIntensity && currentIntensity.name.replace(/\\D/g, \\\"\\\") != \\\"\\\"}",
+    		source: "(301:1) {#if currentIntensity && currentIntensity.name.replace(/\\D/g, \\\"\\\") != \\\"\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (300:5) {:else}
-    function create_else_block_1(ctx) {
+    // (315:6) <Marquee pauseOnHover="true" speed={0.1 * barWidth}>
+    function create_default_slot_17(ctx) {
+    	let t_value = /*sound*/ ctx[5].name + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text(t_value);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*sound*/ 32 && t_value !== (t_value = /*sound*/ ctx[5].name + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_17.name,
+    		type: "slot",
+    		source: "(315:6) <Marquee pauseOnHover=\\\"true\\\" speed={0.1 * barWidth}>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (308:4) <Row>
+    function create_default_slot_16(ctx) {
+    	let div;
     	let marquee;
     	let current;
 
     	marquee = new Marquee({
     			props: {
     				pauseOnHover: "true",
-    				speed: "50",
-    				$$slots: { default: [create_default_slot_19] },
+    				speed: 0.1 * /*barWidth*/ ctx[0],
+    				$$slots: { default: [create_default_slot_17] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7467,16 +7499,21 @@ var app = (function (process, crypto) {
 
     	const block = {
     		c: function create() {
+    			div = element("div");
     			create_component(marquee.$$.fragment);
+    			attr_dev(div, "id", "name");
+    			add_location(div, file, 308, 5, 8360);
     		},
     		m: function mount(target, anchor) {
-    			mount_component(marquee, target, anchor);
+    			insert_dev(target, div, anchor);
+    			mount_component(marquee, div, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
     			const marquee_changes = {};
+    			if (dirty[0] & /*barWidth*/ 1) marquee_changes.speed = 0.1 * /*barWidth*/ ctx[0];
 
-    			if (dirty[0] & /*sound*/ 8 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*sound*/ 32 | dirty[1] & /*$$scope*/ 64) {
     				marquee_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7492,65 +7529,25 @@ var app = (function (process, crypto) {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(marquee, detaching);
+    			if (detaching) detach_dev(div);
+    			destroy_component(marquee);
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block_1.name,
-    		type: "else",
-    		source: "(300:5) {:else}",
+    		id: create_default_slot_16.name,
+    		type: "slot",
+    		source: "(308:4) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (298:5) {#if nameWidth < barWidth}
-    function create_if_block_1(ctx) {
-    	let span;
-    	let t_value = /*sound*/ ctx[3].name + "";
-    	let t;
-    	let span_resize_listener;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text(t_value);
-    			add_render_callback(() => /*span_elementresize_handler*/ ctx[15].call(span));
-    			add_location(span, file, 298, 6, 7539);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    			span_resize_listener = add_resize_listener(span, /*span_elementresize_handler*/ ctx[15].bind(span));
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*sound*/ 8 && t_value !== (t_value = /*sound*/ ctx[3].name + "")) set_data_dev(t, t_value);
-    		},
-    		i: noop,
-    		o: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    			span_resize_listener();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_1.name,
-    		type: "if",
-    		source: "(298:5) {#if nameWidth < barWidth}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (301:6) <Marquee pauseOnHover="true" speed="50">
-    function create_default_slot_19(ctx) {
-    	let t_value = /*sound*/ ctx[3].name + "";
+    // (323:5) <Col sm="1" xs="1">
+    function create_default_slot_15(ctx) {
+    	let t_value = timeFormatter(/*seekStatus*/ ctx[6]) + "";
     	let t;
 
     	const block = {
@@ -7561,7 +7558,7 @@ var app = (function (process, crypto) {
     			insert_dev(target, t, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*sound*/ 8 && t_value !== (t_value = /*sound*/ ctx[3].name + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*seekStatus*/ 64 && t_value !== (t_value = timeFormatter(/*seekStatus*/ ctx[6]) + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(t);
@@ -7570,128 +7567,17 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_19.name,
+    		id: create_default_slot_15.name,
     		type: "slot",
-    		source: "(301:6) <Marquee pauseOnHover=\\\"true\\\" speed=\\\"50\\\">",
+    		source: "(323:5) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (297:4) <Row>
-    function create_default_slot_18(ctx) {
-    	let current_block_type_index;
-    	let if_block;
-    	let if_block_anchor;
-    	let current;
-    	const if_block_creators = [create_if_block_1, create_else_block_1];
-    	const if_blocks = [];
-
-    	function select_block_type(ctx, dirty) {
-    		if (/*nameWidth*/ ctx[1] < /*barWidth*/ ctx[0]) return 0;
-    		return 1;
-    	}
-
-    	current_block_type_index = select_block_type(ctx);
-    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-
-    	const block = {
-    		c: function create() {
-    			if_block.c();
-    			if_block_anchor = empty();
-    		},
-    		m: function mount(target, anchor) {
-    			if_blocks[current_block_type_index].m(target, anchor);
-    			insert_dev(target, if_block_anchor, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			let previous_block_index = current_block_type_index;
-    			current_block_type_index = select_block_type(ctx);
-
-    			if (current_block_type_index === previous_block_index) {
-    				if_blocks[current_block_type_index].p(ctx, dirty);
-    			} else {
-    				group_outros();
-
-    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
-    					if_blocks[previous_block_index] = null;
-    				});
-
-    				check_outros();
-    				if_block = if_blocks[current_block_type_index];
-
-    				if (!if_block) {
-    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-    					if_block.c();
-    				} else {
-    					if_block.p(ctx, dirty);
-    				}
-
-    				transition_in(if_block, 1);
-    				if_block.m(if_block_anchor.parentNode, if_block_anchor);
-    			}
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if_blocks[current_block_type_index].d(detaching);
-    			if (detaching) detach_dev(if_block_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_default_slot_18.name,
-    		type: "slot",
-    		source: "(297:4) <Row>",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (308:5) <Col sm="1" xs="1">
-    function create_default_slot_17(ctx) {
-    	let t_value = timeFormatter(/*seekStatus*/ ctx[4]) + "";
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			t = text(t_value);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, t, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*seekStatus*/ 16 && t_value !== (t_value = timeFormatter(/*seekStatus*/ ctx[4]) + "")) set_data_dev(t, t_value);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(t);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_default_slot_17.name,
-    		type: "slot",
-    		source: "(308:5) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (309:5) <Col style="width:min-content len:min-content">
-    function create_default_slot_16(ctx) {
+    // (324:5) <Col style="width:min-content len:min-content">
+    function create_default_slot_14(ctx) {
     	let div;
     	let progress;
     	let div_resize_listener;
@@ -7702,7 +7588,7 @@ var app = (function (process, crypto) {
     	progress = new Progress({
     			props: {
     				color: "danger",
-    				value: /*$trackProgress*/ ctx[8]
+    				value: /*$trackProgress*/ ctx[9]
     			},
     			$$inline: true
     		});
@@ -7712,23 +7598,23 @@ var app = (function (process, crypto) {
     			div = element("div");
     			create_component(progress.$$.fragment);
     			set_style(div, "width", "min-content len:min-content");
-    			add_render_callback(() => /*div_elementresize_handler*/ ctx[16].call(div));
-    			add_location(div, file, 309, 6, 7841);
+    			add_render_callback(() => /*div_elementresize_handler*/ ctx[17].call(div));
+    			add_location(div, file, 324, 6, 8786);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
     			mount_component(progress, div, null);
-    			div_resize_listener = add_resize_listener(div, /*div_elementresize_handler*/ ctx[16].bind(div));
+    			div_resize_listener = add_resize_listener(div, /*div_elementresize_handler*/ ctx[17].bind(div));
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(div, "click", /*seekToClick*/ ctx[14], false, false, false);
+    				dispose = listen_dev(div, "click", /*seekToClick*/ ctx[15], false, false, false);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
     			const progress_changes = {};
-    			if (dirty[0] & /*$trackProgress*/ 256) progress_changes.value = /*$trackProgress*/ ctx[8];
+    			if (dirty[0] & /*$trackProgress*/ 512) progress_changes.value = /*$trackProgress*/ ctx[9];
     			progress.$set(progress_changes);
     		},
     		i: function intro(local) {
@@ -7751,18 +7637,18 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_16.name,
+    		id: create_default_slot_14.name,
     		type: "slot",
-    		source: "(309:5) <Col style=\\\"width:min-content len:min-content\\\">",
+    		source: "(324:5) <Col style=\\\"width:min-content len:min-content\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (319:5) <Col sm="1" xs="1">
-    function create_default_slot_15(ctx) {
-    	let t_value = timeFormatter(/*timerLeft*/ ctx[5]) + "";
+    // (334:5) <Col sm="1" xs="1">
+    function create_default_slot_13(ctx) {
+    	let t_value = timeFormatter(/*timerLeft*/ ctx[7]) + "";
     	let t;
 
     	const block = {
@@ -7773,7 +7659,7 @@ var app = (function (process, crypto) {
     			insert_dev(target, t, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*timerLeft*/ 32 && t_value !== (t_value = timeFormatter(/*timerLeft*/ ctx[5]) + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*timerLeft*/ 128 && t_value !== (t_value = timeFormatter(/*timerLeft*/ ctx[7]) + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(t);
@@ -7782,17 +7668,17 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_15.name,
+    		id: create_default_slot_13.name,
     		type: "slot",
-    		source: "(319:5) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
+    		source: "(334:5) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (307:4) <Row>
-    function create_default_slot_14(ctx) {
+    // (322:4) <Row>
+    function create_default_slot_12(ctx) {
     	let col0;
     	let t0;
     	let col1;
@@ -7804,7 +7690,7 @@ var app = (function (process, crypto) {
     			props: {
     				sm: "1",
     				xs: "1",
-    				$$slots: { default: [create_default_slot_17] },
+    				$$slots: { default: [create_default_slot_15] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7813,7 +7699,7 @@ var app = (function (process, crypto) {
     	col1 = new Col({
     			props: {
     				style: "width:min-content len:min-content",
-    				$$slots: { default: [create_default_slot_16] },
+    				$$slots: { default: [create_default_slot_14] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7823,7 +7709,7 @@ var app = (function (process, crypto) {
     			props: {
     				sm: "1",
     				xs: "1",
-    				$$slots: { default: [create_default_slot_15] },
+    				$$slots: { default: [create_default_slot_13] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7848,21 +7734,21 @@ var app = (function (process, crypto) {
     		p: function update(ctx, dirty) {
     			const col0_changes = {};
 
-    			if (dirty[0] & /*seekStatus*/ 16 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*seekStatus*/ 64 | dirty[1] & /*$$scope*/ 64) {
     				col0_changes.$$scope = { dirty, ctx };
     			}
 
     			col0.$set(col0_changes);
     			const col1_changes = {};
 
-    			if (dirty[0] & /*barWidth, $trackProgress*/ 257 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*barWidth, $trackProgress*/ 513 | dirty[1] & /*$$scope*/ 64) {
     				col1_changes.$$scope = { dirty, ctx };
     			}
 
     			col1.$set(col1_changes);
     			const col2_changes = {};
 
-    			if (dirty[0] & /*timerLeft*/ 32 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*timerLeft*/ 128 | dirty[1] & /*$$scope*/ 64) {
     				col2_changes.$$scope = { dirty, ctx };
     			}
 
@@ -7892,17 +7778,17 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_14.name,
+    		id: create_default_slot_12.name,
     		type: "slot",
-    		source: "(307:4) <Row>",
+    		source: "(322:4) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (324:5) <Button on:click={() => changeTrack(-1)}>
-    function create_default_slot_13(ctx) {
+    // (339:5) <Button on:click={() => changeTrack(-1)}>
+    function create_default_slot_11(ctx) {
     	let t;
 
     	const block = {
@@ -7919,29 +7805,29 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_13.name,
+    		id: create_default_slot_11.name,
     		type: "slot",
-    		source: "(324:5) <Button on:click={() => changeTrack(-1)}>",
+    		source: "(339:5) <Button on:click={() => changeTrack(-1)}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (327:5) {:else}
+    // (342:5) {:else}
     function create_else_block(ctx) {
     	let button;
     	let current;
 
     	button = new Button({
     			props: {
-    				$$slots: { default: [create_default_slot_12] },
+    				$$slots: { default: [create_default_slot_10] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
-    	button.$on("click", /*playSound*/ ctx[10]);
+    	button.$on("click", /*playSound*/ ctx[11]);
 
     	const block = {
     		c: function create() {
@@ -7978,27 +7864,27 @@ var app = (function (process, crypto) {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(327:5) {:else}",
+    		source: "(342:5) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (325:5) {#if isPlaying}
+    // (340:5) {#if isPlaying}
     function create_if_block(ctx) {
     	let button;
     	let current;
 
     	button = new Button({
     			props: {
-    				$$slots: { default: [create_default_slot_11] },
+    				$$slots: { default: [create_default_slot_9] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
-    	button.$on("click", /*pauseSound*/ ctx[11]);
+    	button.$on("click", /*pauseSound*/ ctx[12]);
 
     	const block = {
     		c: function create() {
@@ -8035,15 +7921,15 @@ var app = (function (process, crypto) {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(325:5) {#if isPlaying}",
+    		source: "(340:5) {#if isPlaying}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (328:6) <Button on:click={playSound}>
-    function create_default_slot_12(ctx) {
+    // (343:6) <Button on:click={playSound}>
+    function create_default_slot_10(ctx) {
     	let t;
 
     	const block = {
@@ -8060,17 +7946,17 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_12.name,
+    		id: create_default_slot_10.name,
     		type: "slot",
-    		source: "(328:6) <Button on:click={playSound}>",
+    		source: "(343:6) <Button on:click={playSound}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (326:6) <Button on:click={pauseSound}>
-    function create_default_slot_11(ctx) {
+    // (341:6) <Button on:click={pauseSound}>
+    function create_default_slot_9(ctx) {
     	let t;
 
     	const block = {
@@ -8087,17 +7973,17 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_11.name,
+    		id: create_default_slot_9.name,
     		type: "slot",
-    		source: "(326:6) <Button on:click={pauseSound}>",
+    		source: "(341:6) <Button on:click={pauseSound}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (330:5) <Button on:click={() => changeTrack(1)}>
-    function create_default_slot_10(ctx) {
+    // (345:5) <Button on:click={() => changeTrack(1)}>
+    function create_default_slot_8(ctx) {
     	let t;
 
     	const block = {
@@ -8114,17 +8000,17 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_10.name,
+    		id: create_default_slot_8.name,
     		type: "slot",
-    		source: "(330:5) <Button on:click={() => changeTrack(1)}>",
+    		source: "(345:5) <Button on:click={() => changeTrack(1)}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (323:4) <ButtonGroup>
-    function create_default_slot_9(ctx) {
+    // (338:4) <ButtonGroup>
+    function create_default_slot_7(ctx) {
     	let button0;
     	let t0;
     	let current_block_type_index;
@@ -8135,33 +8021,33 @@ var app = (function (process, crypto) {
 
     	button0 = new Button({
     			props: {
-    				$$slots: { default: [create_default_slot_13] },
+    				$$slots: { default: [create_default_slot_11] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
-    	button0.$on("click", /*click_handler*/ ctx[17]);
+    	button0.$on("click", /*click_handler*/ ctx[18]);
     	const if_block_creators = [create_if_block, create_else_block];
     	const if_blocks = [];
 
-    	function select_block_type_1(ctx, dirty) {
-    		if (/*isPlaying*/ ctx[2]) return 0;
+    	function select_block_type(ctx, dirty) {
+    		if (/*isPlaying*/ ctx[4]) return 0;
     		return 1;
     	}
 
-    	current_block_type_index = select_block_type_1(ctx);
+    	current_block_type_index = select_block_type(ctx);
     	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
     	button1 = new Button({
     			props: {
-    				$$slots: { default: [create_default_slot_10] },
+    				$$slots: { default: [create_default_slot_8] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
-    	button1.$on("click", /*click_handler_1*/ ctx[18]);
+    	button1.$on("click", /*click_handler_1*/ ctx[19]);
 
     	const block = {
     		c: function create() {
@@ -8188,7 +8074,7 @@ var app = (function (process, crypto) {
 
     			button0.$set(button0_changes);
     			let previous_block_index = current_block_type_index;
-    			current_block_type_index = select_block_type_1(ctx);
+    			current_block_type_index = select_block_type(ctx);
 
     			if (current_block_type_index === previous_block_index) {
     				if_blocks[current_block_type_index].p(ctx, dirty);
@@ -8245,17 +8131,17 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_9.name,
+    		id: create_default_slot_7.name,
     		type: "slot",
-    		source: "(323:4) <ButtonGroup>",
+    		source: "(338:4) <ButtonGroup>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (296:3) <Container>
-    function create_default_slot_8(ctx) {
+    // (307:3) <Container>
+    function create_default_slot_6(ctx) {
     	let row0;
     	let t0;
     	let row1;
@@ -8267,7 +8153,7 @@ var app = (function (process, crypto) {
 
     	row0 = new Row({
     			props: {
-    				$$slots: { default: [create_default_slot_18] },
+    				$$slots: { default: [create_default_slot_16] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -8275,7 +8161,7 @@ var app = (function (process, crypto) {
 
     	row1 = new Row({
     			props: {
-    				$$slots: { default: [create_default_slot_14] },
+    				$$slots: { default: [create_default_slot_12] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -8283,7 +8169,7 @@ var app = (function (process, crypto) {
 
     	buttongroup = new ButtonGroup({
     			props: {
-    				$$slots: { default: [create_default_slot_9] },
+    				$$slots: { default: [create_default_slot_7] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -8298,7 +8184,7 @@ var app = (function (process, crypto) {
     			br = element("br");
     			t2 = space();
     			create_component(buttongroup.$$.fragment);
-    			add_location(br, file, 321, 4, 8179);
+    			add_location(br, file, 336, 4, 9124);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -8313,21 +8199,21 @@ var app = (function (process, crypto) {
     		p: function update(ctx, dirty) {
     			const row0_changes = {};
 
-    			if (dirty[0] & /*nameWidth, sound, barWidth*/ 11 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*barWidth, sound*/ 33 | dirty[1] & /*$$scope*/ 64) {
     				row0_changes.$$scope = { dirty, ctx };
     			}
 
     			row0.$set(row0_changes);
     			const row1_changes = {};
 
-    			if (dirty[0] & /*timerLeft, barWidth, $trackProgress, seekStatus*/ 305 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*timerLeft, barWidth, $trackProgress, seekStatus*/ 705 | dirty[1] & /*$$scope*/ 64) {
     				row1_changes.$$scope = { dirty, ctx };
     			}
 
     			row1.$set(row1_changes);
     			const buttongroup_changes = {};
 
-    			if (dirty[0] & /*isPlaying*/ 4 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*isPlaying*/ 16 | dirty[1] & /*$$scope*/ 64) {
     				buttongroup_changes.$$scope = { dirty, ctx };
     			}
 
@@ -8359,23 +8245,23 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_8.name,
+    		id: create_default_slot_6.name,
     		type: "slot",
-    		source: "(296:3) <Container>",
+    		source: "(307:3) <Container>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (295:2) <Row>
-    function create_default_slot_7(ctx) {
+    // (306:2) <Row>
+    function create_default_slot_5(ctx) {
     	let container;
     	let current;
 
     	container = new Container({
     			props: {
-    				$$slots: { default: [create_default_slot_8] },
+    				$$slots: { default: [create_default_slot_6] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -8392,7 +8278,7 @@ var app = (function (process, crypto) {
     		p: function update(ctx, dirty) {
     			const container_changes = {};
 
-    			if (dirty[0] & /*isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, nameWidth, sound*/ 319 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 753 | dirty[1] & /*$$scope*/ 64) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
@@ -8414,61 +8300,17 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_7.name,
+    		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(295:2) <Row>",
+    		source: "(306:2) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (336:4) <Col sm="1" xs="1">
-    function create_default_slot_6(ctx) {
-    	let icon;
-    	let current;
-
-    	icon = new Icon({
-    			props: { name: "volume-down-fill" },
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			create_component(icon.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(icon, target, anchor);
-    			current = true;
-    		},
-    		p: noop,
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(icon.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(icon.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(icon, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_default_slot_6.name,
-    		type: "slot",
-    		source: "(336:4) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (339:4) <Col      >
-    function create_default_slot_5(ctx) {
+    // (354:4) <Col      >
+    function create_default_slot_4(ctx) {
     	let input;
     	let mounted;
     	let dispose;
@@ -8480,13 +8322,13 @@ var app = (function (process, crypto) {
     			attr_dev(input, "max", "1");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "step", "0.1");
-    			add_location(input, file, 339, 6, 8623);
+    			add_location(input, file, 354, 6, 9577);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
 
     			if (!mounted) {
-    				dispose = listen_dev(input, "input", /*input_handler*/ ctx[19], false, false, false);
+    				dispose = listen_dev(input, "input", /*input_handler*/ ctx[20], false, false, false);
     				mounted = true;
     			}
     		},
@@ -8500,90 +8342,22 @@ var app = (function (process, crypto) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_5.name,
-    		type: "slot",
-    		source: "(339:4) <Col      >",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (349:4) <Col sm="1" xs="1">
-    function create_default_slot_4(ctx) {
-    	let icon;
-    	let current;
-
-    	icon = new Icon({
-    			props: { name: "volume-up-fill" },
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			create_component(icon.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(icon, target, anchor);
-    			current = true;
-    		},
-    		p: noop,
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(icon.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(icon.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(icon, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
     		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(349:4) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
+    		source: "(354:4) <Col      >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (335:3) <Row>
+    // (350:3) <Row>
     function create_default_slot_3(ctx) {
-    	let col0;
-    	let t0;
-    	let col1;
-    	let t1;
-    	let col2;
+    	let col;
     	let current;
 
-    	col0 = new Col({
+    	col = new Col({
     			props: {
-    				sm: "1",
-    				xs: "1",
-    				$$slots: { default: [create_default_slot_6] },
-    				$$scope: { ctx }
-    			},
-    			$$inline: true
-    		});
-
-    	col1 = new Col({
-    			props: {
-    				$$slots: { default: [create_default_slot_5] },
-    				$$scope: { ctx }
-    			},
-    			$$inline: true
-    		});
-
-    	col2 = new Col({
-    			props: {
-    				sm: "1",
-    				xs: "1",
     				$$slots: { default: [create_default_slot_4] },
     				$$scope: { ctx }
     			},
@@ -8592,62 +8366,32 @@ var app = (function (process, crypto) {
 
     	const block = {
     		c: function create() {
-    			create_component(col0.$$.fragment);
-    			t0 = space();
-    			create_component(col1.$$.fragment);
-    			t1 = space();
-    			create_component(col2.$$.fragment);
+    			create_component(col.$$.fragment);
     		},
     		m: function mount(target, anchor) {
-    			mount_component(col0, target, anchor);
-    			insert_dev(target, t0, anchor);
-    			mount_component(col1, target, anchor);
-    			insert_dev(target, t1, anchor);
-    			mount_component(col2, target, anchor);
+    			mount_component(col, target, anchor);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			const col0_changes = {};
+    			const col_changes = {};
 
-    			if (dirty[1] & /*$$scope*/ 64) {
-    				col0_changes.$$scope = { dirty, ctx };
+    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 64) {
+    				col_changes.$$scope = { dirty, ctx };
     			}
 
-    			col0.$set(col0_changes);
-    			const col1_changes = {};
-
-    			if (dirty[0] & /*$current_howl*/ 128 | dirty[1] & /*$$scope*/ 64) {
-    				col1_changes.$$scope = { dirty, ctx };
-    			}
-
-    			col1.$set(col1_changes);
-    			const col2_changes = {};
-
-    			if (dirty[1] & /*$$scope*/ 64) {
-    				col2_changes.$$scope = { dirty, ctx };
-    			}
-
-    			col2.$set(col2_changes);
+    			col.$set(col_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(col0.$$.fragment, local);
-    			transition_in(col1.$$.fragment, local);
-    			transition_in(col2.$$.fragment, local);
+    			transition_in(col.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(col0.$$.fragment, local);
-    			transition_out(col1.$$.fragment, local);
-    			transition_out(col2.$$.fragment, local);
+    			transition_out(col.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(col0, detaching);
-    			if (detaching) detach_dev(t0);
-    			destroy_component(col1, detaching);
-    			if (detaching) detach_dev(t1);
-    			destroy_component(col2, detaching);
+    			destroy_component(col, detaching);
     		}
     	};
 
@@ -8655,14 +8399,14 @@ var app = (function (process, crypto) {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(335:3) <Row>",
+    		source: "(350:3) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (334:2) <Container>
+    // (349:2) <Container>
     function create_default_slot_2(ctx) {
     	let row;
     	let current;
@@ -8686,7 +8430,7 @@ var app = (function (process, crypto) {
     		p: function update(ctx, dirty) {
     			const row_changes = {};
 
-    			if (dirty[0] & /*$current_howl*/ 128 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 64) {
     				row_changes.$$scope = { dirty, ctx };
     			}
 
@@ -8710,19 +8454,19 @@ var app = (function (process, crypto) {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(334:2) <Container>",
+    		source: "(349:2) <Container>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (356:2) <Row>
+    // (373:2) <Row>
     function create_default_slot_1(ctx) {
     	let buttons;
     	let current;
     	buttons = new Control({ $$inline: true });
-    	buttons.$on("play_message", /*handleMessage*/ ctx[13]);
+    	buttons.$on("play_message", /*handleMessage*/ ctx[14]);
 
     	const block = {
     		c: function create() {
@@ -8751,14 +8495,14 @@ var app = (function (process, crypto) {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(356:2) <Row>",
+    		source: "(373:2) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (294:1) <Container>
+    // (305:1) <Container>
     function create_default_slot(ctx) {
     	let row0;
     	let t0;
@@ -8771,7 +8515,7 @@ var app = (function (process, crypto) {
 
     	row0 = new Row({
     			props: {
-    				$$slots: { default: [create_default_slot_7] },
+    				$$slots: { default: [create_default_slot_5] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -8802,7 +8546,7 @@ var app = (function (process, crypto) {
     			br = element("br");
     			t2 = space();
     			create_component(row1.$$.fragment);
-    			add_location(br, file, 354, 2, 8888);
+    			add_location(br, file, 371, 2, 9909);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -8817,14 +8561,14 @@ var app = (function (process, crypto) {
     		p: function update(ctx, dirty) {
     			const row0_changes = {};
 
-    			if (dirty[0] & /*isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, nameWidth, sound*/ 319 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 753 | dirty[1] & /*$$scope*/ 64) {
     				row0_changes.$$scope = { dirty, ctx };
     			}
 
     			row0.$set(row0_changes);
     			const container_changes = {};
 
-    			if (dirty[0] & /*$current_howl*/ 128 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 64) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
@@ -8865,7 +8609,7 @@ var app = (function (process, crypto) {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(294:1) <Container>",
+    		source: "(305:1) <Container>",
     		ctx
     	});
 
@@ -8878,12 +8622,17 @@ var app = (function (process, crypto) {
     	let t0;
     	let h1;
     	let t2;
-    	let show_if = /*currentIntensity*/ ctx[6] && /*currentIntensity*/ ctx[6].name.replace(/\D/g, "") != "";
+    	let show_if = /*currentIntensity*/ ctx[2] && /*currentIntensity*/ ctx[2].name.replace(/\D/g, "") != "";
     	let t3;
+    	let span;
+    	let t4_value = /*sound*/ ctx[5].name + "";
+    	let t4;
+    	let span_resize_listener;
+    	let t5;
     	let container;
     	let current;
     	styles = new Styles({ $$inline: true });
-    	let if_block = show_if && create_if_block_2(ctx);
+    	let if_block = show_if && create_if_block_1(ctx);
 
     	container = new Container({
     			props: {
@@ -8903,11 +8652,17 @@ var app = (function (process, crypto) {
     			t2 = space();
     			if (if_block) if_block.c();
     			t3 = space();
+    			span = element("span");
+    			t4 = text(t4_value);
+    			t5 = space();
     			create_component(container.$$.fragment);
     			attr_dev(h1, "class", "svelte-1wm39n8");
-    			add_location(h1, file, 288, 1, 7256);
+    			add_location(h1, file, 299, 1, 8033);
+    			set_style(span, "display", "none");
+    			add_render_callback(() => /*span_elementresize_handler*/ ctx[16].call(span));
+    			add_location(span, file, 303, 1, 8232);
     			attr_dev(main, "class", "svelte-1wm39n8");
-    			add_location(main, file, 286, 0, 7236);
+    			add_location(main, file, 297, 0, 8013);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8920,17 +8675,21 @@ var app = (function (process, crypto) {
     			append_dev(main, t2);
     			if (if_block) if_block.m(main, null);
     			append_dev(main, t3);
+    			append_dev(main, span);
+    			append_dev(span, t4);
+    			span_resize_listener = add_resize_listener(span, /*span_elementresize_handler*/ ctx[16].bind(span));
+    			append_dev(main, t5);
     			mount_component(container, main, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*currentIntensity*/ 64) show_if = /*currentIntensity*/ ctx[6] && /*currentIntensity*/ ctx[6].name.replace(/\D/g, "") != "";
+    			if (dirty[0] & /*currentIntensity*/ 4) show_if = /*currentIntensity*/ ctx[2] && /*currentIntensity*/ ctx[2].name.replace(/\D/g, "") != "";
 
     			if (show_if) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
-    					if_block = create_if_block_2(ctx);
+    					if_block = create_if_block_1(ctx);
     					if_block.c();
     					if_block.m(main, t3);
     				}
@@ -8939,9 +8698,10 @@ var app = (function (process, crypto) {
     				if_block = null;
     			}
 
+    			if ((!current || dirty[0] & /*sound*/ 32) && t4_value !== (t4_value = /*sound*/ ctx[5].name + "")) set_data_dev(t4, t4_value);
     			const container_changes = {};
 
-    			if (dirty[0] & /*$current_howl, isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, nameWidth, sound*/ 447 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*$current_howl, currentVolume, isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 1017 | dirty[1] & /*$$scope*/ 64) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
@@ -8962,6 +8722,7 @@ var app = (function (process, crypto) {
     			if (detaching) detach_dev(main);
     			destroy_component(styles);
     			if (if_block) if_block.d();
+    			span_resize_listener();
     			destroy_component(container);
     		}
     	};
@@ -8983,24 +8744,6 @@ var app = (function (process, crypto) {
     	return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function crossfadeTracks(old, next) {
-    	let ms = 200;
-    	old.fade(1, 0, ms);
-
-    	setTimeout(
-    		() => {
-    			old.stop();
-    			old.volume(1);
-    		},
-    		ms
-    	);
-
-    	//next.volume(0);
-    	next.play();
-
-    	next.fade(0, 1, ms);
-    }
-
     // get time in second and format to mm:ss
     function timeFormatter(secs) {
     	var minutes = Math.floor(secs / 60) || 0;
@@ -9012,10 +8755,10 @@ var app = (function (process, crypto) {
     	let $current_howl;
     	let $trackProgress;
     	validate_store(current_howl, 'current_howl');
-    	component_subscribe($$self, current_howl, $$value => $$invalidate(7, $current_howl = $$value));
+    	component_subscribe($$self, current_howl, $$value => $$invalidate(8, $current_howl = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
-    	const { App } = require("electron");
+    	const ipc = require("electron").ipcRenderer;
     	const fs = require("fs");
     	const path = require("path");
     	const Store = require("electron-store");
@@ -9023,9 +8766,24 @@ var app = (function (process, crypto) {
     	/**##################### DECLARATIONS ######################*/
     	const store = new Store();
 
-    	let barWidth;
-    	let nameWidth;
+    	let barWidth; // the width of the progress bar
+    	let nameWidth; // the width of the trackname
+    	let currentIntensity; // a 'pointer' to the currently chosen intesityPlaylist
+    	let currentVolume; // save the currently set volume
 
+    	if (store.has("volume")) {
+    		currentVolume = store.get("volume");
+    	} else {
+    		store.set("volume", 1);
+    	}
+
+    	var filelist; // a list of intesityPlaylists that we populate
+    	filelist_store.set(filelist); // svelte store to listen for changes in file list value
+
+    	/**
+     * A class to represent an intesity level
+     *
+     */
     	class intesityPlaylist {
     		constructor(name, trackList) {
     			this.name = name;
@@ -9035,27 +8793,30 @@ var app = (function (process, crypto) {
     		}
     	}
 
+    	/**
+     * A class to represent a music track with metadata
+     */
     	class musicTrack {
     		constructor(name, file, howl) {
     			this.name = name;
-    			this.file = file;
-    			this.howl = howl;
+    			this.file = file; // the path to the file
+    			this.howl = howl; // the howl object
     		}
     	}
 
     	var isPlaying = false;
-    	var myInterval;
+    	var updateInterval; // variable to save the interval we set for the progress update, so we can clear it
     	howler.Howler.preload = true;
-    	var filelist;
-    	filelist_store.set(filelist);
 
+    	// a variable to hold the initial,default sound
     	var sound = {
     		name: "track",
     		file: "track.mp3",
     		howl: new howler.Howl({
     				src: ["track.mp3"],
+    				// we set a function to update the progress-bar every 100 ms
     				onplay() {
-    					myInterval = setInterval(
+    					updateInterval = setInterval(
     						() => {
     							requestAnimationFrame(updateProgress);
     						},
@@ -9065,34 +8826,87 @@ var app = (function (process, crypto) {
     			})
     	};
 
-    	current_howl.set(sound.howl);
-    	let seekStatus = $current_howl.seek() || 0;
+    	current_howl.set(sound.howl); // save the initial sound in a store, so we can listen for changes and access the currently playing track
+    	let seekStatus = $current_howl.seek() || 0; // the seek location in the track, in seconds
     	let timerLeft = $current_howl.duration();
 
-    	// let trackProgress =
-    	// 	($current_howl.seek() / $current_howl.duration()) * 100 || 0;
+    	// another store, the precentage of the progress-bar that passed
     	const trackProgress = writable($current_howl.seek() / $current_howl.duration() * 100 || 0);
 
     	validate_store(trackProgress, 'trackProgress');
-    	component_subscribe($$self, trackProgress, value => $$invalidate(8, $trackProgress = value));
+    	component_subscribe($$self, trackProgress, value => $$invalidate(9, $trackProgress = value));
 
+    	// subscribe to listen for track changes
     	current_howl.subscribe(value => {
-    		console.log("current track updated");
-    		$$invalidate(4, seekStatus = $current_howl.seek() || 0);
-    		$$invalidate(5, timerLeft = $current_howl.duration());
+    		// when the track is changed updates it's progress
+    		$$invalidate(6, seekStatus = $current_howl.seek() || 0);
+
+    		$$invalidate(7, timerLeft = $current_howl.duration());
     		set_store_value(trackProgress, $trackProgress = $current_howl.seek() / $current_howl.duration() * 100 || 0, $trackProgress);
     	});
+
+    	// TODO check if needed:
+    	// ipc.on("music_files", function (event, arg) {
+    	// 	console.log(event);
+    	// 	filelist = arg;
+    	// 	console.log("ipc got " + arg);
+    	// });
+    	// send the list of files to the controller
+    	ipc.on("request_files", function (event, arg) {
+    		ipc.send("music_files", filelist);
+    	});
+
+    	// on folder change we receive an event from the electron main so we update our store, and we use the passed path to build the list
+    	ipc.on("file_path", function (event, arg) {
+    		createPlaylist(arg);
+    		store.set("music-path", arg);
+    	});
+
+    	// TODO: check if needed:
+    	// if (store.has("filelist")) {
+    	// 	filelist = store.get("filelist");
+    	// 	console.log("loaded filelist from storage" + filelist);
+    	// }
+    	// if we have a previously saved music path rebuild the filelist from it
+    	if (store.has("music-path") && !filelist) {
+    		createPlaylist(store.get("music-path"));
+    	}
+
+    	function crossfadeTracks(old, next) {
+    		let ms;
+
+    		if (store.has("fade-ms")) {
+    			ms = store.get("fade-ms");
+    		} else {
+    			ms = 200;
+    			store.set("fade-ms", ms);
+    		}
+
+    		old.fade(currentVolume, 0, ms);
+
+    		setTimeout(
+    			() => {
+    				old.stop();
+    				old.volume(currentVolume);
+    			},
+    			ms
+    		);
+
+    		next.volume(currentVolume);
+    		next.play();
+    		next.fade(0, currentVolume, ms);
+    	}
 
     	let prevId;
 
     	function playSound() {
-    		$$invalidate(2, isPlaying = true);
+    		$$invalidate(4, isPlaying = true);
 
     		//console.log(sound);
     		console.log(sound.howl);
 
     		$current_howl.on("play", function () {
-    			myInterval = setInterval(
+    			updateInterval = setInterval(
     				() => {
     					requestAnimationFrame(updateProgress);
     				},
@@ -9101,35 +8915,36 @@ var app = (function (process, crypto) {
     		});
 
     		current_howl.set(sound.howl);
+    		$current_howl.volume(currentVolume);
     		prevId = $current_howl.play();
     		console.log("prevID = " + prevId);
     	}
 
     	function pauseSound() {
-    		$$invalidate(2, isPlaying = false);
+    		$$invalidate(4, isPlaying = false);
     		$current_howl.pause();
     		get_store_value(current_howl).pause();
     	}
 
     	function stopSound() {
-    		$$invalidate(2, isPlaying = false);
+    		$$invalidate(4, isPlaying = false);
     		get_store_value(current_howl).stop();
     	}
 
     	function changeTrack(value) {
     		if (currentIntensity) {
-    			$$invalidate(6, currentIntensity.index = (currentIntensity.index + value) % (currentIntensity.trackList.length - 1), currentIntensity);
+    			$$invalidate(2, currentIntensity.index = (currentIntensity.index + value) % (currentIntensity.trackList.length - 1), currentIntensity);
 
     			if (isPlaying) {
     				const src = currentIntensity.trackList[currentIntensity.index];
     				crossfadeTracks($current_howl, src.howl);
     				console.log(src);
-    				$$invalidate(3, sound = src);
+    				$$invalidate(5, sound = src);
     				current_howl.update(n => sound.howl);
     			} else {
     				const src = currentIntensity.trackList[currentIntensity.index];
     				console.log(src);
-    				$$invalidate(3, sound = src);
+    				$$invalidate(5, sound = src);
     				current_howl.update(n => sound.howl);
     			}
     		}
@@ -9137,67 +8952,20 @@ var app = (function (process, crypto) {
 
     	function updateProgress() {
     		if ($current_howl.playing()) {
-    			$$invalidate(4, seekStatus = $current_howl.seek() || 0);
+    			$$invalidate(6, seekStatus = $current_howl.seek() || 0);
     			set_store_value(trackProgress, $trackProgress = seekStatus / $current_howl.duration() * 100 || 0, $trackProgress);
-    			$$invalidate(5, timerLeft = $current_howl.duration() - seekStatus);
+    			$$invalidate(7, timerLeft = $current_howl.duration() - seekStatus);
     		} //console.log(trackProgress);
     	}
-
-    	//import MyProgressBar from "./MyProgressBar.svelte";
-    	let dialog = window.dialog;
-
-    	const ipc = require("electron").ipcRenderer;
-
-    	// ipc.on("data_path", function (event, arg) {
-    	// 	storage.setDataPath(arg);
-    	// });
-    	ipc.on("music_files", function (event, arg) {
-    		console.log(event);
-    		filelist = arg;
-    		console.log("ipc got " + arg);
-    	});
-
-    	ipc.on("request_files", function (event, arg) {
-    		console.log("received request for files ipc");
-    		ipc.send("music_files", filelist);
-    	});
-
-    	ipc.on("file_path", function (event, arg) {
-    		console.log("ipc got " + arg);
-    		createPlaylist(arg);
-
-    		//storage.set("filelist", filelist);
-    		store.set("music-path", arg);
-    	});
-
-    	if (store.has("filelist")) {
-    		filelist = store.get("filelist");
-    		console.log("loaded filelist from storage" + filelist);
-    	}
-
-    	if (store.has("music-path") && !filelist) {
-    		createPlaylist(store.get("music-path"));
-    	}
-
-    	// storage.has("filelist", function (error, hasKey) {
-    	// 	if (error) {
-    	// 		console.error(error);
-    	// 	}
-    	// 	if (hasKey) {
-    	// 		filelist = storage.getSync("filelist");
-    	// 		console.log("loaded filelist from storage" + filelist);
-    	// 	}
-    	// });
-    	let currentIntensity;
 
     	// received intesity change event push from controller
     	function handleMessage(event) {
     		// find the intesity that was pressedin the filelist
     		if (currentIntensity) {
-    			$$invalidate(6, currentIntensity.index = (currentIntensity.index + getRandomInt(0, currentIntensity.trackList.length)) % (currentIntensity.trackList.length - 1), currentIntensity);
+    			$$invalidate(2, currentIntensity.index = (currentIntensity.index + getRandomInt(0, currentIntensity.trackList.length)) % (currentIntensity.trackList.length - 1), currentIntensity);
     		}
 
-    		$$invalidate(6, currentIntensity = filelist.find(s => {
+    		$$invalidate(2, currentIntensity = filelist.find(s => {
     			return s.name === event.detail;
     		}));
 
@@ -9208,7 +8976,7 @@ var app = (function (process, crypto) {
     		}
 
     		console.log(src);
-    		$$invalidate(3, sound = src);
+    		$$invalidate(5, sound = src);
     		current_howl.update(n => sound.howl);
     	}
 
@@ -9220,24 +8988,25 @@ var app = (function (process, crypto) {
     			let filepath = path.join(dir, file);
 
     			if (fs.statSync(filepath).isDirectory()) {
-    				console.log(file);
+    				//console.log(file);
     				let temp = new intesityPlaylist(file, walkSync(null, filepath));
+
     				filelist.push(temp);
     			} else {
     				if (file.endsWith(".mp3") || file.endsWith(".m4a") || file.endsWith(".wav") || file.endsWith(".ogg")) {
-    					console.log(path.join(dir, file));
-
+    					//console.log(path.join(dir, file));
     					filelist.push(new musicTrack(file,
     					path.join(dir, file),
     					new howler.Howl({
     								src: [path.join(dir, file)],
     								html5: true,
     								onfade(event) {
-    									console.log(event);
-    								},
+    									
+    								}, //console.log(event);
+    								//console.log(event);
     								onend() {
     									set_store_value(trackProgress, $trackProgress = 100, $trackProgress);
-    									clearInterval(myInterval);
+    									clearInterval(updateInterval);
     									changeTrack(1);
     								}
     							})));
@@ -9279,7 +9048,11 @@ var app = (function (process, crypto) {
 
     	const click_handler = () => changeTrack(-1);
     	const click_handler_1 = () => changeTrack(1);
-    	const input_handler = e => $current_howl.volume(e.target.valueAsNumber);
+
+    	const input_handler = e => {
+    		$current_howl.volume(e.target.valueAsNumber);
+    		$$invalidate(3, currentVolume = e.target.valueAsNumber);
+    	};
 
     	$$self.$capture_state = () => ({
     		Button,
@@ -9291,25 +9064,27 @@ var app = (function (process, crypto) {
     		Styles,
     		Icon,
     		writable,
-    		createEventDispatcher,
     		get: get_store_value,
     		filelist_store,
     		current_howl,
-    		App,
     		Howl: howler.Howl,
     		Howler: howler.Howler,
     		Marquee,
+    		Buttons: Control,
+    		ipc,
     		fs,
     		path,
     		Store,
     		store,
     		barWidth,
     		nameWidth,
+    		currentIntensity,
+    		currentVolume,
+    		filelist,
     		intesityPlaylist,
     		musicTrack,
     		isPlaying,
-    		myInterval,
-    		filelist,
+    		updateInterval,
     		sound,
     		seekStatus,
     		timerLeft,
@@ -9323,12 +9098,6 @@ var app = (function (process, crypto) {
     		stopSound,
     		changeTrack,
     		updateProgress,
-    		Buttons: Control,
-    		electron: process.electron,
-    		randomInt: crypto.randomInt,
-    		dialog,
-    		ipc,
-    		currentIntensity,
     		handleMessage,
     		walkSync,
     		createPlaylist,
@@ -9340,15 +9109,15 @@ var app = (function (process, crypto) {
     	$$self.$inject_state = $$props => {
     		if ('barWidth' in $$props) $$invalidate(0, barWidth = $$props.barWidth);
     		if ('nameWidth' in $$props) $$invalidate(1, nameWidth = $$props.nameWidth);
-    		if ('isPlaying' in $$props) $$invalidate(2, isPlaying = $$props.isPlaying);
-    		if ('myInterval' in $$props) myInterval = $$props.myInterval;
+    		if ('currentIntensity' in $$props) $$invalidate(2, currentIntensity = $$props.currentIntensity);
+    		if ('currentVolume' in $$props) $$invalidate(3, currentVolume = $$props.currentVolume);
     		if ('filelist' in $$props) filelist = $$props.filelist;
-    		if ('sound' in $$props) $$invalidate(3, sound = $$props.sound);
-    		if ('seekStatus' in $$props) $$invalidate(4, seekStatus = $$props.seekStatus);
-    		if ('timerLeft' in $$props) $$invalidate(5, timerLeft = $$props.timerLeft);
+    		if ('isPlaying' in $$props) $$invalidate(4, isPlaying = $$props.isPlaying);
+    		if ('updateInterval' in $$props) updateInterval = $$props.updateInterval;
+    		if ('sound' in $$props) $$invalidate(5, sound = $$props.sound);
+    		if ('seekStatus' in $$props) $$invalidate(6, seekStatus = $$props.seekStatus);
+    		if ('timerLeft' in $$props) $$invalidate(7, timerLeft = $$props.timerLeft);
     		if ('prevId' in $$props) prevId = $$props.prevId;
-    		if ('dialog' in $$props) dialog = $$props.dialog;
-    		if ('currentIntensity' in $$props) $$invalidate(6, currentIntensity = $$props.currentIntensity);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -9358,11 +9127,12 @@ var app = (function (process, crypto) {
     	return [
     		barWidth,
     		nameWidth,
+    		currentIntensity,
+    		currentVolume,
     		isPlaying,
     		sound,
     		seekStatus,
     		timerLeft,
-    		currentIntensity,
     		$current_howl,
     		$trackProgress,
     		trackProgress,
@@ -9379,21 +9149,21 @@ var app = (function (process, crypto) {
     	];
     }
 
-    class App_1 extends SvelteComponentDev {
+    class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
     		init(this, options, instance, create_fragment, safe_not_equal, {}, null, [-1, -1]);
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "App_1",
+    			tagName: "App",
     			options,
     			id: create_fragment.name
     		});
     	}
     }
 
-    const app = new App_1({
+    const app = new App({
     	target: document.body,
     	props: {
     	}
@@ -9401,5 +9171,5 @@ var app = (function (process, crypto) {
 
     return app;
 
-})(process, crypto);
+})();
 //# sourceMappingURL=bundle.js.map

@@ -26,7 +26,12 @@
 	let barWidth; // the width of the progress bar
 	let nameWidth; // the width of the trackname
 	let currentIntensity; // a 'pointer' to the currently chosen intesityPlaylist
-
+	let currentVolume; // save the currently set volume
+	if (store.has("volume")) {
+		currentVolume = store.get("volume");
+	} else {
+		store.set("volume", 1);
+	}
 	var filelist; // a list of intesityPlaylists that we populate
 	filelist_store.set(filelist); // svelte store to listen for changes in file list value
 
@@ -135,13 +140,14 @@
 			store.set("fade-ms", ms);
 		}
 
-		old.fade(1, 0, ms);
+		old.fade(currentVolume, 0, ms);
 		setTimeout(() => {
 			old.stop();
-			old.volume(1);
+			old.volume(currentVolume);
 		}, ms);
+		next.volume(currentVolume);
 		next.play();
-		next.fade(0, 1, ms);
+		next.fade(0, currentVolume, ms);
 	}
 
 	// get time in second and format to mm:ss
@@ -162,7 +168,9 @@
 				requestAnimationFrame(updateProgress);
 			}, 300);
 		});
+
 		current_howl.set(sound.howl);
+		$current_howl.volume(currentVolume);
 		prevId = $current_howl.play();
 		console.log("prevID = " + prevId);
 	}
@@ -236,7 +244,7 @@
 		files.forEach(function (file) {
 			let filepath = path.join(dir, file);
 			if (fs.statSync(filepath).isDirectory()) {
-				console.log(file);
+				//console.log(file);
 				let temp = new intesityPlaylist(file, walkSync(null, filepath));
 				filelist.push(temp);
 			} else {
@@ -246,7 +254,7 @@
 					file.endsWith(".wav") ||
 					file.endsWith(".ogg")
 				) {
-					console.log(path.join(dir, file));
+					//console.log(path.join(dir, file));
 					filelist.push(
 						new musicTrack(
 							file,
@@ -255,7 +263,7 @@
 								src: [path.join(dir, file)],
 								html5: true,
 								onfade: function (event) {
-									console.log(event);
+									//console.log(event);
 								},
 								onend: function () {
 									$trackProgress = 100;
@@ -293,18 +301,22 @@
 	{#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
 		<h2>Current intesity is: {currentIntensity.name.replace(/\D/g, "")}</h2>
 	{/if}
-
+	<span style="display: none" bind:clientWidth={nameWidth}>{sound.name}</span>
 	<Container>
 		<Row>
 			<Container>
 				<Row>
-					{#if nameWidth < barWidth}
-						<span bind:clientWidth={nameWidth}>{sound.name}</span>
-					{:else}
-						<Marquee pauseOnHover="true" speed="50">
+					<div id="name">
+						<!-- {#if nameWidth < barWidth * 0.75}
+							<span bind:clientWidth={nameWidth}
+								>{sound.name}</span
+							>
+						{:else} -->
+						<Marquee pauseOnHover="true" speed={0.1 * barWidth}>
 							{sound.name}
 						</Marquee>
-					{/if}
+						<!-- {/if} -->
+					</div>
 				</Row>
 
 				<Row>
@@ -336,22 +348,24 @@
 		</Row>
 		<Container>
 			<Row>
-				<Col sm="1" xs="1">
+				<!-- <Col sm="1" xs="1">
 					<Icon name="volume-down-fill" />
-				</Col>
+				</Col> -->
 				<Col
 					><input
-						on:input={(e) =>
-							$current_howl.volume(e.target.valueAsNumber)}
+						on:input={(e) => {
+							$current_howl.volume(e.target.valueAsNumber);
+							currentVolume = e.target.valueAsNumber;
+						}}
 						type="range"
 						max="1"
 						min="0"
 						step="0.1"
 					/>
 				</Col>
-				<Col sm="1" xs="1">
+				<!-- <Col sm="1" xs="1">
 					<Icon name="volume-up-fill" />
-				</Col>
+				</Col> -->
 			</Row>
 		</Container>
 
