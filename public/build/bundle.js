@@ -8347,7 +8347,7 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "Current intesity is: 0";
     			attr_dev(h2, "class", "svelte-lhrr2r");
-    			add_location(h2, file, 306, 3, 8408);
+    			add_location(h2, file, 306, 3, 8404);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -8382,7 +8382,7 @@ var app = (function () {
     			t0 = text("Current intesity is: ");
     			t1 = text(t1_value);
     			attr_dev(h2, "class", "svelte-lhrr2r");
-    			add_location(h2, file, 302, 3, 8313);
+    			add_location(h2, file, 302, 3, 8309);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -8460,7 +8460,7 @@ var app = (function () {
     			div = element("div");
     			create_component(marquee.$$.fragment);
     			attr_dev(div, "id", "name");
-    			add_location(div, file, 316, 6, 8591);
+    			add_location(div, file, 316, 6, 8587);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -8557,7 +8557,7 @@ var app = (function () {
     			create_component(progress.$$.fragment);
     			set_style(div, "width", "min-content len:min-content");
     			add_render_callback(() => /*div_elementresize_handler*/ ctx[17].call(div));
-    			add_location(div, file, 332, 7, 9028);
+    			add_location(div, file, 332, 7, 9024);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -9142,7 +9142,7 @@ var app = (function () {
     			br = element("br");
     			t2 = space();
     			create_component(buttongroup.$$.fragment);
-    			add_location(br, file, 347, 5, 9403);
+    			add_location(br, file, 347, 5, 9399);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -9280,7 +9280,7 @@ var app = (function () {
     			attr_dev(input, "max", "1");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "step", "0.1");
-    			add_location(input, file, 365, 7, 9872);
+    			add_location(input, file, 365, 7, 9868);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
@@ -9504,7 +9504,7 @@ var app = (function () {
     			br = element("br");
     			t2 = space();
     			create_component(row1.$$.fragment);
-    			add_location(br, file, 382, 3, 10218);
+    			add_location(br, file, 382, 3, 10214);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -9623,10 +9623,10 @@ var app = (function () {
     			t5 = space();
     			create_component(container.$$.fragment);
     			attr_dev(h1, "class", "svelte-lhrr2r");
-    			add_location(h1, file, 300, 2, 8193);
+    			add_location(h1, file, 300, 2, 8189);
     			set_style(span, "display", "none");
     			add_render_callback(() => /*span_elementresize_handler*/ ctx[16].call(span));
-    			add_location(span, file, 309, 2, 8451);
+    			add_location(span, file, 309, 2, 8447);
     		},
     		m: function mount(target, anchor) {
     			mount_component(styles, target, anchor);
@@ -9718,7 +9718,7 @@ var app = (function () {
     			main = element("main");
     			create_component(container.$$.fragment);
     			attr_dev(main, "class", "svelte-lhrr2r");
-    			add_location(main, file, 297, 0, 8158);
+    			add_location(main, file, 297, 0, 8154);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9764,6 +9764,10 @@ var app = (function () {
     }
 
     function getRandomInt(min, max) {
+    	if (min === max) {
+    		return min;
+    	}
+
     	min = Math.ceil(min);
     	max = Math.floor(max);
     	return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -9871,12 +9875,6 @@ var app = (function () {
     		set_store_value(trackProgress, $trackProgress = $current_howl.seek() / $current_howl.duration() * 100 || 0, $trackProgress);
     	});
 
-    	// TODO check if needed:
-    	// ipc.on("music_files", function (event, arg) {
-    	// 	console.log(event);
-    	// 	filelist = arg;
-    	// 	console.log("ipc got " + arg);
-    	// });
     	// send the list of files to the controller
     	ipc.on("request_files", function (event, arg) {
     		ipc.send("music_files", filelist);
@@ -9888,17 +9886,16 @@ var app = (function () {
     		store.set("music-path", arg);
     	});
 
-    	// TODO: check if needed:
-    	// if (store.has("filelist")) {
-    	// 	filelist = store.get("filelist");
-    	// 	console.log("loaded filelist from storage" + filelist);
-    	// }
     	// if we have a previously saved music path rebuild the filelist from it
     	if (store.has("music-path") && !filelist) {
     		createPlaylist(store.get("music-path"));
     	}
 
     	function crossfadeTracks(old, next) {
+    		if (old == next) {
+    			return;
+    		}
+
     		let ms;
 
     		if (store.has("fade-ms")) {
@@ -9922,8 +9919,6 @@ var app = (function () {
     		next.volume(currentVolume);
     		$$invalidate(5, sound.howl = next, sound);
     		playSound();
-
-    		//next.play();
     		next.fade(0, currentVolume, ms);
     	}
 
@@ -9956,7 +9951,7 @@ var app = (function () {
 
     	function changeTrack(value) {
     		if (currentIntensity) {
-    			$$invalidate(2, currentIntensity.index = (currentIntensity.index + value) % (currentIntensity.trackList.length - 1), currentIntensity);
+    			$$invalidate(2, currentIntensity.index = (currentIntensity.index + value) % Math.max(currentIntensity.trackList.length - 1, 1), currentIntensity);
 
     			if (isPlaying) {
     				const src = currentIntensity.trackList[currentIntensity.index];
@@ -9984,9 +9979,9 @@ var app = (function () {
     	// received intesity change event push from controller
     	function handleMessage(event) {
     		// find the intesity that was pressedin the filelist
-    		if (currentIntensity) {
+    		if (currentIntensity != null) {
     			// advance the index of the previous intesity to a random one
-    			$$invalidate(2, currentIntensity.index = (currentIntensity.index + getRandomInt(0, currentIntensity.trackList.length)) % (currentIntensity.trackList.length - 1), currentIntensity);
+    			$$invalidate(2, currentIntensity.index = (currentIntensity.index + getRandomInt(0, currentIntensity.trackList.length)) % Math.max(currentIntensity.trackList.length - 1, 1), currentIntensity);
     		}
 
     		// find the name of intensity level requested in the filelist
@@ -10023,7 +10018,7 @@ var app = (function () {
     					filelist.push(new musicTrack(file,
     					path.join(dir, file),
     					new howler.Howl({
-    								src: [path.join(dir, file)],
+    								src: [path.join(dir, encodeURIComponent(file))],
     								html5: true,
     								onfade(event) {
     									
@@ -10033,11 +10028,23 @@ var app = (function () {
     									set_store_value(trackProgress, $trackProgress = 100, $trackProgress);
     									clearInterval(updateInterval);
     									changeTrack(1);
+    								},
+    								onplay() {
+    									updateInterval = setInterval(
+    										() => {
+    											requestAnimationFrame(updateProgress);
+    										},
+    										100
+    									);
     								}
     							})));
     				}
     			}
     		});
+
+    		if (filelist.length === 1) {
+    			filelist[0].howl.loop(true);
+    		}
 
     		filelist_store.set(filelist);
     		return filelist;

@@ -96,13 +96,6 @@
 			($current_howl.seek() / $current_howl.duration()) * 100 || 0;
 	});
 
-	// TODO check if needed:
-	// ipc.on("music_files", function (event, arg) {
-	// 	console.log(event);
-	// 	filelist = arg;
-	// 	console.log("ipc got " + arg);
-	// });
-
 	// send the list of files to the controller
 	ipc.on("request_files", function (event, arg) {
 		ipc.send("music_files", filelist);
@@ -114,12 +107,6 @@
 		store.set("music-path", arg);
 	});
 
-	// TODO: check if needed:
-	// if (store.has("filelist")) {
-	// 	filelist = store.get("filelist");
-	// 	console.log("loaded filelist from storage" + filelist);
-	// }
-
 	// if we have a previously saved music path rebuild the filelist from it
 	if (store.has("music-path") && !filelist) {
 		createPlaylist(store.get("music-path"));
@@ -127,12 +114,18 @@
 
 	/**##################### FUNCTIONS ######################*/
 	function getRandomInt(min, max) {
+		if (min === max) {
+			return min;
+		}
 		min = Math.ceil(min);
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
 	function crossfadeTracks(old, next) {
+		if (old == next) {
+			return;
+		}
 		let ms;
 		if (store.has("fade-ms")) {
 			ms = store.get("fade-ms");
@@ -150,7 +143,6 @@
 		next.volume(currentVolume);
 		sound.howl = next;
 		playSound();
-		//next.play();
 		next.fade(0, currentVolume, ms);
 	}
 
@@ -189,7 +181,7 @@
 		if (currentIntensity) {
 			currentIntensity.index =
 				(currentIntensity.index + value) %
-				(currentIntensity.trackList.length - 1);
+				Math.max(currentIntensity.trackList.length - 1, 1);
 			if (isPlaying) {
 				const src = currentIntensity.trackList[currentIntensity.index];
 				crossfadeTracks($current_howl, src.howl);
@@ -217,12 +209,12 @@
 	// received intesity change event push from controller
 	function handleMessage(event) {
 		// find the intesity that was pressedin the filelist
-		if (currentIntensity) {
+		if (currentIntensity != null) {
 			// advance the index of the previous intesity to a random one
 			currentIntensity.index =
 				(currentIntensity.index +
 					getRandomInt(0, currentIntensity.trackList.length)) %
-				(currentIntensity.trackList.length - 1);
+				Math.max(currentIntensity.trackList.length - 1, 1);
 		}
 		// find the name of intensity level requested in the filelist
 		currentIntensity = filelist.find((s) => {
@@ -260,7 +252,7 @@
 							file,
 							path.join(dir, file),
 							new Howl({
-								src: [path.join(dir, file)],
+								src: [path.join(dir, encodeURIComponent(file))],
 								html5: true,
 								onfade: function (event) {
 									//console.log(event);
@@ -270,12 +262,20 @@
 									clearInterval(updateInterval);
 									changeTrack(1);
 								},
+								onplay: function () {
+									updateInterval = setInterval(() => {
+										requestAnimationFrame(updateProgress);
+									}, 100);
+								},
 							})
 						)
 					);
 				}
 			}
 		});
+		if (filelist.length === 1) {
+			filelist[0].howl.loop(true);
+		}
 		filelist_store.set(filelist);
 		return filelist;
 	}
