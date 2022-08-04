@@ -8,7 +8,6 @@
 		Row,
 		Progress,
 		Styles,
-		Icon,
 	} from "sveltestrap";
 	import { writable } from "svelte/store";
 	import { get } from "svelte/store";
@@ -81,6 +80,8 @@
 	current_howl.set(sound.howl); // save the initial sound in a store, so we can listen for changes and access the currently playing track
 	let seekStatus = $current_howl.seek() || 0; // the seek location in the track, in seconds
 	let timerLeft = $current_howl.duration();
+	let prevId; // the howl id of the track that started
+
 	// another store, the precentage of the progress-bar that passed
 	const trackProgress = writable(
 		($current_howl.seek() / $current_howl.duration()) * 100 || 0
@@ -139,6 +140,7 @@
 			ms = 200;
 			store.set("fade-ms", ms);
 		}
+		isPlaying = false;
 
 		old.fade(currentVolume, 0, ms);
 		setTimeout(() => {
@@ -146,7 +148,9 @@
 			old.volume(currentVolume);
 		}, ms);
 		next.volume(currentVolume);
-		next.play();
+		sound.howl = next;
+		playSound();
+		//next.play();
 		next.fade(0, currentVolume, ms);
 	}
 
@@ -158,7 +162,7 @@
 
 		return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 	}
-	let prevId;
+
 	function playSound() {
 		isPlaying = true;
 		//console.log(sound);
@@ -179,11 +183,6 @@
 		isPlaying = false;
 		$current_howl.pause();
 		get(current_howl).pause();
-	}
-
-	function stopSound() {
-		isPlaying = false;
-		get(current_howl).stop();
 	}
 
 	function changeTrack(value) {
@@ -219,17 +218,18 @@
 	function handleMessage(event) {
 		// find the intesity that was pressedin the filelist
 		if (currentIntensity) {
+			// advance the index of the previous intesity to a random one
 			currentIntensity.index =
 				(currentIntensity.index +
 					getRandomInt(0, currentIntensity.trackList.length)) %
 				(currentIntensity.trackList.length - 1);
 		}
+		// find the name of intensity level requested in the filelist
 		currentIntensity = filelist.find((s) => {
 			return s.name === event.detail;
 		});
 
 		const src = currentIntensity.trackList[currentIntensity.index];
-
 		if (isPlaying) {
 			crossfadeTracks(get(current_howl), src.howl);
 		}
@@ -296,83 +296,95 @@
 </script>
 
 <main>
-	<Styles />
-	<h1>Battle Music Intensity Regulator</h1>
-	{#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
-		<h2>Current intesity is: {currentIntensity.name.replace(/\D/g, "")}</h2>
-	{/if}
-	<span style="display: none" bind:clientWidth={nameWidth}>{sound.name}</span>
 	<Container>
-		<Row>
-			<Container>
-				<Row>
-					<div id="name">
-						<!-- {#if nameWidth < barWidth * 0.75}
+		<Styles />
+		<h1>Battle Music Intensity Regulator</h1>
+		{#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
+			<h2>
+				Current intesity is: {currentIntensity.name.replace(/\D/g, "")}
+			</h2>
+		{:else}
+			<h2>Current intesity is: 0</h2>
+		{/if}
+
+		<span style="display: none" bind:clientWidth={nameWidth}
+			>{sound.name}</span
+		>
+		<Container>
+			<Row>
+				<Container>
+					<Row>
+						<div id="name">
+							<!-- {#if nameWidth < barWidth * 0.75}
 							<span bind:clientWidth={nameWidth}
 								>{sound.name}</span
 							>
 						{:else} -->
-						<Marquee pauseOnHover="true" speed={0.1 * barWidth}>
-							{sound.name}
-						</Marquee>
-						<!-- {/if} -->
-					</div>
-				</Row>
-
-				<Row>
-					<Col sm="1" xs="1">{timeFormatter(seekStatus)}</Col>
-					<Col style="width:min-content len:min-content">
-						<div
-							on:click={seekToClick}
-							bind:clientWidth={barWidth}
-							style="width:min-content len:min-content"
-						>
-							<Progress color="danger" value={$trackProgress} />
+							<Marquee pauseOnHover="true" speed={0.1 * barWidth}>
+								{sound.name}
+							</Marquee>
+							<!-- {/if} -->
 						</div>
-						<!-- <MyProgressBar value={trackProgress} /> -->
-					</Col>
-					<Col sm="1" xs="1">{timeFormatter(timerLeft)}</Col>
-				</Row>
+					</Row>
 
-				<br />
-				<ButtonGroup>
-					<Button on:click={() => changeTrack(-1)}>Prev</Button>
-					{#if isPlaying}
-						<Button on:click={pauseSound}>Pause</Button>
-					{:else}
-						<Button on:click={playSound}>Play</Button>
-					{/if}
-					<Button on:click={() => changeTrack(1)}>Next</Button>
-				</ButtonGroup>
-			</Container>
-		</Row>
-		<Container>
-			<Row>
-				<!-- <Col sm="1" xs="1">
+					<Row>
+						<Col sm="1" xs="1">{timeFormatter(seekStatus)}</Col>
+						<Col style="width:min-content len:min-content">
+							<div
+								on:click={seekToClick}
+								bind:clientWidth={barWidth}
+								style="width:min-content len:min-content"
+							>
+								<Progress
+									color="danger"
+									value={$trackProgress}
+								/>
+							</div>
+							<!-- <MyProgressBar value={trackProgress} /> -->
+						</Col>
+						<Col sm="1" xs="1">{timeFormatter(timerLeft)}</Col>
+					</Row>
+
+					<br />
+					<ButtonGroup>
+						<Button on:click={() => changeTrack(-1)}>Prev</Button>
+						{#if isPlaying}
+							<Button on:click={pauseSound}>Pause</Button>
+						{:else}
+							<Button on:click={playSound}>Play</Button>
+						{/if}
+						<Button on:click={() => changeTrack(1)}>Next</Button>
+					</ButtonGroup>
+				</Container>
+			</Row>
+			<Container>
+				<Row>
+					<!-- <Col sm="1" xs="1">
 					<Icon name="volume-down-fill" />
 				</Col> -->
-				<Col
-					><input
-						on:input={(e) => {
-							$current_howl.volume(e.target.valueAsNumber);
-							currentVolume = e.target.valueAsNumber;
-						}}
-						type="range"
-						max="1"
-						min="0"
-						step="0.1"
-					/>
-				</Col>
-				<!-- <Col sm="1" xs="1">
+					<Col
+						><input
+							on:input={(e) => {
+								$current_howl.volume(e.target.valueAsNumber);
+								currentVolume = e.target.valueAsNumber;
+							}}
+							type="range"
+							max="1"
+							min="0"
+							step="0.1"
+						/>
+					</Col>
+					<!-- <Col sm="1" xs="1">
 					<Icon name="volume-up-fill" />
 				</Col> -->
+				</Row>
+			</Container>
+
+			<br />
+			<Row>
+				<Buttons on:play_message={handleMessage} />
 			</Row>
 		</Container>
-
-		<br />
-		<Row>
-			<Buttons on:play_message={handleMessage} />
-		</Row>
 	</Container>
 </main>
 
@@ -381,6 +393,7 @@
 		text-align: center;
 		padding: 1em;
 		max-width: 240px;
+		height: 100vh;
 		margin: 0 auto;
 		content: center;
 	}
