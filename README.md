@@ -8,8 +8,11 @@ A compact player to influence the mood of your tabletop game built using:
 *You will need to have [Node.js](https://nodejs.org) installed.*
 
 ## Usage:
-First point the app to the root folder containing your intensity playlists (See example in /public):
-```
+First point the app to the root folder containing your intensity playlists (See example in /public)
+<details>
+  <summary>Folder structure</summary>
+
+
 📦battle_music
  ┣ 📂intensity 1
  ┃ ┗ 📜Torment  - 011 Valley of Dead Heroes Crisis .mp3
@@ -34,7 +37,11 @@ First point the app to the root folder containing your intensity playlists (See 
  ┃ ┗ 📜Three Ships .mp3
  ┗ 📂town
  ┃ ┗ 📜The inn at the Black Boar.mp3
-```
+
+</details>
+
+Choose an intensity level and press play
+When Playing press any level to switch to it
 
 ## Get started
 
