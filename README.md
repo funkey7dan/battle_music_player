@@ -12,7 +12,7 @@ First point the app to the root folder containing your intensity playlists (See 
 <details>
   <summary>Folder structure</summary>
 
-
+```
 📦battle_music
  ┣ 📂intensity 1
  ┃ ┗ 📜Torment  - 011 Valley of Dead Heroes Crisis .mp3
@@ -37,6 +37,7 @@ First point the app to the root folder containing your intensity playlists (See 
  ┃ ┗ 📜Three Ships .mp3
  ┗ 📂town
  ┃ ┗ 📜The inn at the Black Boar.mp3
+```
 
 </details>
 
