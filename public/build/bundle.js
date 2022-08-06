@@ -1,5 +1,5 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 var app = (function () {
     'use strict';
 
@@ -877,7 +877,7 @@ var app = (function () {
     	let current;
     	let mounted;
     	let dispose;
-    	const if_block_creators = [create_if_block_1$3, create_else_block$4];
+    	const if_block_creators = [create_if_block_1$4, create_else_block$4];
     	const if_blocks = [];
 
     	function select_block_type_1(ctx, dirty) {
@@ -1047,7 +1047,7 @@ var app = (function () {
     }
 
     // (66:6) {#if children}
-    function create_if_block_2$1(ctx) {
+    function create_if_block_2$2(ctx) {
     	let t;
 
     	const block_1 = {
@@ -1069,7 +1069,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block: block_1,
-    		id: create_if_block_2$1.name,
+    		id: create_if_block_2$2.name,
     		type: "if",
     		source: "(66:6) {#if children}",
     		ctx
@@ -1084,7 +1084,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block_2$1, create_else_block_2$1];
+    	const if_block_creators = [create_if_block_2$2, create_else_block_2$1];
     	const if_blocks = [];
 
     	function select_block_type_2(ctx, dirty) {
@@ -1217,7 +1217,7 @@ var app = (function () {
     }
 
     // (48:4) {#if children}
-    function create_if_block_1$3(ctx) {
+    function create_if_block_1$4(ctx) {
     	let t;
 
     	const block_1 = {
@@ -1239,7 +1239,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block: block_1,
-    		id: create_if_block_1$3.name,
+    		id: create_if_block_1$4.name,
     		type: "if",
     		source: "(48:4) {#if children}",
     		ctx
@@ -2724,7 +2724,7 @@ var app = (function () {
     }
 
     // (25:27) 
-    function create_if_block_1$2(ctx) {
+    function create_if_block_1$3(ctx) {
     	let button;
     	let current;
     	let mounted;
@@ -2811,7 +2811,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$2.name,
+    		id: create_if_block_1$3.name,
     		type: "if",
     		source: "(25:27) ",
     		ctx
@@ -2921,7 +2921,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$4, create_if_block_1$2, create_else_block$2];
+    	const if_block_creators = [create_if_block$4, create_if_block_1$3, create_else_block$2];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -3182,7 +3182,7 @@ var app = (function () {
     	let current_block_type_index;
     	let if_block;
     	let current;
-    	const if_block_creators = [create_if_block_2, create_else_block_2];
+    	const if_block_creators = [create_if_block_2$1, create_else_block_2];
     	const if_blocks = [];
 
     	function select_block_type_2(ctx, dirty) {
@@ -3275,7 +3275,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block_1$1, create_else_block$1];
+    	const if_block_creators = [create_if_block_1$2, create_else_block$1];
     	const if_blocks = [];
 
     	function select_block_type_1(ctx, dirty) {
@@ -3436,7 +3436,7 @@ var app = (function () {
     }
 
     // (46:4) {#if multi}
-    function create_if_block_2(ctx) {
+    function create_if_block_2$1(ctx) {
     	let current;
     	const default_slot_template = /*#slots*/ ctx[14].default;
     	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[13], null);
@@ -3484,7 +3484,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_2.name,
+    		id: create_if_block_2$1.name,
     		type: "if",
     		source: "(46:4) {#if multi}",
     		ctx
@@ -3588,7 +3588,7 @@ var app = (function () {
     }
 
     // (29:2) {#if multi}
-    function create_if_block_1$1(ctx) {
+    function create_if_block_1$2(ctx) {
     	let current;
     	const default_slot_template = /*#slots*/ ctx[14].default;
     	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[13], null);
@@ -3636,7 +3636,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$1.name,
+    		id: create_if_block_1$2.name,
     		type: "if",
     		source: "(29:2) {#if multi}",
     		ctx
@@ -7843,14 +7843,141 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[7] = list[i];
-    	child_ctx[8] = list;
-    	child_ctx[9] = i;
+    	child_ctx[9] = list[i];
+    	child_ctx[10] = list;
+    	child_ctx[11] = i;
     	return child_ctx;
     }
 
-    // (30:8) {#if filelist}
+    // (31:8) {#if filelist}
     function create_if_block$1(ctx) {
+    	let current_block_type_index;
+    	let if_block;
+    	let if_block_anchor;
+    	let current;
+    	const if_block_creators = [create_if_block_1$1, create_if_block_3];
+    	const if_blocks = [];
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*state*/ ctx[2] === "battle") return 0;
+    		if (/*state*/ ctx[2] === "town") return 1;
+    		return -1;
+    	}
+
+    	if (~(current_block_type_index = select_block_type(ctx))) {
+    		if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    	}
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (~current_block_type_index) {
+    				if_blocks[current_block_type_index].m(target, anchor);
+    			}
+
+    			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if (~current_block_type_index) {
+    					if_blocks[current_block_type_index].p(ctx, dirty);
+    				}
+    			} else {
+    				if (if_block) {
+    					group_outros();
+
+    					transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    						if_blocks[previous_block_index] = null;
+    					});
+
+    					check_outros();
+    				}
+
+    				if (~current_block_type_index) {
+    					if_block = if_blocks[current_block_type_index];
+
+    					if (!if_block) {
+    						if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    						if_block.c();
+    					} else {
+    						if_block.p(ctx, dirty);
+    					}
+
+    					transition_in(if_block, 1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				} else {
+    					if_block = null;
+    				}
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (~current_block_type_index) {
+    				if_blocks[current_block_type_index].d(detaching);
+    			}
+
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(31:8) {#if filelist}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (46:39) 
+    function create_if_block_3(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Just chilling...");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		p: noop,
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(46:39) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (32:12) {#if state === "battle"}
+    function create_if_block_1$1(ctx) {
     	let each_1_anchor;
     	let current;
     	let each_value = /*filelist*/ ctx[0];
@@ -7882,7 +8009,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*buttons, filelist, dispatch*/ 7) {
+    			if (dirty & /*buttons, filelist, dispatch*/ 11) {
     				each_value = /*filelist*/ ctx[0];
     				validate_each_argument(each_value);
     				let i;
@@ -7936,18 +8063,74 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$1.name,
+    		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(30:8) {#if filelist}",
+    		source: "(32:12) {#if state === \\\"battle\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (34:20) <Button                          bind:inner={buttons[(i + 1) % filelist.length]}                          on:click={() => dispatch("play_message", item.name)}                      >
-    function create_default_slot_2$1(ctx) {
-    	let t_value = /*item*/ ctx[7].name + "";
+    // (34:20) {#if item.name != "town"}
+    function create_if_block_2(ctx) {
+    	let listgroupitem;
+    	let current;
+
+    	listgroupitem = new ListGroupItem({
+    			props: {
+    				style: "border:none",
+    				$$slots: { default: [create_default_slot_3$1] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(listgroupitem.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(listgroupitem, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const listgroupitem_changes = {};
+
+    			if (dirty & /*$$scope, buttons, filelist*/ 4099) {
+    				listgroupitem_changes.$$scope = { dirty, ctx };
+    			}
+
+    			listgroupitem.$set(listgroupitem_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(listgroupitem.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(listgroupitem.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(listgroupitem, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(34:20) {#if item.name != \\\"town\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (36:28) <Button                                  bind:inner={buttons[(i + 1) % filelist.length]}                                  on:click={() =>                                      dispatch("play_message", item.name)}                              >
+    function create_default_slot_4$1(ctx) {
+    	let t_value = /*item*/ ctx[9].name + "";
     	let t;
 
     	const block = {
@@ -7958,7 +8141,7 @@ var app = (function () {
     			insert_dev(target, t, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*filelist*/ 1 && t_value !== (t_value = /*item*/ ctx[7].name + "")) set_data_dev(t, t_value);
+    			if (dirty & /*filelist*/ 1 && t_value !== (t_value = /*item*/ ctx[9].name + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(t);
@@ -7967,37 +8150,37 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_2$1.name,
+    		id: create_default_slot_4$1.name,
     		type: "slot",
-    		source: "(34:20) <Button                          bind:inner={buttons[(i + 1) % filelist.length]}                          on:click={() => dispatch(\\\"play_message\\\", item.name)}                      >",
+    		source: "(36:28) <Button                                  bind:inner={buttons[(i + 1) % filelist.length]}                                  on:click={() =>                                      dispatch(\\\"play_message\\\", item.name)}                              >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (33:16) <ListGroupItem style="border:none">
-    function create_default_slot_1$1(ctx) {
+    // (35:24) <ListGroupItem style="border:none">
+    function create_default_slot_3$1(ctx) {
     	let button;
     	let updating_inner;
     	let t;
     	let current;
 
     	function button_inner_binding(value) {
-    		/*button_inner_binding*/ ctx[4](value, /*i*/ ctx[9]);
+    		/*button_inner_binding*/ ctx[5](value, /*i*/ ctx[11]);
     	}
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[5](/*item*/ ctx[7]);
+    		return /*click_handler*/ ctx[6](/*item*/ ctx[9]);
     	}
 
     	let button_props = {
-    		$$slots: { default: [create_default_slot_2$1] },
+    		$$slots: { default: [create_default_slot_4$1] },
     		$$scope: { ctx }
     	};
 
-    	if (/*buttons*/ ctx[1][(/*i*/ ctx[9] + 1) % /*filelist*/ ctx[0].length] !== void 0) {
-    		button_props.inner = /*buttons*/ ctx[1][(/*i*/ ctx[9] + 1) % /*filelist*/ ctx[0].length];
+    	if (/*buttons*/ ctx[1][(/*i*/ ctx[11] + 1) % /*filelist*/ ctx[0].length] !== void 0) {
+    		button_props.inner = /*buttons*/ ctx[1][(/*i*/ ctx[11] + 1) % /*filelist*/ ctx[0].length];
     	}
 
     	button = new Button({ props: button_props, $$inline: true });
@@ -8018,13 +8201,13 @@ var app = (function () {
     			ctx = new_ctx;
     			const button_changes = {};
 
-    			if (dirty & /*$$scope, filelist*/ 1025) {
+    			if (dirty & /*$$scope, filelist*/ 4097) {
     				button_changes.$$scope = { dirty, ctx };
     			}
 
     			if (!updating_inner && dirty & /*buttons, filelist*/ 3) {
     				updating_inner = true;
-    				button_changes.inner = /*buttons*/ ctx[1][(/*i*/ ctx[9] + 1) % /*filelist*/ ctx[0].length];
+    				button_changes.inner = /*buttons*/ ctx[1][(/*i*/ ctx[11] + 1) % /*filelist*/ ctx[0].length];
     				add_flush_callback(() => updating_inner = false);
     			}
 
@@ -8047,76 +8230,20 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_1$1.name,
+    		id: create_default_slot_3$1.name,
     		type: "slot",
-    		source: "(33:16) <ListGroupItem style=\\\"border:none\\\">",
+    		source: "(35:24) <ListGroupItem style=\\\"border:none\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (32:12) {#each filelist as item, i}
+    // (33:16) {#each filelist as item, i}
     function create_each_block(ctx) {
-    	let listgroupitem;
-    	let current;
-
-    	listgroupitem = new ListGroupItem({
-    			props: {
-    				style: "border:none",
-    				$$slots: { default: [create_default_slot_1$1] },
-    				$$scope: { ctx }
-    			},
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			create_component(listgroupitem.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(listgroupitem, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const listgroupitem_changes = {};
-
-    			if (dirty & /*$$scope, buttons, filelist*/ 1027) {
-    				listgroupitem_changes.$$scope = { dirty, ctx };
-    			}
-
-    			listgroupitem.$set(listgroupitem_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(listgroupitem.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(listgroupitem.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(listgroupitem, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block.name,
-    		type: "each",
-    		source: "(32:12) {#each filelist as item, i}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (29:4) <ListGroup style="border:none">
-    function create_default_slot$1(ctx) {
     	let if_block_anchor;
     	let current;
-    	let if_block = /*filelist*/ ctx[0] && create_if_block$1(ctx);
+    	let if_block = /*item*/ ctx[9].name != "town" && create_if_block_2(ctx);
 
     	const block = {
     		c: function create() {
@@ -8129,7 +8256,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (/*filelist*/ ctx[0]) {
+    			if (/*item*/ ctx[9].name != "town") {
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
@@ -8137,7 +8264,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$1(ctx);
+    					if_block = create_if_block_2(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -8169,9 +8296,191 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(33:16) {#each filelist as item, i}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (51:12) <Button                  on:click={() => {                      if (state === "town") state = "battle";                      else if (state === "battle") {                          state = "town";                          dispatch("play_message", "town");                      }                  }}              >
+    function create_default_slot_2$1(ctx) {
+    	let t_value = (/*state*/ ctx[2] === "town"
+    	? "To Battle!"
+    	: "Back to town") + "";
+
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text(t_value);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*state*/ 4 && t_value !== (t_value = (/*state*/ ctx[2] === "town"
+    			? "To Battle!"
+    			: "Back to town") + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_2$1.name,
+    		type: "slot",
+    		source: "(51:12) <Button                  on:click={() => {                      if (state === \\\"town\\\") state = \\\"battle\\\";                      else if (state === \\\"battle\\\") {                          state = \\\"town\\\";                          dispatch(\\\"play_message\\\", \\\"town\\\");                      }                  }}              >",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (50:8) <ListGroupItem style="border:none">
+    function create_default_slot_1$1(ctx) {
+    	let button;
+    	let current;
+
+    	button = new Button({
+    			props: {
+    				$$slots: { default: [create_default_slot_2$1] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	button.$on("click", /*click_handler_1*/ ctx[7]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(button.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(button, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const button_changes = {};
+
+    			if (dirty & /*$$scope, state*/ 4100) {
+    				button_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button.$set(button_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(button.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(button.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(button, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_1$1.name,
+    		type: "slot",
+    		source: "(50:8) <ListGroupItem style=\\\"border:none\\\">",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (30:4) <ListGroup style="border:none">
+    function create_default_slot$1(ctx) {
+    	let t;
+    	let listgroupitem;
+    	let current;
+    	let if_block = /*filelist*/ ctx[0] && create_if_block$1(ctx);
+
+    	listgroupitem = new ListGroupItem({
+    			props: {
+    				style: "border:none",
+    				$$slots: { default: [create_default_slot_1$1] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			t = space();
+    			create_component(listgroupitem.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, t, anchor);
+    			mount_component(listgroupitem, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*filelist*/ ctx[0]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*filelist*/ 1) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block$1(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(t.parentNode, t);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+
+    			const listgroupitem_changes = {};
+
+    			if (dirty & /*$$scope, state*/ 4100) {
+    				listgroupitem_changes.$$scope = { dirty, ctx };
+    			}
+
+    			listgroupitem.$set(listgroupitem_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			transition_in(listgroupitem.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			transition_out(listgroupitem.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(t);
+    			destroy_component(listgroupitem, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(29:4) <ListGroup style=\\\"border:none\\\">",
+    		source: "(30:4) <ListGroup style=\\\"border:none\\\">",
     		ctx
     	});
 
@@ -8198,7 +8507,7 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			create_component(listgroup.$$.fragment);
-    			add_location(main, file$1, 27, 0, 952);
+    			add_location(main, file$1, 28, 0, 979);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8209,14 +8518,14 @@ var app = (function () {
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(window, "keydown", prevent_default(/*onKeyDown*/ ctx[3]), false, true, false);
+    				dispose = listen_dev(window, "keydown", prevent_default(/*onKeyDown*/ ctx[4]), false, true, false);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
     			const listgroup_changes = {};
 
-    			if (dirty & /*$$scope, filelist, buttons*/ 1027) {
+    			if (dirty & /*$$scope, state, filelist, buttons*/ 4103) {
     				listgroup_changes.$$scope = { dirty, ctx };
     			}
 
@@ -8257,6 +8566,7 @@ var app = (function () {
     	const dispatch = createEventDispatcher();
     	var filelist;
     	let buttons = [];
+    	let state = "battle";
     	filelist_store.subscribe(value => $$invalidate(0, filelist = value));
     	ipc.send("request_files");
 
@@ -8293,6 +8603,13 @@ var app = (function () {
 
     	const click_handler = item => dispatch("play_message", item.name);
 
+    	const click_handler_1 = () => {
+    		if (state === "town") $$invalidate(2, state = "battle"); else if (state === "battle") {
+    			$$invalidate(2, state = "town");
+    			dispatch("play_message", "town");
+    		}
+    	};
+
     	$$self.$capture_state = () => ({
     		Button,
     		Container,
@@ -8304,19 +8621,30 @@ var app = (function () {
     		dispatch,
     		filelist,
     		buttons,
+    		state,
     		onKeyDown
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('filelist' in $$props) $$invalidate(0, filelist = $$props.filelist);
     		if ('buttons' in $$props) $$invalidate(1, buttons = $$props.buttons);
+    		if ('state' in $$props) $$invalidate(2, state = $$props.state);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [filelist, buttons, dispatch, onKeyDown, button_inner_binding, click_handler];
+    	return [
+    		filelist,
+    		buttons,
+    		state,
+    		dispatch,
+    		onKeyDown,
+    		button_inner_binding,
+    		click_handler,
+    		click_handler_1
+    	];
     }
 
     class Control extends SvelteComponentDev {
@@ -8338,7 +8666,7 @@ var app = (function () {
     const { console: console_1 } = globals;
     const file = "src\\App.svelte";
 
-    // (306:2) {:else}
+    // (316:2) {:else}
     function create_else_block_1(ctx) {
     	let h2;
 
@@ -8347,7 +8675,7 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "Current intesity is: 0";
     			attr_dev(h2, "class", "svelte-lhrr2r");
-    			add_location(h2, file, 306, 3, 8404);
+    			add_location(h2, file, 316, 3, 8588);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -8362,14 +8690,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1.name,
     		type: "else",
-    		source: "(306:2) {:else}",
+    		source: "(316:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (302:2) {#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
+    // (312:2) {#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
     function create_if_block_1(ctx) {
     	let h2;
     	let t0;
@@ -8382,7 +8710,7 @@ var app = (function () {
     			t0 = text("Current intesity is: ");
     			t1 = text(t1_value);
     			attr_dev(h2, "class", "svelte-lhrr2r");
-    			add_location(h2, file, 302, 3, 8309);
+    			add_location(h2, file, 312, 3, 8493);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -8401,14 +8729,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(302:2) {#if currentIntensity && currentIntensity.name.replace(/\\D/g, \\\"\\\") != \\\"\\\"}",
+    		source: "(312:2) {#if currentIntensity && currentIntensity.name.replace(/\\D/g, \\\"\\\") != \\\"\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (323:7) <Marquee pauseOnHover="true" speed={0.1 * barWidth}>
+    // (333:7) <Marquee pauseOnHover="true" speed={0.1 * barWidth}>
     function create_default_slot_18(ctx) {
     	let t_value = /*sound*/ ctx[5].name + "";
     	let t;
@@ -8432,14 +8760,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_18.name,
     		type: "slot",
-    		source: "(323:7) <Marquee pauseOnHover=\\\"true\\\" speed={0.1 * barWidth}>",
+    		source: "(333:7) <Marquee pauseOnHover=\\\"true\\\" speed={0.1 * barWidth}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (316:5) <Row>
+    // (326:5) <Row>
     function create_default_slot_17(ctx) {
     	let div;
     	let marquee;
@@ -8460,7 +8788,7 @@ var app = (function () {
     			div = element("div");
     			create_component(marquee.$$.fragment);
     			attr_dev(div, "id", "name");
-    			add_location(div, file, 316, 6, 8587);
+    			add_location(div, file, 326, 6, 8771);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -8496,14 +8824,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_17.name,
     		type: "slot",
-    		source: "(316:5) <Row>",
+    		source: "(326:5) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (331:6) <Col sm="1" xs="1">
+    // (341:6) <Col sm="1" xs="1">
     function create_default_slot_16(ctx) {
     	let t_value = timeFormatter(/*seekStatus*/ ctx[6]) + "";
     	let t;
@@ -8527,14 +8855,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_16.name,
     		type: "slot",
-    		source: "(331:6) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
+    		source: "(341:6) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (332:6) <Col style="width:min-content len:min-content">
+    // (342:6) <Col style="width:min-content len:min-content">
     function create_default_slot_15(ctx) {
     	let div;
     	let progress;
@@ -8557,7 +8885,7 @@ var app = (function () {
     			create_component(progress.$$.fragment);
     			set_style(div, "width", "min-content len:min-content");
     			add_render_callback(() => /*div_elementresize_handler*/ ctx[17].call(div));
-    			add_location(div, file, 332, 7, 9024);
+    			add_location(div, file, 342, 7, 9208);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -8597,14 +8925,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_15.name,
     		type: "slot",
-    		source: "(332:6) <Col style=\\\"width:min-content len:min-content\\\">",
+    		source: "(342:6) <Col style=\\\"width:min-content len:min-content\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (345:6) <Col sm="1" xs="1">
+    // (355:6) <Col sm="1" xs="1">
     function create_default_slot_14(ctx) {
     	let t_value = timeFormatter(/*timerLeft*/ ctx[7]) + "";
     	let t;
@@ -8628,14 +8956,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_14.name,
     		type: "slot",
-    		source: "(345:6) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
+    		source: "(355:6) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (330:5) <Row>
+    // (340:5) <Row>
     function create_default_slot_13(ctx) {
     	let col0;
     	let t0;
@@ -8738,14 +9066,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_13.name,
     		type: "slot",
-    		source: "(330:5) <Row>",
+    		source: "(340:5) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (350:6) <Button on:click={() => changeTrack(-1)}>
+    // (360:6) <Button on:click={() => changeTrack(-1)}>
     function create_default_slot_12(ctx) {
     	let t;
 
@@ -8765,14 +9093,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_12.name,
     		type: "slot",
-    		source: "(350:6) <Button on:click={() => changeTrack(-1)}>",
+    		source: "(360:6) <Button on:click={() => changeTrack(-1)}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (353:6) {:else}
+    // (363:6) {:else}
     function create_else_block(ctx) {
     	let button;
     	let current;
@@ -8822,14 +9150,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(353:6) {:else}",
+    		source: "(363:6) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (351:6) {#if isPlaying}
+    // (361:6) {#if isPlaying}
     function create_if_block(ctx) {
     	let button;
     	let current;
@@ -8879,14 +9207,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(351:6) {#if isPlaying}",
+    		source: "(361:6) {#if isPlaying}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (354:7) <Button on:click={playSound}>
+    // (364:7) <Button on:click={playSound}>
     function create_default_slot_11(ctx) {
     	let t;
 
@@ -8906,14 +9234,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_11.name,
     		type: "slot",
-    		source: "(354:7) <Button on:click={playSound}>",
+    		source: "(364:7) <Button on:click={playSound}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (352:7) <Button on:click={pauseSound}>
+    // (362:7) <Button on:click={pauseSound}>
     function create_default_slot_10(ctx) {
     	let t;
 
@@ -8933,14 +9261,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_10.name,
     		type: "slot",
-    		source: "(352:7) <Button on:click={pauseSound}>",
+    		source: "(362:7) <Button on:click={pauseSound}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (356:6) <Button on:click={() => changeTrack(1)}>
+    // (366:6) <Button on:click={() => changeTrack(1)}>
     function create_default_slot_9(ctx) {
     	let t;
 
@@ -8960,14 +9288,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_9.name,
     		type: "slot",
-    		source: "(356:6) <Button on:click={() => changeTrack(1)}>",
+    		source: "(366:6) <Button on:click={() => changeTrack(1)}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (349:5) <ButtonGroup>
+    // (359:5) <ButtonGroup>
     function create_default_slot_8(ctx) {
     	let button0;
     	let t0;
@@ -9091,14 +9419,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_8.name,
     		type: "slot",
-    		source: "(349:5) <ButtonGroup>",
+    		source: "(359:5) <ButtonGroup>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (315:4) <Container>
+    // (325:4) <Container>
     function create_default_slot_7(ctx) {
     	let row0;
     	let t0;
@@ -9142,7 +9470,7 @@ var app = (function () {
     			br = element("br");
     			t2 = space();
     			create_component(buttongroup.$$.fragment);
-    			add_location(br, file, 347, 5, 9399);
+    			add_location(br, file, 357, 5, 9583);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -9205,14 +9533,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_7.name,
     		type: "slot",
-    		source: "(315:4) <Container>",
+    		source: "(325:4) <Container>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (314:3) <Row>
+    // (324:3) <Row>
     function create_default_slot_6(ctx) {
     	let container;
     	let current;
@@ -9260,14 +9588,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_6.name,
     		type: "slot",
-    		source: "(314:3) <Row>",
+    		source: "(324:3) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (365:5) <Col       >
+    // (375:5) <Col       >
     function create_default_slot_5(ctx) {
     	let input;
     	let mounted;
@@ -9280,7 +9608,7 @@ var app = (function () {
     			attr_dev(input, "max", "1");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "step", "0.1");
-    			add_location(input, file, 365, 7, 9868);
+    			add_location(input, file, 375, 7, 10052);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
@@ -9302,14 +9630,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(365:5) <Col       >",
+    		source: "(375:5) <Col       >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (361:4) <Row>
+    // (371:4) <Row>
     function create_default_slot_4(ctx) {
     	let col;
     	let current;
@@ -9357,14 +9685,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(361:4) <Row>",
+    		source: "(371:4) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (360:3) <Container>
+    // (370:3) <Container>
     function create_default_slot_3(ctx) {
     	let row;
     	let current;
@@ -9412,14 +9740,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(360:3) <Container>",
+    		source: "(370:3) <Container>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (384:3) <Row>
+    // (394:3) <Row>
     function create_default_slot_2(ctx) {
     	let buttons;
     	let current;
@@ -9453,14 +9781,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(384:3) <Row>",
+    		source: "(394:3) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (313:2) <Container>
+    // (323:2) <Container>
     function create_default_slot_1(ctx) {
     	let row0;
     	let t0;
@@ -9504,7 +9832,7 @@ var app = (function () {
     			br = element("br");
     			t2 = space();
     			create_component(row1.$$.fragment);
-    			add_location(br, file, 382, 3, 10214);
+    			add_location(br, file, 392, 3, 10398);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -9567,14 +9895,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(313:2) <Container>",
+    		source: "(323:2) <Container>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (299:1) <Container>
+    // (309:1) <Container>
     function create_default_slot(ctx) {
     	let styles;
     	let t0;
@@ -9623,10 +9951,10 @@ var app = (function () {
     			t5 = space();
     			create_component(container.$$.fragment);
     			attr_dev(h1, "class", "svelte-lhrr2r");
-    			add_location(h1, file, 300, 2, 8189);
+    			add_location(h1, file, 310, 2, 8373);
     			set_style(span, "display", "none");
     			add_render_callback(() => /*span_elementresize_handler*/ ctx[16].call(span));
-    			add_location(span, file, 309, 2, 8447);
+    			add_location(span, file, 319, 2, 8631);
     		},
     		m: function mount(target, anchor) {
     			mount_component(styles, target, anchor);
@@ -9693,7 +10021,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(299:1) <Container>",
+    		source: "(309:1) <Container>",
     		ctx
     	});
 
@@ -9718,7 +10046,7 @@ var app = (function () {
     			main = element("main");
     			create_component(container.$$.fragment);
     			attr_dev(main, "class", "svelte-lhrr2r");
-    			add_location(main, file, 297, 0, 8154);
+    			add_location(main, file, 307, 0, 8338);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9813,7 +10141,7 @@ var app = (function () {
      * A class to represent an intesity level
      *
      */
-    	class intesityPlaylist {
+    	class intensityPlaylist {
     		constructor(name, trackList) {
     			this.name = name;
     			this.trackList = trackList;
@@ -9855,6 +10183,7 @@ var app = (function () {
     			})
     	};
 
+    	currentIntensity = new intensityPlaylist("placeholder", [sound]);
     	current_howl.set(sound.howl); // save the initial sound in a store, so we can listen for changes and access the currently playing track
     	let seekStatus = $current_howl.seek() || 0; // the seek location in the track, in seconds
     	let timerLeft = $current_howl.duration();
@@ -9989,6 +10318,11 @@ var app = (function () {
     			return s.name === event.detail;
     		}));
 
+    		if (currentIntensity == null) {
+    			alert(event.detail + "playlwas not found!");
+    			return;
+    		}
+
     		const src = currentIntensity.trackList[currentIntensity.index];
 
     		if (isPlaying) {
@@ -10009,7 +10343,7 @@ var app = (function () {
 
     			if (fs.statSync(filepath).isDirectory()) {
     				//console.log(file);
-    				let temp = new intesityPlaylist(file, walkSync(null, filepath));
+    				let temp = new intensityPlaylist(file, walkSync(null, filepath));
 
     				filelist.push(temp);
     			} else {
@@ -10112,7 +10446,7 @@ var app = (function () {
     		currentIntensity,
     		currentVolume,
     		filelist,
-    		intesityPlaylist,
+    		intensityPlaylist,
     		musicTrack,
     		isPlaying,
     		updateInterval,

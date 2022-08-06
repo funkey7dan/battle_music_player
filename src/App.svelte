@@ -38,7 +38,7 @@
 	 * A class to represent an intesity level
 	 *
 	 */
-	class intesityPlaylist {
+	class intensityPlaylist {
 		constructor(name, trackList) {
 			this.name = name;
 			this.trackList = trackList;
@@ -76,6 +76,8 @@
 			},
 		}),
 	};
+
+	currentIntensity = new intensityPlaylist("placeholder", [sound]);
 
 	current_howl.set(sound.howl); // save the initial sound in a store, so we can listen for changes and access the currently playing track
 	let seekStatus = $current_howl.seek() || 0; // the seek location in the track, in seconds
@@ -221,6 +223,11 @@
 			return s.name === event.detail;
 		});
 
+		if (currentIntensity == null) {
+			alert(event.detail + "playlist was not found!");
+			return;
+		}
+
 		const src = currentIntensity.trackList[currentIntensity.index];
 		if (isPlaying) {
 			crossfadeTracks(get(current_howl), src.howl);
@@ -237,7 +244,10 @@
 			let filepath = path.join(dir, file);
 			if (fs.statSync(filepath).isDirectory()) {
 				//console.log(file);
-				let temp = new intesityPlaylist(file, walkSync(null, filepath));
+				let temp = new intensityPlaylist(
+					file,
+					walkSync(null, filepath)
+				);
 				filelist.push(temp);
 			} else {
 				if (
