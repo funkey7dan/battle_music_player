@@ -10,6 +10,7 @@
     const ipc = require("electron").ipcRenderer;
     import { createEventDispatcher } from "svelte";
     import { filelist_store } from "./stores";
+    import { fade } from "svelte/transition";
     const dispatch = createEventDispatcher();
     var filelist;
     let buttons = [];
