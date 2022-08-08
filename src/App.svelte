@@ -313,6 +313,10 @@
 			<h2>
 				Current intesity is: {currentIntensity.name.replace(/\D/g, "")}
 			</h2>
+		{:else if currentIntensity.name === "victory"}
+			<h2>WE ARE VICTORIOUS!</h2>
+		{:else if currentIntensity.name === "defeat"}
+			<h2>Defeat...</h2>
 		{:else}
 			<h2>Current intesity is: 0</h2>
 		{/if}
