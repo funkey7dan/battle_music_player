@@ -4,6 +4,7 @@
     "electron-json-storage": "^4.5.0",
     "electron-store": "^8.1.0",
     "howler": "^2.2.3",
+    "python-shell": "^3.0.1",
     "sirv-cli": "^2.0.0",
     "svelte-fast-marquee": "^0.4.1",
     "sveltestrap": "^5.9.0"
@@ -20,8 +21,8 @@
     "concurrently": "^7.3.0",
     "electron": "^19.0.10",
     "electron-builder": "^23.1.0",
-    "electron-reload": "^2.0.0-alpha.1",
     "electron-packager": "^15.5.1",
+    "electron-reload": "^2.0.0-alpha.1",
     "rollup": "^2.3.4",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-css-only": "^3.1.0",
