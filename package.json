@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bootstrap": "^5.2.0",
+    "dockerode": "^3.3.3",
     "electron-json-storage": "^4.5.0",
     "electron-store": "^8.1.0",
     "howler": "^2.2.3",

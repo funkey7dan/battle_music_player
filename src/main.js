@@ -6,9 +6,21 @@ const { Howl, Howler } = require("howler")
 
 const path = require('path')
 const fs = require('fs')
-const storage = require('electron-json-storage')
+//const storage = require('electron-json-storage')
 const Store = require('electron-store');
 const store = new Store();
+const spawn = require('child_process').spawn;
+const execSync = require('child_process').execSync;
+const Docker = require('dockerode');
+const parser = require("./parser");
+var gameState = {
+}
+var parsed;
+var docker = new Docker();
+var child;
+var container;
+var enableDocker = true;
+var scriptOutput = "";
 var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 
 if (isDev) {
@@ -85,6 +97,47 @@ const createWindow = () => {
     if (isDev) {
         mainWindow.webContents.openDevTools()
     }
+
+    // start docker container
+    child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
+    container = docker.getContainer('temp');
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function (data) {
+        //Here is where the output goes
+        console.log('stdout: ' + data);
+        data = data.toString()
+        scriptOutput += data;
+        if (scriptOutput.includes('###')) {
+            scriptOutput = scriptOutput.replace(/monster ability deck: id: ([0-9]+)/g, "monster ability deck: id $1")
+            parsed = parse(scriptOutput);
+            parsed[0] = Array.from(new Set(parsed[0]));
+            consumeParsed();
+            scriptOutput = "";
+        }
+    });
+
+    function parse(data) {
+        try {
+            return parser.parse(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    function consumeParsed() {
+        const found = parsed[0].find(element => element["Nr actors"]);
+    }
+
+    child.on('close', function (code) {
+        //Here you can get the exit code of the script
+        // if the container is running kill it and retry
+        console.log('closing code: ' + code);
+        if (code === 125 || code === '125') {
+            container.kill();
+            child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
+        }
+        //console.log('Full output of script: ', scriptOutput);
+    });
 }
 const loadSettings = () => {
     // if (isDev) {
@@ -96,6 +149,10 @@ const loadSettings = () => {
         musicPath = store.get('folder')
         console.log("loaded folder path from storage" + musicPath)
         mainWindow.webContents.send("file_path", musicPath)
+    }
+    if (store.has('docker')) {
+        enableDocker = store.get('docker')
+        console.log("loaded docker settings from storage" + enableDocker)
     }
     // storage.has('folder', function (error, hasKey) {
     //     if (error) console.error(error)
@@ -155,7 +212,15 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit()
+    //execSync("docker kill temp");
+    //child.kill();
+    app.quit()
+})
+
+app.on("before-quit", () => {
+    //execSync("docker kill temp");
+    //child.kill();
+    container.kill();
 })
 
 // ipcMain.on("request_files", function (event, arg) {
