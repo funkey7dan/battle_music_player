@@ -2,11 +2,8 @@
 
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, dialog, Menu, ipcMain, crashReporter } = require('electron')
-const { Howl, Howler } = require("howler")
-
 const path = require('path')
 const fs = require('fs')
-//const storage = require('electron-json-storage')
 const Store = require('electron-store');
 const store = new Store();
 const spawn = require('child_process').spawn;
@@ -14,8 +11,6 @@ const execSync = require('child_process').execSync;
 const Docker = require('dockerode');
 const parser = require("./parser");
 const MonsterName = require("./constants").MonsterName;
-var gameState = {
-}
 var dockerStarted;
 var parsed;
 var docker = new Docker();
@@ -27,7 +22,6 @@ var monsterProps;
 var playerProps;
 var monstersN;
 var playersN;
-var totalN;
 var round;
 var currIntensity;
 var client =
