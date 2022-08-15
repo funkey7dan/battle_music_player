@@ -13,6 +13,9 @@ const spawn = require('child_process').spawn;
 const execSync = require('child_process').execSync;
 const Docker = require('dockerode');
 const parser = require("./parser");
+MonsterName = {
+    values: ["Ancient Artillery", "Bandit Archer", "Bandit Guard", "Black Imp", "Cave Bear", "City Archer", "City Guard", "Cultist", "Deep Terror", "Earth Demon", "Flame Demon", "Frost Demon", "Forest Imp", "Giant Viper", "Harrower Infester", "Hound", "Inox Archer", "Inox Guard", "Inox Shaman", "Living Bones", "Living Corpse", "Living Spirit", "Lurker", "Ooze", "Night Demon", "Rending Drake", "Savvas Icestorm", "Savvas Lavaflow", "Spitting Drake", "Stone Golem", "Sun Demon", "Vermling Scout", "Vermling Shaman", "Wind Demon", "Bandit Commander", "The Betrayer", "Captain of the Guard", "The Colorless", "Dark Rider", "Elder Drake", "The Gloom", "Inox Bodyguard", "Jekserah", "Merciless Overseer", "Prime Demon", "The Sightless Eye", "Winged Horror", "Aesther Ashblade", "Aesther Scout", "Bear - Drake Abomination", "Valrath Tracker", "Valrath Savage", "Wolf - Viper Abomination", "Human Commander", "Valrath Commander", "Manifestation of Corruption"]
+};
 var gameState = {
 }
 var parsed;
@@ -21,6 +24,11 @@ var child;
 var container;
 var enableDocker = true;
 var scriptOutput = "";
+var monstersN;
+var playersN;
+var totalN;
+var round;
+
 var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 
 if (isDev) {
@@ -97,19 +105,38 @@ const createWindow = () => {
     if (isDev) {
         mainWindow.webContents.openDevTools()
     }
+    if (enableDocker) {
+        gameListen();
+    }
 
+}
+
+const gameListen = () => {
     // start docker container
     child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
     container = docker.getContainer('temp');
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', function (data) {
         //Here is where the output goes
-        console.log('stdout: ' + data);
+        //console.log('stdout: ' + data);
         data = data.toString()
         scriptOutput += data;
         if (scriptOutput.includes('###')) {
+            // if round is defined - i.e that's not the first response we received from the client
+            if (round) {
+                // if the round didn't change - we received push because of some values change, drop the push(no impact on intensity)
+                if (scriptOutput.match(/round ([0-9]+)/)[1] === round) {
+                    scriptOutput = "";
+                    return
+                }
+            }
             scriptOutput = scriptOutput.replace(/monster ability deck: id: ([0-9]+)/g, "monster ability deck: id $1")
-            parsed = parse(scriptOutput);
+            //parsed = parse(scriptOutput);
+            try {
+                parsed = parser.parse(scriptOutput);
+            } catch (error) {
+                console.error(error);
+            }
             parsed[0] = Array.from(new Set(parsed[0]));
             consumeParsed();
             scriptOutput = "";
@@ -124,8 +151,68 @@ const createWindow = () => {
         }
     }
 
+    function mapPlayer(arr) {
+        let seen = {}
+        return (arr.map(x => {
+            let content = Object.assign({}, ...x['player']['content']);
+            if (seen[content['character_class']]) {
+            }
+            else {
+                seen[content['character_class']] = true;
+                return content;
+            }
+        })).filter(x => x !== undefined);
+    }
+
+
+    // gets an array of objects, and a value, and returns the indexes of the objects that have a matching key to the passed value.
+    function getAllIndexes(arr, val) {
+        return arr.reduce(function (a, e, i) {
+            if (Object.keys(e).includes(val))
+                a.push(i);
+            return a;
+        }, []);
+    }
+
     function consumeParsed() {
-        const found = parsed[0].find(element => element["Nr actors"]);
+        var actors = parsed[0]
+            .filter(element => element["actor"])
+            .map(x => x['actor'])
+            .map(x => {
+                var obj = {};
+                obj[x['type']] = x['properties'];
+                return obj;
+            }
+            )
+        var monsterIndices = getAllIndexes(parsed[0], 'monster');
+        var monsterProps = monsterIndices.map(x => {
+            let i = 2;
+            let arr = [];
+            while (parsed[0][x + i]['instance']) {
+
+                const [number, type, is_new, hp, hp_max] = parsed[0][x + i]['instance'];
+                var yourObject = { number, type, is_new, hp, hp_max };
+                //arr.push(parsed[0][x + i]['instance']);
+                arr.push(yourObject);
+                i++;
+
+            }
+            let ID = parsed[0][x]['monster']['properties']['content'][0]['id'];
+            let monsterName = MonsterName.values[ID];
+
+            let obj = {}
+            obj['instances'] = (i - 2);
+            obj[monsterName] = arr;
+            return obj;
+        })
+
+        //var players = new Set(actors.filter(x => x['player']).map(x => x['player']['content'][1]['character_class']))
+
+        var players = mapPlayer(actors.filter(x => x['player']));
+        //var monsters = actors.filter(x => x['monster']).map(x => x['monster']['content'][0]['id']);
+        monstersN = monsterProps.reduce((prev, curr) => prev += curr['instances'], 0);
+        playersN = players.length;
+        round = parsed[0].find(x => { if (typeof (x) === 'string' && x.includes('round')) return x; }).match(/round ([0-9]+)/)[1]
     }
 
     child.on('close', function (code) {
@@ -138,7 +225,9 @@ const createWindow = () => {
         }
         //console.log('Full output of script: ', scriptOutput);
     });
+
 }
+
 const loadSettings = () => {
     // if (isDev) {
     //     storage.clear(function (error) {
