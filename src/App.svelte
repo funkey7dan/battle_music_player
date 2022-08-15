@@ -11,7 +11,7 @@
 	} from "sveltestrap";
 	import { writable } from "svelte/store";
 	import { get } from "svelte/store";
-	import { filelist_store, current_howl } from "./stores";
+	import { filelist_store, current_howl, state } from "./stores";
 	import { Howl, Howler } from "howler";
 	import Marquee from "svelte-fast-marquee";
 	import Buttons from "./Control.svelte";
@@ -19,6 +19,8 @@
 	const fs = require("fs");
 	const path = require("path");
 	const Store = require("electron-store");
+	import { createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher();
 
 	/**##################### DECLARATIONS ######################*/
 	const store = new Store();
@@ -26,6 +28,7 @@
 	let nameWidth; // the width of the trackname
 	let currentIntensity; // a 'pointer' to the currently chosen intesityPlaylist
 	let currentVolume; // save the currently set volume
+	let intensityChange = ""; // a stack holding the intensity changes
 	if (store.has("volume")) {
 		currentVolume = store.get("volume");
 	} else {
@@ -60,7 +63,7 @@
 	var isPlaying = false;
 
 	var updateInterval; // variable to save the interval we set for the progress update, so we can clear it
-	Howler.preload = true;
+	//Howler.preload = true;
 
 	// a variable to hold the initial,default sound
 	var sound = {
@@ -107,6 +110,24 @@
 	ipc.on("file_path", function (event, arg) {
 		createPlaylist(arg);
 		store.set("music-path", arg);
+	});
+
+	ipc.on("intensity_change", function (event, arg) {
+		// if the current track is less than half done, or if there is more than 1 minute left
+		//if ($trackProgress < 50 || timerLeft > 60) {
+		if (
+			currentIntensity.name === "victory" ||
+			currentIntensity.name === "defeat"
+		) {
+			return;
+		}
+		if (timerLeft > 60) {
+			handleMessage(
+				new CustomEvent("play_message", { detail: "intensity " + arg })
+			);
+		} else {
+			intensityChange = "intensity " + arg;
+		}
 	});
 
 	// if we have a previously saved music path rebuild the filelist from it
@@ -179,7 +200,16 @@
 		get(current_howl).pause();
 	}
 
+	// change the track in the current intesity tracklist according to the passed value
 	function changeTrack(value) {
+		if (intensityChange !== "") {
+			handleMessage(
+				new CustomEvent("play_message", { detail: intensityChange })
+			);
+			//dispatch("play_message", intensityChange);
+			intensityChange = "";
+			return;
+		}
 		if (currentIntensity) {
 			currentIntensity.index =
 				(currentIntensity.index + value) %
@@ -226,6 +256,12 @@
 		if (currentIntensity == null) {
 			alert(event.detail + "playlist was not found!");
 			return;
+		}
+
+		if (event.detail === "town") {
+			$state = "town";
+		} else {
+			$state = "battle";
 		}
 
 		const src = currentIntensity.trackList[currentIntensity.index];

@@ -9,13 +9,21 @@
     } from "sveltestrap";
     const ipc = require("electron").ipcRenderer;
     import { createEventDispatcher } from "svelte";
-    import { filelist_store } from "./stores";
-    import { fade } from "svelte/transition";
+    import { filelist_store, state } from "./stores";
+    let keyboard = {
+        KEY_D: 68,
+        KEY_V: 86,
+        NUMPAD_0: 96,
+        NUMPAD_9: 105,
+        KEY_0: 48,
+        KEY_9: 57,
+    };
     const dispatch = createEventDispatcher();
     var filelist;
     let buttons = [];
     let toIgnore = ["town", "defeat", "victory"];
-    let state = "battle";
+    //let state = $gameState;
+    $state = "battle";
     filelist_store.subscribe((value) => (filelist = value));
     ipc.send("request_files");
     ipc.on("music_files", function (event, arg) {
@@ -25,10 +33,22 @@
     });
 
     function onKeyDown(e) {
-        if (e.keyCode >= 48 && e.keyCode <= 57) {
-            dispatch("play_message", buttons[e.keyCode - 48].outerText);
-        } else if (e.keyCode >= 96 && e.keyCode <= 105) {
-            dispatch("play_message", buttons[e.keyCode - 96].outerText);
+        if (e.keyCode > keyboard.KEY_0 && e.keyCode <= keyboard.KEY_9) {
+            dispatch("play_message", buttons[e.keyCode - 48 + 1].outerText);
+        } else if (
+            e.keyCode > keyboard.NUMPAD_0 &&
+            e.keyCode <= keyboard.NUMPAD_9
+        ) {
+            dispatch("play_message", buttons[e.keyCode - 96 + 1].outerText);
+        } else if (e.keyCode == keyboard.KEY_D) {
+            dispatch("play_message", "defeat");
+        } else if (e.keyCode == keyboard.KEY_V) {
+            dispatch("play_message", "victory");
+        } else if (
+            e.keyCode === keyboard.NUMPAD_0 ||
+            e.keyCode === keyboard.KEY_0
+        ) {
+            dispatch("play_message", buttons[11].outerText);
         }
     }
 </script>
@@ -36,7 +56,7 @@
 <main>
     <div class="row">
         <div class="col-4">
-            {#if state === "battle"}
+            {#if $state === "battle"}
                 <Button
                     class="btn-danger"
                     on:click={() => dispatch("play_message", "defeat")}
@@ -49,7 +69,7 @@
                 <!-- Check if the filelist is loaded -->
                 {#if filelist}
                     <!-- Differentiate between the battle controls and the city mode -->
-                    {#if state === "battle"}
+                    {#if $state === "battle"}
                         {#each filelist as item, i}
                             {#if !toIgnore.includes(item.name)}
                                 <ListGroupItem style="border:none">
@@ -65,27 +85,27 @@
                                 </ListGroupItem>
                             {/if}
                         {/each}
-                    {:else if state === "town"}
+                    {:else if $state === "town"}
                         Just chilling...
                     {/if}
                 {/if}
                 <ListGroupItem style="border:none">
                     <Button
                         on:click={() => {
-                            if (state === "town") state = "battle";
-                            else if (state === "battle") {
-                                state = "town";
+                            if ($state === "town") $state = "battle";
+                            else if ($state === "battle") {
+                                $state = "town";
                                 dispatch("play_message", "town");
                             }
                         }}
                     >
-                        {state === "town" ? "To Battle!" : "Back to town"}
+                        {$state === "town" ? "To Battle!" : "Back to town"}
                     </Button>
                 </ListGroupItem>
             </ListGroup>
         </div>
         <div class="col-4">
-            {#if state === "battle"}
+            {#if $state === "battle"}
                 <Button
                     class="btn-success"
                     on:click={() => dispatch("play_message", "victory")}

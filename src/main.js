@@ -1,7 +1,7 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, dialog, Menu, ipcMain } = require('electron')
+const { app, BrowserWindow, dialog, Menu, ipcMain, crashReporter } = require('electron')
 const { Howl, Howler } = require("howler")
 
 const path = require('path')
@@ -13,21 +13,28 @@ const spawn = require('child_process').spawn;
 const execSync = require('child_process').execSync;
 const Docker = require('dockerode');
 const parser = require("./parser");
-MonsterName = {
-    values: ["Ancient Artillery", "Bandit Archer", "Bandit Guard", "Black Imp", "Cave Bear", "City Archer", "City Guard", "Cultist", "Deep Terror", "Earth Demon", "Flame Demon", "Frost Demon", "Forest Imp", "Giant Viper", "Harrower Infester", "Hound", "Inox Archer", "Inox Guard", "Inox Shaman", "Living Bones", "Living Corpse", "Living Spirit", "Lurker", "Ooze", "Night Demon", "Rending Drake", "Savvas Icestorm", "Savvas Lavaflow", "Spitting Drake", "Stone Golem", "Sun Demon", "Vermling Scout", "Vermling Shaman", "Wind Demon", "Bandit Commander", "The Betrayer", "Captain of the Guard", "The Colorless", "Dark Rider", "Elder Drake", "The Gloom", "Inox Bodyguard", "Jekserah", "Merciless Overseer", "Prime Demon", "The Sightless Eye", "Winged Horror", "Aesther Ashblade", "Aesther Scout", "Bear - Drake Abomination", "Valrath Tracker", "Valrath Savage", "Wolf - Viper Abomination", "Human Commander", "Valrath Commander", "Manifestation of Corruption"]
-};
+const MonsterName = require("./constants").MonsterName;
 var gameState = {
 }
+var dockerStarted;
 var parsed;
 var docker = new Docker();
 var child;
 var container;
-var enableDocker = true;
+var enableDocker;
 var scriptOutput = "";
+var monsterProps;
+var playerProps;
 var monstersN;
 var playersN;
 var totalN;
 var round;
+var currIntensity;
+var client =
+{
+    'clientHost': "",
+    'clientPort': "",
+}
 
 var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 
@@ -80,6 +87,51 @@ const template = [
         label: 'Window',
         role: 'windowMenu'
     },
+    {
+        label: 'Listener',
+        submenu: [
+            {
+                label: "On",
+                type: "radio",
+                click: () => {
+                    enableDocker = true;
+                    store.set('docker', enableDocker);
+                    //gameListen();
+
+                },
+                checked: enableDocker
+            },
+            {
+                label: "Off",
+                type: "radio",
+                click: () => {
+                    enableDocker = false;
+                    store.set('docker', enableDocker);
+                    try {
+                        container.kill();
+                    }
+                    catch (e) {
+                        console.error(e);
+                    }
+                },
+                checked: !enableDocker
+            },
+            {
+                label: "Client settings",
+                click: () => {
+                    let configFile = dialog.showOpenDialogSync(mainWindow, {
+                        defaultPath: path.join(__dirname, '..'),
+                        properties: ['openFile',],
+                        filters: [{ name: "Configuration Files", extensions: ['json'] }]
+                    })[0];
+                    if (configFile) {
+                        store.set("client_config", configFile);
+                        loadClientConfig(configFile);
+                    }
+                }
+            }
+        ]
+    },
 
 ]
 const menu = Menu.buildFromTemplate(template)
@@ -100,7 +152,6 @@ const createWindow = () => {
     })
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, '../public/index.html'));
-
     // Open the DevTools.
     if (isDev) {
         mainWindow.webContents.openDevTools()
@@ -111,10 +162,12 @@ const createWindow = () => {
 
 }
 
+
 const gameListen = () => {
     // start docker container
-    child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
+    child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py " + client.clientHost + " " + client.clientPort]);
     container = docker.getContainer('temp');
+    dockerStarted = true;
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', function (data) {
         //Here is where the output goes
@@ -136,26 +189,29 @@ const gameListen = () => {
                 parsed = parser.parse(scriptOutput);
             } catch (error) {
                 console.error(error);
+                try {
+                    fs.writeFileSync('./error.txt', error.toString());
+                    // file written successfully
+                } catch (err) {
+                    console.error(err);
+                }
             }
             parsed[0] = Array.from(new Set(parsed[0]));
             consumeParsed();
             scriptOutput = "";
+            calculateIntensity();
         }
     });
 
-    function parse(data) {
-        try {
-            return parser.parse(data);
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
+    // map the player objects by their class (the client listener pushes duplicates)
     function mapPlayer(arr) {
         let seen = {}
         return (arr.map(x => {
             let content = Object.assign({}, ...x['player']['content']);
+            // if the class was already seen previously, ignore the entry
             if (seen[content['character_class']]) {
+                //nop
             }
             else {
                 seen[content['character_class']] = true;
@@ -185,7 +241,7 @@ const gameListen = () => {
             }
             )
         var monsterIndices = getAllIndexes(parsed[0], 'monster');
-        var monsterProps = monsterIndices.map(x => {
+        monsterProps = monsterIndices.map(x => {
             let i = 2;
             let arr = [];
             while (parsed[0][x + i]['instance']) {
@@ -208,11 +264,44 @@ const gameListen = () => {
 
         //var players = new Set(actors.filter(x => x['player']).map(x => x['player']['content'][1]['character_class']))
 
-        var players = mapPlayer(actors.filter(x => x['player']));
+        playerProps = mapPlayer(actors.filter(x => x['player']));
         //var monsters = actors.filter(x => x['monster']).map(x => x['monster']['content'][0]['id']);
         monstersN = monsterProps.reduce((prev, curr) => prev += curr['instances'], 0);
-        playersN = players.length;
+        playersN = playerProps.length;
         round = parsed[0].find(x => { if (typeof (x) === 'string' && x.includes('round')) return x; }).match(/round ([0-9]+)/)[1]
+    }
+
+
+    function calculateIntensity() {
+        let out = 0;
+        let boss = false;
+        monsterProps;
+        playerProps;
+        let monsterRatios = monsterProps.map(curr => {
+
+            let k = Object.keys(curr)[1];
+            let instanceArr = curr[k];
+
+            return instanceArr.map(curr => {
+                if (curr.type.type === 'Boss') {
+                    boss = true;
+                }
+                let mult;
+                mult = (curr.type === 'Elite') ? 1.25 : 1;
+                return mult * (parseInt(curr.hp.hp) / parseInt(curr.hp_max.hp_max));
+            });
+        })
+        let playerRatios = playerProps.map(curr => {
+            return (parseInt(curr.hp) / parseInt(curr.hp_max));
+        })
+        out = playerRatios.reduce((p, c) => p += (c / playersN), out);
+        out = monsterRatios.reduce((p, c) =>
+            p += (c.reduce((p, c) => p += (c), 0) / monstersN), out);
+        out *= round;
+        out = Math.floor(out);
+        if (boss) out = 10;
+        else out = Math.min(9, out);
+        mainWindow.webContents.send("intensity_change", out);
     }
 
     child.on('close', function (code) {
@@ -225,42 +314,14 @@ const gameListen = () => {
         }
         //console.log('Full output of script: ', scriptOutput);
     });
-
 }
 
 const loadSettings = () => {
-    // if (isDev) {
-    //     storage.clear(function (error) {
-    //         if (error) throw error;
-    //     });
-    // }
     if (store.has('folder')) {
         musicPath = store.get('folder')
         console.log("loaded folder path from storage" + musicPath)
         mainWindow.webContents.send("file_path", musicPath)
     }
-    if (store.has('docker')) {
-        enableDocker = store.get('docker')
-        console.log("loaded docker settings from storage" + enableDocker)
-    }
-    // storage.has('folder', function (error, hasKey) {
-    //     if (error) console.error(error)
-    //     if (hasKey) {
-    //         musicPath = storage.getSync('folder')
-    //         console.log("loaded folder path from storage" + musicPath)
-    //         mainWindow.webContents.send("file_path", musicPath)
-    //     }
-    // })
-    // storage.has('filelist', function (error, hasKey) {
-    //     if (error) {
-    //         console.error(error)
-    //     }
-    //     if (hasKey) {
-    //         filelist = storage.getSync('filelist')
-    //         mainWindow.webContents.send("music_files", filelist)
-    //         console.log("loaded filelist from storage" + filelist)
-    //     }
-    // })
 }
 
 // function for the open folder menu item
@@ -272,14 +333,6 @@ const openFolderDialog = () => {
     //storage.set('folder', musicPath)
     mainWindow.webContents.send("file_path", musicPath)
 
-    // var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
-    // filelist = walkSync(null, musicPath).sort((a, b) => {
-
-    //     return collator.compare(a.name, b.name);
-    // })
-    //storage.set('filelist', filelist);
-    //mainWindow.webContents.send("music_files", filelist)
-    //console.log(filelist)
 }
 
 // This method will be called when Electron has finished
@@ -287,6 +340,13 @@ const openFolderDialog = () => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
+    if (store.has('docker')) {
+        enableDocker = store.get('docker')
+        console.log("loaded docker settings from storage" + enableDocker)
+    }
+    if (store.has('client_config')) {
+        loadClientConfig(store.get("client_config"));
+    }
     createWindow();
     loadSettings();
 
@@ -301,22 +361,16 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-    //execSync("docker kill temp");
-    //child.kill();
     app.quit()
 })
 
 app.on("before-quit", () => {
-    //execSync("docker kill temp");
-    //child.kill();
+
     container.kill();
+    dockerStarted = false;
 })
 
-// ipcMain.on("request_files", function (event, arg) {
-//     console.log("received request for files ipc")
-//     mainWindow.webContents.send("music_files", filelist)
-// });
-
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+function loadClientConfig(path) {
+    client = JSON.parse(fs.readFileSync(path));
+    console.log(client);
+}
