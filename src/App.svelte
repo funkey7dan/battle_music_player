@@ -8,7 +8,10 @@
 		Row,
 		Progress,
 		Styles,
+		Toast,
+		ToastBody,
 	} from "sveltestrap";
+	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
 	import { writable } from "svelte/store";
 	import { get } from "svelte/store";
 	import { filelist_store, current_howl, state } from "./stores";
@@ -29,6 +32,7 @@
 	let currentIntensity; // a 'pointer' to the currently chosen intesityPlaylist
 	let currentVolume; // save the currently set volume
 	let intensityChange = ""; // a stack holding the intensity changes
+	let isOpen = false; // boolean for notfications
 	if (store.has("volume")) {
 		currentVolume = store.get("volume");
 	} else {
@@ -110,6 +114,10 @@
 	ipc.on("file_path", function (event, arg) {
 		createPlaylist(arg);
 		store.set("music-path", arg);
+	});
+
+	ipc.on("toast", function (event, arg) {
+		toast.push(arg);
 	});
 
 	ipc.on("intensity_change", function (event, arg) {
@@ -344,6 +352,7 @@
 <main>
 	<Container>
 		<Styles />
+		<SvelteToast options={{ duration: 2000, intro: { x: 250 } }} />
 		<h1>Battle Music Intensity Regulator</h1>
 		{#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
 			<h2>
@@ -465,5 +474,14 @@
 		main {
 			max-width: none;
 		}
+	}
+
+	:root {
+		--toastContainerTop: auto;
+		--toastContainerRight: auto;
+		/* --toastContainerBottom: 4rem; */
+		--toastContainerLeft: calc(50vw - 8rem);
+		--toastBarWidth: 0;
+		--toastBackground: rgba(66, 66, 66, 0.6);
 	}
 </style>

@@ -19,6 +19,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "@zerodevx/svelte-toast": "^0.7.2",
     "concurrently": "^7.3.0",
     "electron": "^19.0.10",
     "electron-builder": "^23.1.0",

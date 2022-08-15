@@ -17,6 +17,7 @@
         NUMPAD_9: 105,
         KEY_0: 48,
         KEY_9: 57,
+        BACKSPACE: 8,
     };
     const dispatch = createEventDispatcher();
     var filelist;
@@ -49,6 +50,10 @@
             e.keyCode === keyboard.KEY_0
         ) {
             dispatch("play_message", buttons[11].outerText);
+        } else if (e.keyCode === keyboard.BACKSPACE) {
+            $state === "battle"
+                ? dispatch("play_message", "town")
+                : ($state = "battle");
         }
     }
 </script>

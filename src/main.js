@@ -32,8 +32,14 @@ var client =
 
 var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 
+if (store.has('docker')) {
+    enableDocker = store.get('docker')
+    console.log("loaded docker settings from storage" + enableDocker)
+}
+
 if (isDev) {
     console.log("Dev mode")
+    //store.clear();
     require('electron-reload')(__dirname, {
         electron: path.join(__dirname, '../node_modules', '.bin', 'electron'),
         awaitWriteFinish: true,
@@ -90,8 +96,8 @@ const template = [
                 click: () => {
                     enableDocker = true;
                     store.set('docker', enableDocker);
-                    //gameListen();
-
+                    if (!dockerStarted) gameListen();
+                    mainWindow.webContents.send("toast", "Docker on");
                 },
                 checked: enableDocker
             },
@@ -102,22 +108,25 @@ const template = [
                     enableDocker = false;
                     store.set('docker', enableDocker);
                     try {
+                        dockerStarted = false;
                         container.kill();
                     }
                     catch (e) {
                         console.error(e);
                     }
+                    mainWindow.webContents.send("toast", "Docker off");
                 },
                 checked: !enableDocker
             },
             {
                 label: "Client settings",
                 click: () => {
-                    let configFile = dialog.showOpenDialogSync(mainWindow, {
+                    let configFile;
+                    if (!(configFile = dialog.showOpenDialogSync(mainWindow, {
                         defaultPath: path.join(__dirname, '..'),
                         properties: ['openFile',],
                         filters: [{ name: "Configuration Files", extensions: ['json'] }]
-                    })[0];
+                    })[0])) return;
                     if (configFile) {
                         store.set("client_config", configFile);
                         loadClientConfig(configFile);
@@ -334,10 +343,7 @@ const openFolderDialog = () => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
-    if (store.has('docker')) {
-        enableDocker = store.get('docker')
-        console.log("loaded docker settings from storage" + enableDocker)
-    }
+
     if (store.has('client_config')) {
         loadClientConfig(store.get("client_config"));
     }
