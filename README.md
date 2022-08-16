@@ -1,9 +1,16 @@
 # Battle Music Intensity Regulator
 
-A compact player to influence the mood of your tabletop game built using:
-[Electron](https://www.electronjs.org/),
-[Svelte](https://svelte.technology) ,
-[HowlerJS](https://howlerjs.com/),
+## About
+Music is important in everything we do.
+ When playing a boardgame, you want to be as immersed as possible,
+and many random playlist on youtube are a mish-mash of different energies.
+I wanted to have manual control over the mood of the game,
+and later I decided to try and automate this for Gloomhaven. 
+
+Built using:
+[Electron](https://www.electronjs.org/)
+[Svelte](https://svelte.technology) 
+[HowlerJS](https://howlerjs.com/)
 [Docker](https://www.docker.com/)
 
 *You will need to have [Node.js](https://nodejs.org) installed.*
