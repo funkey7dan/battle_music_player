@@ -3,9 +3,11 @@
 A compact player to influence the mood of your tabletop game built using:
 [Electron](https://www.electronjs.org/),
 [Svelte](https://svelte.technology) ,
-[HowlerJS](https://howlerjs.com/)
+[HowlerJS](https://howlerjs.com/),
+[Docker](https://www.docker.com/)
 
 *You will need to have [Node.js](https://nodejs.org) installed.*
+
 
 ## Usage:
 First point the app to the root folder containing your intensity playlists (See example in /public)
@@ -45,8 +47,17 @@ First point the app to the root folder containing your intensity playlists (See 
 
 </details>
 
-Choose an intensity level and press play
-When Playing press any level to switch to it
+-Choose an intensity level and press play
+-When Playing press any level to switch to it
+
+If you want to enable integration with a python client listening to "Gloomhaven Helper" in a docker container:
+After Installing Docker:
+```bash
+docker pull funkey7dan/myvimage
+```
+
+If you want to start docker through the app, change the path in the main.js.
+
 
 ## Get started
 
@@ -71,3 +82,9 @@ To package into a portable windows Executable
 ```bash
 npm run build
 ```
+
+## Acknowledgements
+Special thank to  Robin Grönberg for publishing his Gloomhaven helper client and making this project possible:
+https://github.com/Gronis/gloomhaven-helper-rfid
+
+

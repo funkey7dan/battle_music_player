@@ -201,7 +201,7 @@ const gameListen = () => {
 
 
     // start docker container
-    child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py " + client.clientHost + " " + client.clientPort]);
+    child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u client.py " + client.clientHost + " " + client.clientPort]);
     container = docker.getContainer('temp');
     dockerStarted = true;
     child.stdout.setEncoding('utf8');
