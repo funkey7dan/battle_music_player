@@ -80,6 +80,17 @@ const template = [
         ]
     },
     {
+        label: 'Edit',
+        submenu: [
+            { role: 'undo' },
+            { role: 'redo' },
+            { type: 'separator' },
+            { role: 'cut' },
+            { role: 'copy' },
+            { role: 'paste' },
+        ]
+    },
+    {
         label: 'View',
         role: 'viewMenu'
     },
@@ -144,6 +155,7 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        "minWidth": 660,
         icon: __dirname + "/bard.png",
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -249,8 +261,8 @@ const gameListen = () => {
             let arr = [];
             while (parsed[0][x + i]['instance']) {
 
-                const [number, type, is_new, hp, hp_max] = parsed[0][x + i]['instance'];
-                var yourObject = { number, type, is_new, hp, hp_max };
+                //const [number, type, is_new, hp, hp_max] = parsed[0][x + i]['instance'];
+                var yourObject = Object.assign({}, ...parsed[0][x + i]['instance']);
                 //arr.push(parsed[0][x + i]['instance']);
                 arr.push(yourObject);
                 i++;
@@ -286,12 +298,12 @@ const gameListen = () => {
             let instanceArr = curr[k];
 
             return instanceArr.map(curr => {
-                if (curr.type.type === 'Boss') {
+                if (curr.type === 'Boss') {
                     boss = true;
                 }
                 let mult;
                 mult = (curr.type === 'Elite') ? 1.25 : 1;
-                return mult * (parseInt(curr.hp.hp) / parseInt(curr.hp_max.hp_max));
+                return mult * (parseInt(curr.hp) / parseInt(curr.hp_max));
             });
         })
         let playerRatios = playerProps.map(curr => {
