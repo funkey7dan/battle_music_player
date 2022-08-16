@@ -8,6 +8,7 @@ const Store = require('electron-store');
 const store = new Store();
 const spawn = require('child_process').spawn;
 const execSync = require('child_process').execSync;
+const execFile = require('child_process').execFile;
 const Docker = require('dockerode');
 const parser = require("./parser");
 const MonsterName = require("./constants").MonsterName;
@@ -179,6 +180,26 @@ const createWindow = () => {
 
 
 const gameListen = () => {
+    //check if docker is running:
+    try {
+        execSync("docker ps");
+    }
+    catch (e) {
+        if (e.toString().includes("daemon is not running")) {
+            console.log("docker is not running");
+
+            //const child = execFile("C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe");
+            const child = spawn(`C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe`, {
+                detached: true,
+            });
+            child.unref();
+        }
+        else {
+            console.error(e);
+        }
+    }
+
+
     // start docker container
     child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py " + client.clientHost + " " + client.clientPort]);
     container = docker.getContainer('temp');
@@ -317,6 +338,7 @@ const gameListen = () => {
         if (boss) out = 10;
         else out = Math.min(9, out);
         mainWindow.webContents.send("intensity_change", out);
+        console.log("Intensity set: " + out)
     }
 
     child.on('close', function (code) {
@@ -361,7 +383,7 @@ app.whenReady().then(() => {
     }
     createWindow();
     loadSettings();
-
+    //app.show();
     app.on('activate', () => {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.

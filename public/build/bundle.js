@@ -12009,7 +12009,7 @@ var app = (function () {
     const { console: console_1 } = globals;
     const file = "src\\App.svelte";
 
-    // (365:2) {:else}
+    // (416:2) {:else}
     function create_else_block_1(ctx) {
     	let h2;
 
@@ -12018,7 +12018,7 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "Current intesity is: 0";
     			attr_dev(h2, "class", "svelte-1btx31t");
-    			add_location(h2, file, 365, 3, 10037);
+    			add_location(h2, file, 416, 3, 11427);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -12033,14 +12033,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1.name,
     		type: "else",
-    		source: "(365:2) {:else}",
+    		source: "(416:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (363:47) 
+    // (414:55) 
     function create_if_block_3(ctx) {
     	let h2;
 
@@ -12049,7 +12049,7 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "Defeat...";
     			attr_dev(h2, "class", "svelte-1btx31t");
-    			add_location(h2, file, 363, 3, 10005);
+    			add_location(h2, file, 414, 3, 11395);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -12064,14 +12064,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(363:47) ",
+    		source: "(414:55) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (361:48) 
+    // (412:56) 
     function create_if_block_2(ctx) {
     	let h2;
 
@@ -12080,7 +12080,7 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "WE ARE VICTORIOUS!";
     			attr_dev(h2, "class", "svelte-1btx31t");
-    			add_location(h2, file, 361, 3, 9926);
+    			add_location(h2, file, 412, 3, 11308);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -12095,18 +12095,18 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(361:48) ",
+    		source: "(412:56) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (357:2) {#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
+    // (405:2) {#if currentIntensityPlaylist && currentIntensityPlaylist.name.replace(/\D/g, "") != ""}
     function create_if_block_1(ctx) {
     	let h2;
     	let t0;
-    	let t1_value = /*currentIntensity*/ ctx[2].name.replace(/\D/g, "") + "";
+    	let t1_value = /*currentIntensityPlaylist*/ ctx[2].name.replace(/\D/g, "") + "";
     	let t1;
 
     	const block = {
@@ -12115,7 +12115,7 @@ var app = (function () {
     			t0 = text("Current intesity is: ");
     			t1 = text(t1_value);
     			attr_dev(h2, "class", "svelte-1btx31t");
-    			add_location(h2, file, 357, 3, 9792);
+    			add_location(h2, file, 405, 3, 11142);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -12123,7 +12123,7 @@ var app = (function () {
     			append_dev(h2, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*currentIntensity*/ 4 && t1_value !== (t1_value = /*currentIntensity*/ ctx[2].name.replace(/\D/g, "") + "")) set_data_dev(t1, t1_value);
+    			if (dirty[0] & /*currentIntensityPlaylist*/ 4 && t1_value !== (t1_value = /*currentIntensityPlaylist*/ ctx[2].name.replace(/\D/g, "") + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h2);
@@ -12134,14 +12134,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(357:2) {#if currentIntensity && currentIntensity.name.replace(/\\D/g, \\\"\\\") != \\\"\\\"}",
+    		source: "(405:2) {#if currentIntensityPlaylist && currentIntensityPlaylist.name.replace(/\\D/g, \\\"\\\") != \\\"\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (382:7) <Marquee pauseOnHover="true" speed={0.1 * barWidth}>
+    // (433:7) <Marquee pauseOnHover="true" speed={0.1 * barWidth}>
     function create_default_slot_18(ctx) {
     	let t_value = /*sound*/ ctx[5].name + "";
     	let t;
@@ -12165,14 +12165,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_18.name,
     		type: "slot",
-    		source: "(382:7) <Marquee pauseOnHover=\\\"true\\\" speed={0.1 * barWidth}>",
+    		source: "(433:7) <Marquee pauseOnHover=\\\"true\\\" speed={0.1 * barWidth}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (375:5) <Row>
+    // (426:5) <Row>
     function create_default_slot_17(ctx) {
     	let div;
     	let marquee;
@@ -12193,7 +12193,7 @@ var app = (function () {
     			div = element("div");
     			create_component(marquee.$$.fragment);
     			attr_dev(div, "id", "name");
-    			add_location(div, file, 375, 6, 10220);
+    			add_location(div, file, 426, 6, 11610);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -12204,7 +12204,7 @@ var app = (function () {
     			const marquee_changes = {};
     			if (dirty[0] & /*barWidth*/ 1) marquee_changes.speed = 0.1 * /*barWidth*/ ctx[0];
 
-    			if (dirty[0] & /*sound*/ 32 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*sound*/ 32 | dirty[1] & /*$$scope*/ 512) {
     				marquee_changes.$$scope = { dirty, ctx };
     			}
 
@@ -12229,14 +12229,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_17.name,
     		type: "slot",
-    		source: "(375:5) <Row>",
+    		source: "(426:5) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (390:6) <Col sm="1" xs="1">
+    // (441:6) <Col sm="1" xs="1">
     function create_default_slot_16(ctx) {
     	let t_value = timeFormatter(/*seekStatus*/ ctx[6]) + "";
     	let t;
@@ -12260,14 +12260,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_16.name,
     		type: "slot",
-    		source: "(390:6) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
+    		source: "(441:6) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (391:6) <Col style="width:min-content len:min-content">
+    // (442:6) <Col style="width:min-content len:min-content">
     function create_default_slot_15(ctx) {
     	let div;
     	let progress;
@@ -12290,7 +12290,7 @@ var app = (function () {
     			create_component(progress.$$.fragment);
     			set_style(div, "width", "min-content len:min-content");
     			add_render_callback(() => /*div_elementresize_handler*/ ctx[17].call(div));
-    			add_location(div, file, 391, 7, 10657);
+    			add_location(div, file, 442, 7, 12047);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -12330,14 +12330,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_15.name,
     		type: "slot",
-    		source: "(391:6) <Col style=\\\"width:min-content len:min-content\\\">",
+    		source: "(442:6) <Col style=\\\"width:min-content len:min-content\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (404:6) <Col sm="1" xs="1">
+    // (455:6) <Col sm="1" xs="1">
     function create_default_slot_14(ctx) {
     	let t_value = timeFormatter(/*timerLeft*/ ctx[7]) + "";
     	let t;
@@ -12361,14 +12361,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_14.name,
     		type: "slot",
-    		source: "(404:6) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
+    		source: "(455:6) <Col sm=\\\"1\\\" xs=\\\"1\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (389:5) <Row>
+    // (440:5) <Row>
     function create_default_slot_13(ctx) {
     	let col0;
     	let t0;
@@ -12425,21 +12425,21 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const col0_changes = {};
 
-    			if (dirty[0] & /*seekStatus*/ 64 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*seekStatus*/ 64 | dirty[1] & /*$$scope*/ 512) {
     				col0_changes.$$scope = { dirty, ctx };
     			}
 
     			col0.$set(col0_changes);
     			const col1_changes = {};
 
-    			if (dirty[0] & /*barWidth, $trackProgress*/ 513 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*barWidth, $trackProgress*/ 513 | dirty[1] & /*$$scope*/ 512) {
     				col1_changes.$$scope = { dirty, ctx };
     			}
 
     			col1.$set(col1_changes);
     			const col2_changes = {};
 
-    			if (dirty[0] & /*timerLeft*/ 128 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*timerLeft*/ 128 | dirty[1] & /*$$scope*/ 512) {
     				col2_changes.$$scope = { dirty, ctx };
     			}
 
@@ -12471,14 +12471,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_13.name,
     		type: "slot",
-    		source: "(389:5) <Row>",
+    		source: "(440:5) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (409:6) <Button on:click={() => changeTrack(-1)}>
+    // (460:6) <Button on:click={() => changeTrack(-1)}>
     function create_default_slot_12(ctx) {
     	let t;
 
@@ -12498,14 +12498,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_12.name,
     		type: "slot",
-    		source: "(409:6) <Button on:click={() => changeTrack(-1)}>",
+    		source: "(460:6) <Button on:click={() => changeTrack(-1)}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (412:6) {:else}
+    // (463:6) {:else}
     function create_else_block(ctx) {
     	let button;
     	let current;
@@ -12531,7 +12531,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const button_changes = {};
 
-    			if (dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[1] & /*$$scope*/ 512) {
     				button_changes.$$scope = { dirty, ctx };
     			}
 
@@ -12555,14 +12555,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(412:6) {:else}",
+    		source: "(463:6) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (410:6) {#if isPlaying}
+    // (461:6) {#if isPlaying}
     function create_if_block(ctx) {
     	let button;
     	let current;
@@ -12588,7 +12588,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const button_changes = {};
 
-    			if (dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[1] & /*$$scope*/ 512) {
     				button_changes.$$scope = { dirty, ctx };
     			}
 
@@ -12612,14 +12612,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(410:6) {#if isPlaying}",
+    		source: "(461:6) {#if isPlaying}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (413:7) <Button on:click={playSound}>
+    // (464:7) <Button on:click={playSound}>
     function create_default_slot_11(ctx) {
     	let t;
 
@@ -12639,14 +12639,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_11.name,
     		type: "slot",
-    		source: "(413:7) <Button on:click={playSound}>",
+    		source: "(464:7) <Button on:click={playSound}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (411:7) <Button on:click={pauseSound}>
+    // (462:7) <Button on:click={pauseSound}>
     function create_default_slot_10(ctx) {
     	let t;
 
@@ -12666,14 +12666,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_10.name,
     		type: "slot",
-    		source: "(411:7) <Button on:click={pauseSound}>",
+    		source: "(462:7) <Button on:click={pauseSound}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (415:6) <Button on:click={() => changeTrack(1)}>
+    // (466:6) <Button on:click={() => changeTrack(1)}>
     function create_default_slot_9(ctx) {
     	let t;
 
@@ -12693,14 +12693,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_9.name,
     		type: "slot",
-    		source: "(415:6) <Button on:click={() => changeTrack(1)}>",
+    		source: "(466:6) <Button on:click={() => changeTrack(1)}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (408:5) <ButtonGroup>
+    // (459:5) <ButtonGroup>
     function create_default_slot_8(ctx) {
     	let button0;
     	let t0;
@@ -12759,7 +12759,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const button0_changes = {};
 
-    			if (dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[1] & /*$$scope*/ 512) {
     				button0_changes.$$scope = { dirty, ctx };
     			}
 
@@ -12792,7 +12792,7 @@ var app = (function () {
 
     			const button1_changes = {};
 
-    			if (dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[1] & /*$$scope*/ 512) {
     				button1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -12824,14 +12824,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_8.name,
     		type: "slot",
-    		source: "(408:5) <ButtonGroup>",
+    		source: "(459:5) <ButtonGroup>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (374:4) <Container>
+    // (425:4) <Container>
     function create_default_slot_7(ctx) {
     	let row0;
     	let t0;
@@ -12875,7 +12875,7 @@ var app = (function () {
     			br = element("br");
     			t2 = space();
     			create_component(buttongroup.$$.fragment);
-    			add_location(br, file, 406, 5, 11032);
+    			add_location(br, file, 457, 5, 12422);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -12890,21 +12890,21 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const row0_changes = {};
 
-    			if (dirty[0] & /*barWidth, sound*/ 33 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*barWidth, sound*/ 33 | dirty[1] & /*$$scope*/ 512) {
     				row0_changes.$$scope = { dirty, ctx };
     			}
 
     			row0.$set(row0_changes);
     			const row1_changes = {};
 
-    			if (dirty[0] & /*timerLeft, barWidth, $trackProgress, seekStatus*/ 705 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*timerLeft, barWidth, $trackProgress, seekStatus*/ 705 | dirty[1] & /*$$scope*/ 512) {
     				row1_changes.$$scope = { dirty, ctx };
     			}
 
     			row1.$set(row1_changes);
     			const buttongroup_changes = {};
 
-    			if (dirty[0] & /*isPlaying*/ 16 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*isPlaying*/ 16 | dirty[1] & /*$$scope*/ 512) {
     				buttongroup_changes.$$scope = { dirty, ctx };
     			}
 
@@ -12938,14 +12938,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_7.name,
     		type: "slot",
-    		source: "(374:4) <Container>",
+    		source: "(425:4) <Container>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (373:3) <Row>
+    // (424:3) <Row>
     function create_default_slot_6(ctx) {
     	let container;
     	let current;
@@ -12969,7 +12969,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const container_changes = {};
 
-    			if (dirty[0] & /*isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 753 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 753 | dirty[1] & /*$$scope*/ 512) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
@@ -12993,14 +12993,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_6.name,
     		type: "slot",
-    		source: "(373:3) <Row>",
+    		source: "(424:3) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (424:5) <Col       >
+    // (475:5) <Col       >
     function create_default_slot_5(ctx) {
     	let input;
     	let mounted;
@@ -13013,7 +13013,7 @@ var app = (function () {
     			attr_dev(input, "max", "1");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "step", "0.1");
-    			add_location(input, file, 424, 7, 11501);
+    			add_location(input, file, 475, 7, 12891);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
@@ -13035,14 +13035,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(424:5) <Col       >",
+    		source: "(475:5) <Col       >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (420:4) <Row>
+    // (471:4) <Row>
     function create_default_slot_4(ctx) {
     	let col;
     	let current;
@@ -13066,7 +13066,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const col_changes = {};
 
-    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 512) {
     				col_changes.$$scope = { dirty, ctx };
     			}
 
@@ -13090,14 +13090,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(420:4) <Row>",
+    		source: "(471:4) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (419:3) <Container>
+    // (470:3) <Container>
     function create_default_slot_3(ctx) {
     	let row;
     	let current;
@@ -13121,7 +13121,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const row_changes = {};
 
-    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 512) {
     				row_changes.$$scope = { dirty, ctx };
     			}
 
@@ -13145,19 +13145,19 @@ var app = (function () {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(419:3) <Container>",
+    		source: "(470:3) <Container>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (443:3) <Row>
+    // (494:3) <Row>
     function create_default_slot_2(ctx) {
     	let buttons;
     	let current;
     	buttons = new Control({ $$inline: true });
-    	buttons.$on("play_message", /*handleMessage*/ ctx[14]);
+    	buttons.$on("play_message", /*handleIntensityChange*/ ctx[14]);
 
     	const block = {
     		c: function create() {
@@ -13186,14 +13186,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(443:3) <Row>",
+    		source: "(494:3) <Row>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (372:2) <Container>
+    // (423:2) <Container>
     function create_default_slot_1(ctx) {
     	let row0;
     	let t0;
@@ -13237,7 +13237,7 @@ var app = (function () {
     			br = element("br");
     			t2 = space();
     			create_component(row1.$$.fragment);
-    			add_location(br, file, 441, 3, 11847);
+    			add_location(br, file, 492, 3, 13237);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -13252,21 +13252,21 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const row0_changes = {};
 
-    			if (dirty[0] & /*isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 753 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 753 | dirty[1] & /*$$scope*/ 512) {
     				row0_changes.$$scope = { dirty, ctx };
     			}
 
     			row0.$set(row0_changes);
     			const container_changes = {};
 
-    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*$current_howl, currentVolume*/ 264 | dirty[1] & /*$$scope*/ 512) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
     			container.$set(container_changes);
     			const row1_changes = {};
 
-    			if (dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[1] & /*$$scope*/ 512) {
     				row1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -13300,14 +13300,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(372:2) <Container>",
+    		source: "(423:2) <Container>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (353:1) <Container>
+    // (401:1) <Container>
     function create_default_slot(ctx) {
     	let styles;
     	let t0;
@@ -13334,11 +13334,11 @@ var app = (function () {
     		});
 
     	function select_block_type(ctx, dirty) {
-    		if (dirty[0] & /*currentIntensity*/ 4) show_if = null;
-    		if (show_if == null) show_if = !!(/*currentIntensity*/ ctx[2] && /*currentIntensity*/ ctx[2].name.replace(/\D/g, "") != "");
+    		if (dirty[0] & /*currentIntensityPlaylist*/ 4) show_if = null;
+    		if (show_if == null) show_if = !!(/*currentIntensityPlaylist*/ ctx[2] && /*currentIntensityPlaylist*/ ctx[2].name.replace(/\D/g, "") != "");
     		if (show_if) return create_if_block_1;
-    		if (/*currentIntensity*/ ctx[2].name === "victory") return create_if_block_2;
-    		if (/*currentIntensity*/ ctx[2].name === "defeat") return create_if_block_3;
+    		if (/*currentIntensityPlaylist*/ ctx[2].name === "victory") return create_if_block_2;
+    		if (/*currentIntensityPlaylist*/ ctx[2].name === "defeat") return create_if_block_3;
     		return create_else_block_1;
     	}
 
@@ -13369,10 +13369,10 @@ var app = (function () {
     			t6 = space();
     			create_component(container.$$.fragment);
     			attr_dev(h1, "class", "svelte-1btx31t");
-    			add_location(h1, file, 355, 2, 9672);
+    			add_location(h1, file, 403, 2, 11006);
     			set_style(span, "display", "none");
     			add_render_callback(() => /*span_elementresize_handler*/ ctx[16].call(span));
-    			add_location(span, file, 368, 2, 10080);
+    			add_location(span, file, 419, 2, 11470);
     		},
     		m: function mount(target, anchor) {
     			mount_component(styles, target, anchor);
@@ -13406,7 +13406,7 @@ var app = (function () {
     			if ((!current || dirty[0] & /*sound*/ 32) && t5_value !== (t5_value = /*sound*/ ctx[5].name + "")) set_data_dev(t5, t5_value);
     			const container_changes = {};
 
-    			if (dirty[0] & /*$current_howl, currentVolume, isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 1017 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*$current_howl, currentVolume, isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound*/ 1017 | dirty[1] & /*$$scope*/ 512) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
@@ -13445,7 +13445,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(353:1) <Container>",
+    		source: "(401:1) <Container>",
     		ctx
     	});
 
@@ -13470,7 +13470,7 @@ var app = (function () {
     			main = element("main");
     			create_component(container.$$.fragment);
     			attr_dev(main, "class", "svelte-1btx31t");
-    			add_location(main, file, 351, 0, 9571);
+    			add_location(main, file, 399, 0, 10905);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -13483,7 +13483,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			const container_changes = {};
 
-    			if (dirty[0] & /*$current_howl, currentVolume, isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound, nameWidth, currentIntensity*/ 1023 | dirty[1] & /*$$scope*/ 256) {
+    			if (dirty[0] & /*$current_howl, currentVolume, isPlaying, timerLeft, barWidth, $trackProgress, seekStatus, sound, nameWidth, currentIntensityPlaylist*/ 1023 | dirty[1] & /*$$scope*/ 512) {
     				container_changes.$$scope = { dirty, ctx };
     			}
 
@@ -13515,6 +13515,10 @@ var app = (function () {
     	return block;
     }
 
+    function mod(n, m) {
+    	return (n % m + m) % m;
+    }
+
     function getRandomInt(min, max) {
     	if (min === max) {
     		return min;
@@ -13539,7 +13543,7 @@ var app = (function () {
     	validate_store(current_howl, 'current_howl');
     	component_subscribe($$self, current_howl, $$value => $$invalidate(8, $current_howl = $$value));
     	validate_store(state, 'state');
-    	component_subscribe($$self, state, $$value => $$invalidate(25, $state = $$value));
+    	component_subscribe($$self, state, $$value => $$invalidate(26, $state = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
     	const ipc = require("electron").ipcRenderer;
@@ -13553,15 +13557,24 @@ var app = (function () {
 
     	let barWidth; // the width of the progress bar
     	let nameWidth; // the width of the trackname
-    	let currentIntensity; // a 'pointer' to the currently chosen intesityPlaylist
+    	let currentIntensityPlaylist; // a 'pointer' to the currently chosen intesityPlaylist
     	let currentVolume; // save the currently set volume
-    	let intensityChange = ""; // a stack holding the intensity changes
+    	let intensityChange = ""; // a stack holding the intensity change pushes from the main app
     	let isOpen = false; // boolean for notfications
 
     	if (store.has("volume")) {
     		currentVolume = store.get("volume");
     	} else {
     		store.set("volume", 1);
+    	}
+
+    	let ms;
+
+    	if (store.has("fade-ms")) {
+    		ms = store.get("fade-ms");
+    	} else {
+    		ms = 200;
+    		store.set("fade-ms", ms);
     	}
 
     	var filelist; // a list of intesityPlaylists that we populate
@@ -13613,7 +13626,7 @@ var app = (function () {
     			})
     	};
 
-    	currentIntensity = new intensityPlaylist("placeholder", [sound]);
+    	currentIntensityPlaylist = new intensityPlaylist("placeholder", [sound]);
     	current_howl.set(sound.howl); // save the initial sound in a store, so we can listen for changes and access the currently playing track
     	let seekStatus = $current_howl.seek() || 0; // the seek location in the track, in seconds
     	let timerLeft = $current_howl.duration();
@@ -13652,12 +13665,12 @@ var app = (function () {
     	ipc.on("intensity_change", function (event, arg) {
     		// if the current track is less than half done, or if there is more than 1 minute left
     		//if ($trackProgress < 50 || timerLeft > 60) {
-    		if (currentIntensity.name === "victory" || currentIntensity.name === "defeat") {
+    		if (currentIntensityPlaylist.name === "victory" || currentIntensityPlaylist.name === "defeat") {
     			return;
     		}
 
     		if (timerLeft > 60) {
-    			handleMessage(new CustomEvent("play_message", { detail: "intensity " + arg }));
+    			handleIntensityChange(new CustomEvent("play_message", { detail: "intensity " + arg }));
     		} else {
     			intensityChange = "intensity " + arg;
     		}
@@ -13668,18 +13681,24 @@ var app = (function () {
     		createPlaylist(store.get("music-path"));
     	}
 
-    	function crossfadeTracks(old, next) {
-    		if (old == next) {
+    	// function crossfadeTracks(old, next) {
+    	// 	if (old === next) {
+    	// 		return;
+    	// 	}
+    	// 	isPlaying = false;
+    	// 	old.fade(currentVolume, 0, ms);
+    	// 	setTimeout(() => {
+    	// 		old.stop();
+    	// 		old.volume(currentVolume);
+    	// 	}, ms);
+    	// 	next.volume(currentVolume);
+    	// 	sound.howl = next;
+    	// 	playSound();
+    	// 	next.fade(0, currentVolume, ms);
+    	// }
+    	function crossfadeTracks(old, next, src) {
+    		if (old === next) {
     			return;
-    		}
-
-    		let ms;
-
-    		if (store.has("fade-ms")) {
-    			ms = store.get("fade-ms");
-    		} else {
-    			ms = 200;
-    			store.set("fade-ms", ms);
     		}
 
     		$$invalidate(4, isPlaying = false);
@@ -13694,7 +13713,7 @@ var app = (function () {
     		);
 
     		next.volume(currentVolume);
-    		$$invalidate(5, sound.howl = next, sound);
+    		$$invalidate(5, sound = src);
     		playSound();
     		next.fade(0, currentVolume, ms);
     	}
@@ -13703,7 +13722,9 @@ var app = (function () {
     		$$invalidate(4, isPlaying = true);
 
     		//console.log(sound);
-    		console.log(sound.howl);
+    		set_store_value(current_howl, $current_howl = sound.howl, $current_howl);
+
+    		$current_howl.volume(currentVolume);
 
     		$current_howl.on("play", function () {
     			updateInterval = setInterval(
@@ -13714,8 +13735,7 @@ var app = (function () {
     			);
     		});
 
-    		current_howl.set(sound.howl);
-    		$current_howl.volume(currentVolume);
+    		console.log(sound.howl);
     		prevId = $current_howl.play();
     		console.log("prevID = " + prevId);
     	}
@@ -13728,33 +13748,43 @@ var app = (function () {
 
     	// change the track in the current intesity tracklist according to the passed value
     	function changeTrack(value) {
+    		// if there is a push waiting to be played, play that instead
     		if (intensityChange !== "") {
-    			handleMessage(new CustomEvent("play_message", { detail: intensityChange }));
+    			// change the intensity according to the push
+    			handleIntensityChange(new CustomEvent("play_message", { detail: intensityChange }));
 
-    			//dispatch("play_message", intensityChange);
     			intensityChange = "";
-
     			return;
     		}
 
-    		if (currentIntensity) {
-    			$$invalidate(2, currentIntensity.index = (currentIntensity.index + value) % Math.max(currentIntensity.trackList.length - 1, 1), currentIntensity);
+    		// if the current intensity is defined
+    		if (currentIntensityPlaylist) {
+    			// advance the index of the current playlist
+    			$$invalidate(2, currentIntensityPlaylist.index = mod(currentIntensityPlaylist.index + value, Math.max(currentIntensityPlaylist.trackList.length - 1, 1)), currentIntensityPlaylist);
 
+    			// (currentIntensityPlaylist.index + value) %
+    			// Math.max(currentIntensityPlaylist.trackList.length - 1, 1);
+    			var src = currentIntensityPlaylist.trackList[currentIntensityPlaylist.index];
+
+    			// if the music is playing during the track change,
     			if (isPlaying) {
-    				const src = currentIntensity.trackList[currentIntensity.index];
-    				crossfadeTracks($current_howl, src.howl);
-    				console.log(src);
-    				$$invalidate(5, sound = src);
-    				current_howl.update(n => sound.howl);
+    				crossfadeTracks($current_howl, src.howl, src);
     			} else {
-    				const src = currentIntensity.trackList[currentIntensity.index];
-    				console.log(src);
     				$$invalidate(5, sound = src);
-    				current_howl.update(n => sound.howl);
     			}
-    		}
-    	}
 
+    			console.log(src);
+
+    			//sound = src;
+    			set_store_value(current_howl, $current_howl = sound.howl, $current_howl);
+    		} //current_howl.update((n) => sound.howl);
+    		// } else {
+    	} // 	//var src = currentIntensityPlaylist.trackList[currentIntensityPlaylist.index];
+    	// 	console.log(src);
+
+    	// 	sound = src;
+    	// 	current_howl.update((n) => sound.howl);
+    	// }
     	function updateProgress() {
     		if ($current_howl.playing()) {
     			$$invalidate(6, seekStatus = $current_howl.seek() || 0);
@@ -13764,19 +13794,25 @@ var app = (function () {
     	}
 
     	// received intesity change event push from controller
-    	function handleMessage(event) {
+    	function handleIntensityChange(event) {
+    		if (currentIntensityPlaylist != null && event.detail === currentIntensityPlaylist.name) {
+    			console.log("Same intesity level requested, doing nothing.");
+    			return;
+    		}
+
     		// find the intesity that was pressedin the filelist
-    		if (currentIntensity != null) {
+    		if (currentIntensityPlaylist != null) {
     			// advance the index of the previous intesity to a random one
-    			$$invalidate(2, currentIntensity.index = (currentIntensity.index + getRandomInt(0, currentIntensity.trackList.length)) % Math.max(currentIntensity.trackList.length - 1, 1), currentIntensity);
+    			$$invalidate(2, currentIntensityPlaylist.index = (currentIntensityPlaylist.index + getRandomInt(0, currentIntensityPlaylist.trackList.length)) % Math.max(currentIntensityPlaylist.trackList.length - 1, 1), currentIntensityPlaylist);
     		}
 
     		// find the name of intensity level requested in the filelist
-    		$$invalidate(2, currentIntensity = filelist.find(s => {
+    		$$invalidate(2, currentIntensityPlaylist = filelist.find(s => {
     			return s.name === event.detail;
     		}));
 
-    		if (currentIntensity == null) {
+    		if (currentIntensityPlaylist == null) {
+    			console.log(event.detail + "playlist was not found!");
     			alert(event.detail + "playlist was not found!");
     			return;
     		}
@@ -13787,15 +13823,18 @@ var app = (function () {
     			set_store_value(state, $state = "battle", $state);
     		}
 
-    		const src = currentIntensity.trackList[currentIntensity.index];
+    		const src = currentIntensityPlaylist.trackList[currentIntensityPlaylist.index];
 
     		if (isPlaying) {
-    			crossfadeTracks(get_store_value(current_howl), src.howl);
+    			crossfadeTracks(get_store_value(current_howl), src.howl, src);
+    		} else {
+    			$$invalidate(5, sound = src);
     		}
 
     		console.log(src);
-    		$$invalidate(5, sound = src);
-    		current_howl.update(n => sound.howl);
+
+    		//sound = src;
+    		set_store_value(current_howl, $current_howl = sound.howl, $current_howl);
     	}
 
     	function walkSync(filelist, dir) {
@@ -13914,10 +13953,11 @@ var app = (function () {
     		store,
     		barWidth,
     		nameWidth,
-    		currentIntensity,
+    		currentIntensityPlaylist,
     		currentVolume,
     		intensityChange,
     		isOpen,
+    		ms,
     		filelist,
     		intensityPlaylist,
     		musicTrack,
@@ -13928,6 +13968,7 @@ var app = (function () {
     		timerLeft,
     		prevId,
     		trackProgress,
+    		mod,
     		getRandomInt,
     		crossfadeTracks,
     		timeFormatter,
@@ -13935,7 +13976,7 @@ var app = (function () {
     		pauseSound,
     		changeTrack,
     		updateProgress,
-    		handleMessage,
+    		handleIntensityChange,
     		walkSync,
     		createPlaylist,
     		seekToClick,
@@ -13947,10 +13988,11 @@ var app = (function () {
     	$$self.$inject_state = $$props => {
     		if ('barWidth' in $$props) $$invalidate(0, barWidth = $$props.barWidth);
     		if ('nameWidth' in $$props) $$invalidate(1, nameWidth = $$props.nameWidth);
-    		if ('currentIntensity' in $$props) $$invalidate(2, currentIntensity = $$props.currentIntensity);
+    		if ('currentIntensityPlaylist' in $$props) $$invalidate(2, currentIntensityPlaylist = $$props.currentIntensityPlaylist);
     		if ('currentVolume' in $$props) $$invalidate(3, currentVolume = $$props.currentVolume);
     		if ('intensityChange' in $$props) intensityChange = $$props.intensityChange;
     		if ('isOpen' in $$props) isOpen = $$props.isOpen;
+    		if ('ms' in $$props) ms = $$props.ms;
     		if ('filelist' in $$props) filelist = $$props.filelist;
     		if ('isPlaying' in $$props) $$invalidate(4, isPlaying = $$props.isPlaying);
     		if ('updateInterval' in $$props) updateInterval = $$props.updateInterval;
@@ -13967,7 +14009,7 @@ var app = (function () {
     	return [
     		barWidth,
     		nameWidth,
-    		currentIntensity,
+    		currentIntensityPlaylist,
     		currentVolume,
     		isPlaying,
     		sound,
@@ -13979,7 +14021,7 @@ var app = (function () {
     		playSound,
     		pauseSound,
     		changeTrack,
-    		handleMessage,
+    		handleIntensityChange,
     		seekToClick,
     		span_elementresize_handler,
     		div_elementresize_handler,

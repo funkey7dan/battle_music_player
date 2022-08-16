@@ -29,14 +29,21 @@
 	const store = new Store();
 	let barWidth; // the width of the progress bar
 	let nameWidth; // the width of the trackname
-	let currentIntensity; // a 'pointer' to the currently chosen intesityPlaylist
+	let currentIntensityPlaylist; // a 'pointer' to the currently chosen intesityPlaylist
 	let currentVolume; // save the currently set volume
-	let intensityChange = ""; // a stack holding the intensity changes
+	let intensityChange = ""; // a stack holding the intensity change pushes from the main app
 	let isOpen = false; // boolean for notfications
 	if (store.has("volume")) {
 		currentVolume = store.get("volume");
 	} else {
 		store.set("volume", 1);
+	}
+	let ms;
+	if (store.has("fade-ms")) {
+		ms = store.get("fade-ms");
+	} else {
+		ms = 200;
+		store.set("fade-ms", ms);
 	}
 	var filelist; // a list of intesityPlaylists that we populate
 	filelist_store.set(filelist); // svelte store to listen for changes in file list value
@@ -84,7 +91,7 @@
 		}),
 	};
 
-	currentIntensity = new intensityPlaylist("placeholder", [sound]);
+	currentIntensityPlaylist = new intensityPlaylist("placeholder", [sound]);
 
 	current_howl.set(sound.howl); // save the initial sound in a store, so we can listen for changes and access the currently playing track
 	let seekStatus = $current_howl.seek() || 0; // the seek location in the track, in seconds
@@ -124,13 +131,13 @@
 		// if the current track is less than half done, or if there is more than 1 minute left
 		//if ($trackProgress < 50 || timerLeft > 60) {
 		if (
-			currentIntensity.name === "victory" ||
-			currentIntensity.name === "defeat"
+			currentIntensityPlaylist.name === "victory" ||
+			currentIntensityPlaylist.name === "defeat"
 		) {
 			return;
 		}
 		if (timerLeft > 60) {
-			handleMessage(
+			handleIntensityChange(
 				new CustomEvent("play_message", { detail: "intensity " + arg })
 			);
 		} else {
@@ -144,6 +151,11 @@
 	}
 
 	/**##################### FUNCTIONS ######################*/
+
+	function mod(n, m) {
+		return ((n % m) + m) % m;
+	}
+
 	function getRandomInt(min, max) {
 		if (min === max) {
 			return min;
@@ -153,26 +165,34 @@
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
-	function crossfadeTracks(old, next) {
-		if (old == next) {
+	// function crossfadeTracks(old, next) {
+	// 	if (old === next) {
+	// 		return;
+	// 	}
+	// 	isPlaying = false;
+	// 	old.fade(currentVolume, 0, ms);
+	// 	setTimeout(() => {
+	// 		old.stop();
+	// 		old.volume(currentVolume);
+	// 	}, ms);
+	// 	next.volume(currentVolume);
+	// 	sound.howl = next;
+	// 	playSound();
+	// 	next.fade(0, currentVolume, ms);
+	// }
+
+	function crossfadeTracks(old, next, src) {
+		if (old === next) {
 			return;
 		}
-		let ms;
-		if (store.has("fade-ms")) {
-			ms = store.get("fade-ms");
-		} else {
-			ms = 200;
-			store.set("fade-ms", ms);
-		}
 		isPlaying = false;
-
 		old.fade(currentVolume, 0, ms);
 		setTimeout(() => {
 			old.stop();
 			old.volume(currentVolume);
 		}, ms);
 		next.volume(currentVolume);
-		sound.howl = next;
+		sound = src;
 		playSound();
 		next.fade(0, currentVolume, ms);
 	}
@@ -189,15 +209,15 @@
 	function playSound() {
 		isPlaying = true;
 		//console.log(sound);
-		console.log(sound.howl);
+		$current_howl = sound.howl;
+		$current_howl.volume(currentVolume);
 		$current_howl.on("play", function () {
 			updateInterval = setInterval(() => {
 				requestAnimationFrame(updateProgress);
 			}, 300);
 		});
+		console.log(sound.howl);
 
-		current_howl.set(sound.howl);
-		$current_howl.volume(currentVolume);
 		prevId = $current_howl.play();
 		console.log("prevID = " + prevId);
 	}
@@ -210,30 +230,44 @@
 
 	// change the track in the current intesity tracklist according to the passed value
 	function changeTrack(value) {
+		// if there is a push waiting to be played, play that instead
 		if (intensityChange !== "") {
-			handleMessage(
+			// change the intensity according to the push
+			handleIntensityChange(
 				new CustomEvent("play_message", { detail: intensityChange })
 			);
-			//dispatch("play_message", intensityChange);
 			intensityChange = "";
 			return;
 		}
-		if (currentIntensity) {
-			currentIntensity.index =
-				(currentIntensity.index + value) %
-				Math.max(currentIntensity.trackList.length - 1, 1);
+		// if the current intensity is defined
+		if (currentIntensityPlaylist) {
+			// advance the index of the current playlist
+			currentIntensityPlaylist.index = mod(
+				currentIntensityPlaylist.index + value,
+				Math.max(currentIntensityPlaylist.trackList.length - 1, 1)
+			);
+			// (currentIntensityPlaylist.index + value) %
+			// Math.max(currentIntensityPlaylist.trackList.length - 1, 1);
+			var src =
+				currentIntensityPlaylist.trackList[
+					currentIntensityPlaylist.index
+				];
+			// if the music is playing during the track change,
 			if (isPlaying) {
-				const src = currentIntensity.trackList[currentIntensity.index];
-				crossfadeTracks($current_howl, src.howl);
-				console.log(src);
-				sound = src;
-				current_howl.update((n) => sound.howl);
+				crossfadeTracks($current_howl, src.howl, src);
 			} else {
-				const src = currentIntensity.trackList[currentIntensity.index];
-				console.log(src);
 				sound = src;
-				current_howl.update((n) => sound.howl);
 			}
+			console.log(src);
+			//sound = src;
+			$current_howl = sound.howl;
+			//current_howl.update((n) => sound.howl);
+			// } else {
+			// 	//var src = currentIntensityPlaylist.trackList[currentIntensityPlaylist.index];
+			// 	console.log(src);
+			// 	sound = src;
+			// 	current_howl.update((n) => sound.howl);
+			// }
 		}
 	}
 
@@ -247,21 +281,32 @@
 	}
 
 	// received intesity change event push from controller
-	function handleMessage(event) {
+	function handleIntensityChange(event) {
+		if (
+			currentIntensityPlaylist != null &&
+			event.detail === currentIntensityPlaylist.name
+		) {
+			console.log("Same intesity level requested, doing nothing.");
+			return;
+		}
 		// find the intesity that was pressedin the filelist
-		if (currentIntensity != null) {
+		if (currentIntensityPlaylist != null) {
 			// advance the index of the previous intesity to a random one
-			currentIntensity.index =
-				(currentIntensity.index +
-					getRandomInt(0, currentIntensity.trackList.length)) %
-				Math.max(currentIntensity.trackList.length - 1, 1);
+			currentIntensityPlaylist.index =
+				(currentIntensityPlaylist.index +
+					getRandomInt(
+						0,
+						currentIntensityPlaylist.trackList.length
+					)) %
+				Math.max(currentIntensityPlaylist.trackList.length - 1, 1);
 		}
 		// find the name of intensity level requested in the filelist
-		currentIntensity = filelist.find((s) => {
+		currentIntensityPlaylist = filelist.find((s) => {
 			return s.name === event.detail;
 		});
 
-		if (currentIntensity == null) {
+		if (currentIntensityPlaylist == null) {
+			console.log(event.detail + "playlist was not found!");
 			alert(event.detail + "playlist was not found!");
 			return;
 		}
@@ -272,13 +317,16 @@
 			$state = "battle";
 		}
 
-		const src = currentIntensity.trackList[currentIntensity.index];
+		const src =
+			currentIntensityPlaylist.trackList[currentIntensityPlaylist.index];
 		if (isPlaying) {
-			crossfadeTracks(get(current_howl), src.howl);
+			crossfadeTracks(get(current_howl), src.howl, src);
+		} else {
+			sound = src;
 		}
 		console.log(src);
-		sound = src;
-		current_howl.update((n) => sound.howl);
+		//sound = src;
+		$current_howl = sound.howl;
 	}
 
 	function walkSync(filelist, dir) {
@@ -354,13 +402,16 @@
 		<Styles />
 		<SvelteToast options={{ duration: 2000, intro: { x: 250 } }} />
 		<h1>Battle Music Intensity Regulator</h1>
-		{#if currentIntensity && currentIntensity.name.replace(/\D/g, "") != ""}
+		{#if currentIntensityPlaylist && currentIntensityPlaylist.name.replace(/\D/g, "") != ""}
 			<h2>
-				Current intesity is: {currentIntensity.name.replace(/\D/g, "")}
+				Current intesity is: {currentIntensityPlaylist.name.replace(
+					/\D/g,
+					""
+				)}
 			</h2>
-		{:else if currentIntensity.name === "victory"}
+		{:else if currentIntensityPlaylist.name === "victory"}
 			<h2>WE ARE VICTORIOUS!</h2>
-		{:else if currentIntensity.name === "defeat"}
+		{:else if currentIntensityPlaylist.name === "defeat"}
 			<h2>Defeat...</h2>
 		{:else}
 			<h2>Current intesity is: 0</h2>
@@ -441,7 +492,7 @@
 
 			<br />
 			<Row>
-				<Buttons on:play_message={handleMessage} />
+				<Buttons on:play_message={handleIntensityChange} />
 			</Row>
 		</Container>
 	</Container>
