@@ -63,7 +63,7 @@ return content.join("")
 }
 
 word
-= word:([A-Za-z0-9\-\+,]+) {return word.join("")}
+= word:([A-Za-z0-9\-\+,*]+) {return word.join("")}
 
 //optional separator
 sep
@@ -75,4 +75,4 @@ _  = [ \t\r\n]*
 // mandatory whitespace
 __ = [ \t\r\n]+
 
-eoi = "#" + counter:[0-9]+ {return {"counter":counter}}
+eoi = "#" + counter:[0-9]+ _ {return {"counter":counter}}

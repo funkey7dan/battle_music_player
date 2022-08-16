@@ -201,7 +201,7 @@ const gameListen = () => {
 
 
     // start docker container
-    child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u client.py " + client.clientHost + " " + client.clientPort]);
+    child = spawn('docker', ['run', '--rm', '--name', 'temp', 'funkey7dan/myvimage', "bash", "-c", "python3 -u client.py " + client.clientHost + " " + client.clientPort]);
     container = docker.getContainer('temp');
     dockerStarted = true;
     child.stdout.setEncoding('utf8');
@@ -227,10 +227,12 @@ const gameListen = () => {
                 console.error(error);
                 try {
                     fs.writeFileSync('./error.txt', error.toString());
+                    fs.writeFileSync('./error.txt', scriptOutput.toString());
                     // file written successfully
                 } catch (err) {
                     console.error(err);
                 }
+                return;
             }
             parsed[0] = Array.from(new Set(parsed[0]));
             consumeParsed();
