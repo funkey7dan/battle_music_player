@@ -12,8 +12,11 @@ const execFile = require('child_process').execFile;
 const Docker = require('dockerode');
 const parser = require("./parser");
 const MonsterName = require("./constants").MonsterName;
+const MonsterRating = require("./constants").MonsterRating;
 var dockerStarted;
+var scenLevel;
 var parsed;
+var parsedObj;
 var docker = new Docker();
 var child;
 var container;
@@ -269,6 +272,16 @@ const gameListen = () => {
     }
 
     function consumeParsed() {
+
+        parsedObj = parsed[0].reduce((prev, curr) => {
+            if (typeof (curr) === 'string') {
+                return prev;
+            }
+            let k = Object.keys(curr)[0];
+            prev[k] = curr[k];
+            return prev;
+        }, {});
+
         var actors = parsed[0]
             .filter(element => element["actor"])
             .map(x => x['actor'])
@@ -282,18 +295,19 @@ const gameListen = () => {
         monsterProps = monsterIndices.map(x => {
             let i = 2;
             let arr = [];
+
+            let ID = parsed[0][x]['monster']['properties']['content'][0]['id'];
+            let monsterName = MonsterName.values[ID];
             while (parsed[0][x + i]['instance']) {
 
                 //const [number, type, is_new, hp, hp_max] = parsed[0][x + i]['instance'];
                 var yourObject = Object.assign({}, ...parsed[0][x + i]['instance']);
+                yourObject['difficullty'] = MonsterRating[monsterName];
                 //arr.push(parsed[0][x + i]['instance']);
                 arr.push(yourObject);
                 i++;
 
             }
-            let ID = parsed[0][x]['monster']['properties']['content'][0]['id'];
-            let monsterName = MonsterName.values[ID];
-
             let obj = {}
             obj['instances'] = (i - 2);
             obj[monsterName] = arr;
@@ -311,34 +325,42 @@ const gameListen = () => {
 
 
     function calculateIntensity() {
-        let out = 0;
+
+        scenLevel = parseInt(parsedObj['scen lvl']);
+        let out = scenLevel;
         let boss = false;
-        monsterProps;
-        playerProps;
+        let AVG_ROUNDS = 8;
+        let ELITE_MODIFIER = 1.25;
+        //monsterProps;
+        //playerProps;
+
+        //generate an array on ratios of monster hp weight, if monster is elite increase value
         let monsterRatios = monsterProps.map(curr => {
 
             let k = Object.keys(curr)[1];
             let instanceArr = curr[k];
 
-            return instanceArr.map(curr => {
+            return instanceArr.map((curr, index, arr) => {
                 if (curr.type === 'Boss') {
                     boss = true;
                 }
                 let mult;
-                mult = (curr.type === 'Elite') ? 1.25 : 1;
+                mult = (curr.type === 'Elite') ? ELITE_MODIFIER : 1; // multiplyer for elites
+                mult += parseFloat(curr.difficullty);
                 return mult * (parseInt(curr.hp) / parseInt(curr.hp_max));
             });
         })
+        //generate an array on ratios of monster hp
         let playerRatios = playerProps.map(curr => {
             return (parseInt(curr.hp) / parseInt(curr.hp_max));
         })
-        out = playerRatios.reduce((p, c) => p += (c / playersN), out);
-        out = monsterRatios.reduce((p, c) =>
+        out += playerRatios.reduce((p, c) => p -= (c / playersN), out);
+        out += monsterRatios.reduce((p, c) =>
             p += (c.reduce((p, c) => p += (c), 0) / monstersN), out);
-        out *= round;
+        out *= 0.5 + (round / AVG_ROUNDS)
         out = Math.floor(out);
         if (boss) out = 10;
-        else out = Math.min(9, out);
+        else out = Math.max(Math.min(9, out), 1);
         mainWindow.webContents.send("intensity_change", out);
         console.log("Intensity set: " + out)
     }

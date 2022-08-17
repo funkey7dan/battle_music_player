@@ -41,7 +41,8 @@ exports.SummonColor = {
 exports.MonsterName = {
 	values: [ "Ancient Artillery", "Bandit Archer", "Bandit Guard", "Black Imp", "Cave Bear", "City Archer", "City Guard", "Cultist", "Deep Terror", "Earth Demon", "Flame Demon", "Frost Demon", "Forest Imp", "Giant Viper", "Harrower Infester", "Hound", "Inox Archer", "Inox Guard", "Inox Shaman", "Living Bones", "Living Corpse", "Living Spirit", "Lurker", "Ooze", "Night Demon", "Rending Drake", "Savvas Icestorm", "Savvas Lavaflow", "Spitting Drake", "Stone Golem", "Sun Demon", "Vermling Scout", "Vermling Shaman", "Wind Demon", "Bandit Commander", "The Betrayer", "Captain of the Guard", "The Colorless", "Dark Rider", "Elder Drake", "The Gloom", "Inox Bodyguard", "Jekserah", "Merciless Overseer", "Prime Demon", "The Sightless Eye", "Winged Horror", "Aesther Ashblade", "Aesther Scout", "Bear - Drake Abomination", "Valrath Tracker", "Valrath Savage", "Wolf - Viper Abomination", "Human Commander", "Valrath Commander", "Manifestation of Corruption"]
 };
-  
+
+exports.MonsterRating ={ "Ancient Artillery": "1", "Bandit Archer": "1", "Bandit Guard": "1", "Black Imp": "0.5", "Cave Bear": "2", "City Archer": "1", "City Guard": "1", "Cultist": "1", "Deep Terror": "1", "Earth Demon": "1.5", "Flame Demon": "1.5", "Forest Sprite": "0.5", "Frost Demon": "1.5", "Giant Viper": "0.5", "Harrower Infester": "1.5", "Hound": "1", "Inox Archer": "1", "Inox Guard": "1", "Inox Shaman": "1", "Living Bones": "1", "Living Corpse": "1", "Living Spirit": "1", "Lurker": "1.5", "Night Demon": "1.5", "Ooze": "1", "Savvas Icestorm": "2", "Savvas Lavaflow": "2", "Spitting Drake": "1.5", "Stone Golem": "2", "Sun Demon": "1.5", "Vermling Scout": "0.5", "Vermling Shaman": "1", "Vicious Drake": "1.5", "Wind Demon": "1.5" }
 exports.keyboard = {
 	BACKSPACE: 8,
 	TAB: 9,
