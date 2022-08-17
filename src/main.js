@@ -325,7 +325,12 @@ const gameListen = () => {
 
 
     function calculateIntensity() {
-
+        
+        if (monstersN == 0) {
+            mainWindow.webContents.send("intensity_change", 1);
+            console.log("Intensity set: " + 1)
+            return;
+        }
         scenLevel = parseInt(parsedObj['scen lvl']);
         let out = scenLevel;
         let boss = false;

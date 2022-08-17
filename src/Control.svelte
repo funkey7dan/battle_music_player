@@ -22,7 +22,7 @@
     const dispatch = createEventDispatcher();
     var filelist;
     let buttons = [];
-    let toIgnore = ["town", "defeat", "victory"];
+    let toIgnore = ["town", "defeat", "victory", "Preparation"];
     //let state = $gameState;
     $state = "battle";
     filelist_store.subscribe((value) => (filelist = value));
@@ -75,6 +75,14 @@
                 {#if filelist}
                     <!-- Differentiate between the battle controls and the city mode -->
                     {#if $state === "battle"}
+                        <ListGroupItem style="border:none">
+                            <Button
+                                on:click={() =>
+                                    dispatch("play_message", "Preparation")}
+                            >
+                                Preparation
+                            </Button>
+                        </ListGroupItem>
                         {#each filelist as item, i}
                             {#if !toIgnore.includes(item.name)}
                                 <ListGroupItem style="border:none">
