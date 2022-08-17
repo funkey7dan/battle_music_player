@@ -4,3 +4,4 @@ public/vendor
 client.json
 error.txt
 public/build
+.vscode/
