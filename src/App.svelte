@@ -26,6 +26,8 @@
 	const dispatch = createEventDispatcher();
 
 	/**##################### DECLARATIONS ######################*/
+	Howl.preload = true;
+	Howler.preload = true;
 	const store = new Store();
 	let barWidth; // the width of the progress bar
 	let nameWidth; // the width of the trackname
@@ -74,8 +76,6 @@
 	var isPlaying = false;
 
 	var updateInterval; // variable to save the interval we set for the progress update, so we can clear it
-	//Howler.preload = true;
-
 	// a variable to hold the initial,default sound
 	var sound = {
 		name: "track",
@@ -207,7 +207,6 @@
 	}
 
 	function playSound() {
-		isPlaying = true;
 		//console.log(sound);
 		$current_howl = sound.howl;
 		$current_howl.volume(currentVolume);
@@ -219,6 +218,7 @@
 		console.log(sound.howl);
 
 		prevId = $current_howl.play();
+		isPlaying = true;
 		console.log("prevID = " + prevId);
 	}
 
@@ -317,7 +317,7 @@
 			$state = "battle";
 		}
 
-		const src =
+		var src =
 			currentIntensityPlaylist.trackList[currentIntensityPlaylist.index];
 		if (isPlaying) {
 			crossfadeTracks(get(current_howl), src.howl, src);
@@ -349,28 +349,24 @@
 					file.endsWith(".ogg")
 				) {
 					//console.log(path.join(dir, file));
+					let temp = new Howl({
+						src: [path.join(dir, encodeURIComponent(file))],
+						html5: true,
+						preload: false,
+						onend: function () {
+							$trackProgress = 100;
+							clearInterval(updateInterval);
+							changeTrack(1);
+						},
+						onplay: function () {
+							console.log("onplay");
+							updateInterval = setInterval(() => {
+								requestAnimationFrame(updateProgress);
+							}, 100);
+						},
+					});
 					filelist.push(
-						new musicTrack(
-							file,
-							path.join(dir, file),
-							new Howl({
-								src: [path.join(dir, encodeURIComponent(file))],
-								html5: true,
-								onfade: function (event) {
-									//console.log(event);
-								},
-								onend: function () {
-									$trackProgress = 100;
-									clearInterval(updateInterval);
-									changeTrack(1);
-								},
-								onplay: function () {
-									updateInterval = setInterval(() => {
-										requestAnimationFrame(updateProgress);
-									}, 100);
-								},
-							})
-						)
+						new musicTrack(file, path.join(dir, file), temp)
 					);
 				}
 			}
