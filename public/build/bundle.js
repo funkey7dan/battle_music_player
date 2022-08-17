@@ -12018,7 +12018,7 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "Current intesity is: 0";
     			attr_dev(h2, "class", "svelte-1btx31t");
-    			add_location(h2, file, 416, 3, 11427);
+    			add_location(h2, file, 416, 3, 11843);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -12049,7 +12049,7 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "Defeat...";
     			attr_dev(h2, "class", "svelte-1btx31t");
-    			add_location(h2, file, 414, 3, 11395);
+    			add_location(h2, file, 414, 3, 11809);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -12080,7 +12080,7 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "WE ARE VICTORIOUS!";
     			attr_dev(h2, "class", "svelte-1btx31t");
-    			add_location(h2, file, 412, 3, 11308);
+    			add_location(h2, file, 412, 3, 11720);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -12115,7 +12115,7 @@ var app = (function () {
     			t0 = text("Current intesity is: ");
     			t1 = text(t1_value);
     			attr_dev(h2, "class", "svelte-1btx31t");
-    			add_location(h2, file, 405, 3, 11142);
+    			add_location(h2, file, 405, 3, 11547);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -12193,7 +12193,7 @@ var app = (function () {
     			div = element("div");
     			create_component(marquee.$$.fragment);
     			attr_dev(div, "id", "name");
-    			add_location(div, file, 426, 6, 11610);
+    			add_location(div, file, 426, 6, 12036);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -12290,7 +12290,7 @@ var app = (function () {
     			create_component(progress.$$.fragment);
     			set_style(div, "width", "min-content len:min-content");
     			add_render_callback(() => /*div_elementresize_handler*/ ctx[17].call(div));
-    			add_location(div, file, 442, 7, 12047);
+    			add_location(div, file, 442, 7, 12489);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -12875,7 +12875,7 @@ var app = (function () {
     			br = element("br");
     			t2 = space();
     			create_component(buttongroup.$$.fragment);
-    			add_location(br, file, 457, 5, 12422);
+    			add_location(br, file, 457, 5, 12879);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -13000,7 +13000,7 @@ var app = (function () {
     	return block;
     }
 
-    // (475:5) <Col       >
+    // (475:5) <Col        >
     function create_default_slot_5(ctx) {
     	let input;
     	let mounted;
@@ -13013,7 +13013,7 @@ var app = (function () {
     			attr_dev(input, "max", "1");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "step", "0.1");
-    			add_location(input, file, 475, 7, 12891);
+    			add_location(input, file, 475, 7, 13366);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
@@ -13035,7 +13035,7 @@ var app = (function () {
     		block,
     		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(475:5) <Col       >",
+    		source: "(475:5) <Col        >",
     		ctx
     	});
 
@@ -13237,7 +13237,7 @@ var app = (function () {
     			br = element("br");
     			t2 = space();
     			create_component(row1.$$.fragment);
-    			add_location(br, file, 492, 3, 13237);
+    			add_location(br, file, 492, 3, 13729);
     		},
     		m: function mount(target, anchor) {
     			mount_component(row0, target, anchor);
@@ -13369,10 +13369,10 @@ var app = (function () {
     			t6 = space();
     			create_component(container.$$.fragment);
     			attr_dev(h1, "class", "svelte-1btx31t");
-    			add_location(h1, file, 403, 2, 11006);
+    			add_location(h1, file, 403, 2, 11409);
     			set_style(span, "display", "none");
     			add_render_callback(() => /*span_elementresize_handler*/ ctx[16].call(span));
-    			add_location(span, file, 419, 2, 11470);
+    			add_location(span, file, 419, 2, 11889);
     		},
     		m: function mount(target, anchor) {
     			mount_component(styles, target, anchor);
@@ -13470,7 +13470,7 @@ var app = (function () {
     			main = element("main");
     			create_component(container.$$.fragment);
     			attr_dev(main, "class", "svelte-1btx31t");
-    			add_location(main, file, 399, 0, 10905);
+    			add_location(main, file, 399, 0, 11304);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
