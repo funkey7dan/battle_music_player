@@ -27,6 +27,7 @@ var playerProps;
 var monstersN;
 var playersN;
 var round;
+var isSfx;
 var currIntensity;
 var client =
 {
@@ -101,6 +102,20 @@ const template = [
     {
         label: 'Window',
         role: 'windowMenu'
+    },
+    {
+        label: 'Settings',
+        submenu: [{
+            label: "Sound effects",
+            type: "checkbox",
+            accelerator: "M",
+            click: () => {
+                isSfx = !isSfx;
+                //store.set('docker', enableDocker);
+                //if (!dockerStarted) gameListen();
+                mainWindow.webContents.send("sfx", isSfx);
+            },
+        }]
     },
     {
         label: 'Listener',
@@ -325,7 +340,7 @@ const gameListen = () => {
 
 
     function calculateIntensity() {
-        
+
         if (monstersN == 0) {
             mainWindow.webContents.send("intensity_change", 1);
             console.log("Intensity set: " + 1)

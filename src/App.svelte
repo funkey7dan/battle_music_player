@@ -14,16 +14,14 @@
 	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
 	import { writable } from "svelte/store";
 	import { get } from "svelte/store";
-	import { filelist_store, current_howl, state } from "./stores";
+	import { filelist_store, current_howl, state, isSfx } from "./stores";
 	import { Howl, Howler } from "howler";
 	import Marquee from "svelte-fast-marquee";
-	import Buttons from "./Control.svelte";
+	import Control from "./Control.svelte";
 	const ipc = require("electron").ipcRenderer;
 	const fs = require("fs");
 	const path = require("path");
 	const Store = require("electron-store");
-	import { createEventDispatcher } from "svelte";
-	const dispatch = createEventDispatcher();
 
 	/**##################### DECLARATIONS ######################*/
 	Howl.preload = true;
@@ -82,12 +80,31 @@
 		file: "track.mp3",
 		howl: new Howl({
 			src: ["track.mp3"],
+			autoplay: false,
 			// we set a function to update the progress-bar every 100 ms
 			onplay: function () {
+				isPlaying = true;
 				updateInterval = setInterval(() => {
 					requestAnimationFrame(updateProgress);
 				}, 100);
 			},
+		}),
+	};
+	var btn_sfx = {
+		menu: new Howl({
+			preload: true,
+			volume: $isSfx ? 1 : 0,
+			src: ["Menu_Select_00.mp3"],
+		}),
+		page: new Howl({
+			preload: true,
+			volume: $isSfx ? 1 : 0,
+			src: ["turn_page.wav"],
+		}),
+		click: new Howl({
+			preload: true,
+			volume: $isSfx ? 1 : 0,
+			src: ["click1.wav"],
 		}),
 	};
 
@@ -117,10 +134,20 @@
 		ipc.send("music_files", filelist);
 	});
 
+	ipc.on("sfx", function (event, arg) {
+		$isSfx = arg;
+		if (!$isSfx) {
+			btn_sfx.click.volume(0);
+			btn_sfx.page.volume(0);
+		} else {
+			btn_sfx.click.volume(currentVolume);
+			btn_sfx.page.volume(currentVolume);
+		}
+	});
+
 	// on folder change we receive an event from the electron main so we update our store, and we use the passed path to build the list
 	ipc.on("file_path", function (event, arg) {
 		createPlaylist(arg);
-		store.set("music-path", arg);
 	});
 
 	ipc.on("toast", function (event, arg) {
@@ -246,8 +273,6 @@
 				currentIntensityPlaylist.index + value,
 				Math.max(currentIntensityPlaylist.trackList.length - 1, 1)
 			);
-			// (currentIntensityPlaylist.index + value) %
-			// Math.max(currentIntensityPlaylist.trackList.length - 1, 1);
 			var src =
 				currentIntensityPlaylist.trackList[
 					currentIntensityPlaylist.index
@@ -280,6 +305,30 @@
 		}
 	}
 
+	function handleButtonClick(event) {
+		if (event.detail === "next") {
+			changeTrack(1);
+		} else if (event.detail === "prev") {
+			changeTrack(-1);
+		} else if (event.detail === "volup") {
+			$current_howl.volume(Math.min(currentVolume + 0.1, 1));
+			currentVolume = Math.min(currentVolume + 0.1, 1);
+			return;
+		} else if (event.detail === "voldown") {
+			$current_howl.volume(Math.max(currentVolume - 0.1, 0));
+			currentVolume = Math.max(currentVolume - 0.1, 0);
+			return;
+		} else if (event.detail === "space") {
+			isPlaying ? pauseSound() : playSound();
+		} else if (event.detail === "page") {
+			btn_sfx.page.play();
+			return;
+		} else if (event.detail === "click") {
+			// btn_sfx.click.play();
+			// return;
+		}
+		btn_sfx.click.play();
+	}
 	// received intesity change event push from controller
 	function handleIntensityChange(event) {
 		if (
@@ -289,17 +338,16 @@
 			console.log("Same intesity level requested, doing nothing.");
 			return;
 		}
-		// find the intesity that was pressedin the filelist
+		// find the intesity that was pressed in the filelist
 		if (currentIntensityPlaylist != null) {
 			// advance the index of the previous intesity to a random one
-			currentIntensityPlaylist.index =
-				(currentIntensityPlaylist.index +
-					getRandomInt(
-						0,
-						currentIntensityPlaylist.trackList.length
-					)) %
-				Math.max(currentIntensityPlaylist.trackList.length - 1, 1);
+			currentIntensityPlaylist.index = mod(
+				currentIntensityPlaylist.index +
+					getRandomInt(0, currentIntensityPlaylist.trackList.length),
+				Math.max(currentIntensityPlaylist.trackList.length - 1, 1)
+			);
 		}
+
 		// find the name of intensity level requested in the filelist
 		currentIntensityPlaylist = filelist.find((s) => {
 			return s.name === event.detail;
@@ -325,7 +373,6 @@
 			sound = src;
 		}
 		console.log(src);
-		//sound = src;
 		$current_howl = sound.howl;
 	}
 
@@ -390,6 +437,8 @@
 
 	function seekToClick(e) {
 		$current_howl.seek($current_howl.duration() * (e.offsetX / barWidth));
+		$trackProgress =
+			($current_howl.seek() / $current_howl.duration()) * 100 || 0;
 	}
 </script>
 
@@ -453,13 +502,33 @@
 
 					<br />
 					<ButtonGroup>
-						<Button on:click={() => changeTrack(-1)}>Prev</Button>
+						<Button
+							on:click={function () {
+								changeTrack(-1);
+								btn_sfx.click.play();
+							}}>Prev</Button
+						>
 						{#if isPlaying}
-							<Button on:click={pauseSound}>Pause</Button>
+							<Button
+								on:click={function () {
+									btn_sfx.click.play();
+									pauseSound();
+								}}>Pause</Button
+							>
 						{:else}
-							<Button on:click={playSound}>Play</Button>
+							<Button
+								on:click={function () {
+									btn_sfx.click.play();
+									playSound();
+								}}>Play</Button
+							>
 						{/if}
-						<Button on:click={() => changeTrack(1)}>Next</Button>
+						<Button
+							on:click={function () {
+								changeTrack(1);
+								btn_sfx.click.play();
+							}}>Next</Button
+						>
 					</ButtonGroup>
 				</Container>
 			</Row>
@@ -475,6 +544,7 @@
 								currentVolume = e.target.valueAsNumber;
 							}}
 							type="range"
+							bind:value={currentVolume}
 							max="1"
 							min="0"
 							step="0.1"
@@ -488,7 +558,10 @@
 
 			<br />
 			<Row>
-				<Buttons on:play_message={handleIntensityChange} />
+				<Control
+					on:play_message={handleIntensityChange}
+					on:key_press={handleButtonClick}
+				/>
 			</Row>
 		</Container>
 	</Container>

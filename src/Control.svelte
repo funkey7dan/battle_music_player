@@ -8,8 +8,16 @@
         Col,
     } from "sveltestrap";
     const ipc = require("electron").ipcRenderer;
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher } from "svelte/internal";
+    import { get_current_component } from "svelte/internal";
     import { filelist_store, state } from "./stores";
+    const component = get_current_component();
+    const svelteDispatch = createEventDispatcher();
+    const dispatch = (name, detail) => {
+        svelteDispatch(name, detail);
+        component.dispatchEvent &&
+            component.dispatchEvent(new CustomEvent(name, { detail }));
+    };
     let keyboard = {
         KEY_D: 68,
         KEY_V: 86,
@@ -18,8 +26,13 @@
         KEY_0: 48,
         KEY_9: 57,
         BACKSPACE: 8,
+        SPACE: 32,
+        LEFT_ARROW: 37,
+        UP_ARROW: 38,
+        RIGHT_ARROW: 39,
+        DOWN_ARROW: 40,
     };
-    const dispatch = createEventDispatcher();
+    //const dispatch = createEventDispatcher();
     var filelist;
     let buttons = [];
     let toIgnore = ["town", "defeat", "victory", "Preparation"];
@@ -32,6 +45,10 @@
         filelist = arg;
         console.log("ipc got " + arg);
     });
+
+    function dispatchMouseClick(e) {
+        dispatch("key_press", "click");
+    }
 
     function onKeyDown(e) {
         if (e.keyCode > keyboard.KEY_0 && e.keyCode <= keyboard.KEY_9) {
@@ -54,6 +71,17 @@
             $state === "battle"
                 ? dispatch("play_message", "town")
                 : ($state = "battle");
+            dispatch("key_press", "page");
+        } else if (e.keyCode === keyboard.RIGHT_ARROW) {
+            dispatch("key_press", "next");
+        } else if (e.keyCode === keyboard.LEFT_ARROW) {
+            dispatch("key_press", "prev");
+        } else if (e.keyCode === keyboard.UP_ARROW) {
+            dispatch("key_press", "volup");
+        } else if (e.keyCode === keyboard.DOWN_ARROW) {
+            dispatch("key_press", "voldown");
+        } else if (e.keyCode === keyboard.SPACE) {
+            dispatch("key_press", "space");
         }
     }
 </script>
@@ -64,8 +92,10 @@
             {#if $state === "battle"}
                 <Button
                     class="btn-danger"
-                    on:click={() => dispatch("play_message", "defeat")}
-                    >Defeat</Button
+                    on:click={() => {
+                        dispatch("play_message", "defeat");
+                        dispatch("key_press", "click");
+                    }}>Defeat</Button
                 >
             {/if}
         </div>
@@ -77,8 +107,10 @@
                     {#if $state === "battle"}
                         <ListGroupItem style="border:none">
                             <Button
-                                on:click={() =>
-                                    dispatch("play_message", "Preparation")}
+                                on:click={() => {
+                                    dispatch("play_message", "Preparation");
+                                    dispatch("key_press", "click");
+                                }}
                             >
                                 Preparation
                             </Button>
@@ -90,8 +122,10 @@
                                         bind:inner={buttons[
                                             (i + 1) % filelist.length
                                         ]}
-                                        on:click={() =>
-                                            dispatch("play_message", item.name)}
+                                        on:click={() => {
+                                            dispatch("key_press", "click");
+                                            dispatch("play_message", item.name);
+                                        }}
                                     >
                                         {item.name}
                                     </Button>
@@ -108,6 +142,7 @@
                             if ($state === "town") $state = "battle";
                             else if ($state === "battle") {
                                 $state = "town";
+                                dispatch("key_press", "click");
                                 dispatch("play_message", "town");
                             }
                         }}
@@ -121,8 +156,10 @@
             {#if $state === "battle"}
                 <Button
                     class="btn-success"
-                    on:click={() => dispatch("play_message", "victory")}
-                    >Victory</Button
+                    on:click={() => {
+                        dispatch("play_message", "victory");
+                        dispatch("key_press", "click");
+                    }}>Victory</Button
                 >
             {/if}
         </div>
