@@ -347,11 +347,9 @@ const gameListen = () => {
             return;
         }
         scenLevel = parseInt(parsedObj['scen lvl']);
-        let out = scenLevel;
+        let out = 0;
         let boss = false;
-        let AVG_ROUNDS = 8;
         let ELITE_MODIFIER = 1.25;
-
 
         //generate an array on ratios of monster hp weight, if monster is elite increase value
         let monsterRatios = monsterProps.map(curr => {
@@ -373,16 +371,65 @@ const gameListen = () => {
         let playerRatios = playerProps.map(curr => {
             return (parseInt(curr.hp) / parseInt(curr.hp_max));
         })
-        out += playerRatios.reduce((p, c) => p -= (c / playersN), out);
-        out += monsterRatios.reduce((p, c) =>
-            p += (c.reduce((p, c) => p += (c), 0) / monstersN), out);
-        out *= 0.5 + (round / AVG_ROUNDS)
-        out = Math.floor(out);
+        // calculate averages of monsters and players hp's
+        let playersVar = playerRatios.reduce((p, c) => p += (c), 0) / playersN;
+
+        let monstersVar = monsterRatios.reduce((p, c) =>
+            p += (c.reduce((p, c) => p += c, 0)), 0) / monstersN;
+
+        out = 0.1 * (1.2 ** round) + 0.4 * (12 - 10 * playersVar) + 0.5 * (1.2 * monstersVar ** 1.75);
+        out = Math.round(out);
         if (boss) out = 10;
         else out = Math.max(Math.min(9, out), 1);
         mainWindow.webContents.send("intensity_change", out);
         console.log("Intensity set: " + out)
     }
+
+    // function calculateIntensity() {
+
+    //     if (monstersN == 0) {
+    //         mainWindow.webContents.send("intensity_change", 1);
+    //         console.log("Intensity set: " + 1)
+    //         return;
+    //     }
+    //     scenLevel = parseInt(parsedObj['scen lvl']);
+    //     let out = scenLevel;
+    //     let base = scenLevel;
+    //     let boss = false;
+    //     let AVG_ROUNDS = 12;
+    //     let ELITE_MODIFIER = 1.25;
+
+
+    //     //generate an array on ratios of monster hp weight, if monster is elite increase value
+    //     let monsterRatios = monsterProps.map(curr => {
+
+    //         let k = Object.keys(curr)[1];
+    //         let instanceArr = curr[k];
+
+    //         return instanceArr.map((curr, index, arr) => {
+    //             if (curr.type === 'Boss') {
+    //                 boss = true;
+    //             }
+    //             let mult;
+    //             mult = (curr.type === 'Elite') ? ELITE_MODIFIER : 1; // multiplyer for elites
+    //             mult += parseFloat(curr.difficullty);
+    //             return mult * (parseInt(curr.hp) / parseInt(curr.hp_max));
+    //         });
+    //     })
+    //     //generate an array on ratios of monster hp
+    //     let playerRatios = playerProps.map(curr => {
+    //         return (parseInt(curr.hp) / parseInt(curr.hp_max));
+    //     })
+    //     out -= playerRatios.reduce((p, c) => p += (c), base);
+    //     out += monsterRatios.reduce((p, c) =>
+    //         p += (c.reduce((p, c) => p += (c), 0) / monstersN), base);
+    //     out *= 0.5 + (round / AVG_ROUNDS)
+    //     out = Math.floor(out);
+    //     if (boss) out = 10;
+    //     else out = Math.max(Math.min(9, out), 1);
+    //     mainWindow.webContents.send("intensity_change", out);
+    //     console.log("Intensity set: " + out)
+    // }
 
     child.on('close', function (code) {
         //Here you can get the exit code of the script

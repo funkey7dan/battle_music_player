@@ -81,6 +81,10 @@
 		howl: new Howl({
 			src: ["track.mp3"],
 			autoplay: false,
+			onend: function () {
+				$trackProgress = 100;
+				clearInterval(updateInterval);
+			},
 			// we set a function to update the progress-bar every 100 ms
 			onplay: function () {
 				isPlaying = true;
@@ -163,6 +167,7 @@
 		) {
 			return;
 		}
+		// if there is more than 60 sec left, change intensity immediately
 		if (timerLeft > 60) {
 			handleIntensityChange(
 				new CustomEvent("play_message", { detail: "intensity " + arg })
@@ -242,8 +247,12 @@
 				requestAnimationFrame(updateProgress);
 			}, 300);
 		});
+		$current_howl.on("end", function () {
+			$trackProgress = 100;
+			clearInterval(updateInterval);
+			changeTrack(1);
+		});
 		console.log(sound.howl);
-
 		prevId = $current_howl.play();
 		isPlaying = true;
 		console.log("prevID = " + prevId);
@@ -284,15 +293,7 @@
 				sound = src;
 			}
 			console.log(src);
-			//sound = src;
 			$current_howl = sound.howl;
-			//current_howl.update((n) => sound.howl);
-			// } else {
-			// 	//var src = currentIntensityPlaylist.trackList[currentIntensityPlaylist.index];
-			// 	console.log(src);
-			// 	sound = src;
-			// 	current_howl.update((n) => sound.howl);
-			// }
 		}
 	}
 
@@ -329,18 +330,19 @@
 		}
 		btn_sfx.click.play();
 	}
+
 	// received intesity change event push from controller
 	function handleIntensityChange(event) {
-		// find the intesity that was pressed in the filelist
 		if (currentIntensityPlaylist != null) {
 			// advance the index of the previous intesity to a random one
 			currentIntensityPlaylist.index = mod(
 				currentIntensityPlaylist.index +
-					getRandomInt(0, currentIntensityPlaylist.trackList.length),
+					getRandomInt(1, currentIntensityPlaylist.trackList.length),
 				Math.max(currentIntensityPlaylist.trackList.length - 1, 1)
 			);
 		}
 
+		// if received intensity change push for the same level
 		if (
 			currentIntensityPlaylist != null &&
 			event.detail === currentIntensityPlaylist.name
@@ -348,6 +350,7 @@
 			console.log("Same intesity level requested, doing nothing.");
 			return;
 		}
+
 		// find the name of intensity level requested in the filelist
 		currentIntensityPlaylist = filelist.find((s) => {
 			return s.name === event.detail;
