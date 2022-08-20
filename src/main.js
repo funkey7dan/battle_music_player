@@ -351,8 +351,7 @@ const gameListen = () => {
         let boss = false;
         let AVG_ROUNDS = 8;
         let ELITE_MODIFIER = 1.25;
-        //monsterProps;
-        //playerProps;
+
 
         //generate an array on ratios of monster hp weight, if monster is elite increase value
         let monsterRatios = monsterProps.map(curr => {
