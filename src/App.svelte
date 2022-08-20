@@ -331,13 +331,6 @@
 	}
 	// received intesity change event push from controller
 	function handleIntensityChange(event) {
-		if (
-			currentIntensityPlaylist != null &&
-			event.detail === currentIntensityPlaylist.name
-		) {
-			console.log("Same intesity level requested, doing nothing.");
-			return;
-		}
 		// find the intesity that was pressed in the filelist
 		if (currentIntensityPlaylist != null) {
 			// advance the index of the previous intesity to a random one
@@ -348,6 +341,13 @@
 			);
 		}
 
+		if (
+			currentIntensityPlaylist != null &&
+			event.detail === currentIntensityPlaylist.name
+		) {
+			console.log("Same intesity level requested, doing nothing.");
+			return;
+		}
 		// find the name of intensity level requested in the filelist
 		currentIntensityPlaylist = filelist.find((s) => {
 			return s.name === event.detail;
