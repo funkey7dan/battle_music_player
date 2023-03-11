@@ -13,6 +13,9 @@ const Docker = require('dockerode');
 const parser = require("./parser");
 const MonsterName = require("./constants").MonsterName;
 const MonsterRating = require("./constants").MonsterRating;
+const log = require('electron-log');
+log.info('Log from the main process');
+
 var dockerStarted;
 var scenLevel;
 var parsed;
@@ -29,6 +32,7 @@ var playersN;
 var round;
 var isSfx;
 var currIntensity;
+// client object that will be sent to the docker container, contains the host and port of the client aquired from the config file
 var client =
 {
     'clientHost': "",
@@ -39,11 +43,11 @@ var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false
 
 if (store.has('docker')) {
     enableDocker = store.get('docker')
-    console.log("loaded docker settings from storage" + enableDocker)
+    console.log("loaded docker settings from storage" + enableDocker); log.info("loaded docker settings from storage" + enableDocker)
 }
 
 if (isDev) {
-    console.log("Dev mode")
+    console.log("Dev mode"); log.info("Dev mode")
     //store.clear();
     require('electron-reload')(__dirname, {
         electron: path.join(__dirname, '../node_modules', '.bin', 'electron'),
@@ -196,6 +200,10 @@ const createWindow = () => {
 
 }
 
+const docker_run = () => {
+    return spawn('docker', ['run', '--rm', '--name', 'temp', 'funkey7dan/myvimage', "bash", "-c", "python3 -u client.py " + client.clientHost + " " + client.clientPort]);
+}
+
 
 const gameListen = () => {
     //check if docker is running:
@@ -204,7 +212,7 @@ const gameListen = () => {
     }
     catch (e) {
         if (e.toString().includes("daemon is not running")) {
-            console.log("docker is not running");
+            console.log("docker is not running"); log.info("docker is not running");
 
             //const child = execFile("C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe");
             const child = spawn(`C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe`, {
@@ -219,13 +227,14 @@ const gameListen = () => {
 
 
     // start docker container
-    child = spawn('docker', ['run', '--rm', '--name', 'temp', 'funkey7dan/myvimage', "bash", "-c", "python3 -u client.py " + client.clientHost + " " + client.clientPort]);
+    //child = spawn('docker', ['run', '--rm', '--name', 'temp', 'funkey7dan/myvimage', "bash", "-c", "python3 -u client.py " + client.clientHost + " " + client.clientPort]);
+    child = docker_run();
     container = docker.getContainer('temp');
     dockerStarted = true;
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', function (data) {
         //Here is where the output goes
-        //console.log('stdout: ' + data);
+        //console.log('stdout: ' + data); log.info('stdout: ' + data);
         data = data.toString()
         timestamp = new Date().toLocaleString()
         //fs.writeFileSync('./docker_log.txt', timestamp + '\n' + data);
@@ -236,8 +245,8 @@ const gameListen = () => {
             if (round) {
                 // if the round didn't change - we received push because of some values change, drop the push(no impact on intensity)
                 if (scriptOutput.match(/round ([0-9]+)/)[1] === round) {
-                    scriptOutput = "";
-                    return
+                    //scriptOutput = "";
+                    //return
                 }
             }
             scriptOutput = scriptOutput.replace(/monster ability deck: id: ([0-9]+)/g, "monster ability deck: id $1")
@@ -250,8 +259,8 @@ const gameListen = () => {
                     timestamp = new Date().toLocaleString()
                     //fs.writeFileSync('./error.txt', error.toString());
                     //fs.writeFileSync('./error.txt', scriptOutput.toString());
-                    fs.appendFileSync('./error.txt', timestamp + '\n' + error.toString() + '\n' + scriptOutput.toString());
-                // file written successfully
+                    fs.writeFileSync('./error.txt', timestamp + '\n' + error.toString() + '\n' + scriptOutput.toString());
+                    // file written successfully
                 } catch (err) {
                     console.error(err);
                 }
@@ -293,8 +302,6 @@ const gameListen = () => {
 
 
     function consumeParsed() {
-
-        
         parsedObj = parsed[0].reduce((prev, curr) => {
             if (typeof (curr) === 'string') {
                 return prev;
@@ -349,7 +356,7 @@ const gameListen = () => {
 
         if (monstersN == 0) {
             mainWindow.webContents.send("intensity_change", 1);
-            console.log("Intensity set: " + 1)
+            console.log("Intensity set: " + 1); log.info("Intensity set: " + 1)
             return;
         }
         scenLevel = parseInt(parsedObj['scen lvl']);
@@ -391,14 +398,14 @@ const gameListen = () => {
         else out = Math.max(Math.min(9, out), 1);
 
         mainWindow.webContents.send("intensity_change", out);
-        console.log("Intensity set: " + out)
+        console.log("Intensity set: " + out); log.info("Intensity set: " + out)
     }
 
     // function calculateIntensity() {
 
     //     if (monstersN == 0) {
     //         mainWindow.webContents.send("intensity_change", 1);
-    //         console.log("Intensity set: " + 1)
+    //         console.log("Intensity set: " + 1); log.info("Intensity set: " + 1)
     //         return;
     //     }
     //     scenLevel = parseInt(parsedObj['scen lvl']);
@@ -437,30 +444,31 @@ const gameListen = () => {
     //     if (boss) out = 10;
     //     else out = Math.max(Math.min(9, out), 1);
     //     mainWindow.webContents.send("intensity_change", out);
-    //     console.log("Intensity set: " + out)
+    //     console.log("Intensity set: " + out); log.info("Intensity set: " + out)
     // }
 
     child.on('close', function (code) {
         //Here you can get the exit code of the script
         // if the container is running kill it and retry
-        console.log('closing code: ' + code);
-        if (code === 125 || code === '125') {
+        console.log('closing code: ' + code); log.info('closing code: ' + code);
+        while (code === 125 || code === '125') {
             try {
                 container.kill();
             }
             catch (e) {
                 console.error(e);
             }
-            child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
+            //child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
+            child = docker_run();
         }
-        //console.log('Full output of script: ', scriptOutput);
+        //console.log('Full output of script: ', scriptOutput); log.info('Full output of script: ', scriptOutput);
     });
 }
 
 const loadSettings = () => {
     if (store.has('folder')) {
         musicPath = store.get('folder')
-        console.log("loaded folder path from storage" + musicPath)
+        console.log("loaded folder path from storage" + musicPath); log.info("loaded folder path from storage" + musicPath)
         mainWindow.webContents.send("file_path", musicPath)
     }
 }
@@ -469,7 +477,7 @@ const loadSettings = () => {
 const openFolderDialog = () => {
     if (!(musicPath = dialog.showOpenDialogSync({ properties: ['openDirectory'] }))) return;// if canceled or didn't choose
     else musicPath = musicPath[0];
-    //console.log(musicPath)
+    //console.log(musicPath); log.info(musicPath)
     store.set('folder', musicPath);
     //storage.set('folder', musicPath)
     mainWindow.webContents.send("file_path", musicPath)
@@ -510,5 +518,5 @@ app.on("before-quit", () => {
 
 function loadClientConfig(path) {
     client = JSON.parse(fs.readFileSync(path));
-    console.log(client);
+    console.log(client); log.info(client);
 }

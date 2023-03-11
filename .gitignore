@@ -7,3 +7,4 @@ public/build
 .vscode/
 *.lnk
 log.txt
+docker_log.txt
