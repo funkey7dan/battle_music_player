@@ -5,3 +5,5 @@ client.json
 error.txt
 public/build
 .vscode/
+*.lnk
+log.txt

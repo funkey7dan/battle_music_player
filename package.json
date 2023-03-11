@@ -37,7 +37,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set APP_DEV=true && concurrently \"npm:svelte-dev\" \" electron .\"",
     "packager": "electron-packager ./ --platform=win32",
-    "build": "rollup -c && electron-builder build -w portable",
+    "build": "electron-builder build -w portable nsis-web nsis",
     "svelte-build": "rollup -c",
     "svelte-dev": "rollup -c -w",
     "svelte-start": "sirv public --no-clear"

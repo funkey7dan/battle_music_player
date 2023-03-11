@@ -227,6 +227,9 @@ const gameListen = () => {
         //Here is where the output goes
         //console.log('stdout: ' + data);
         data = data.toString()
+        timestamp = new Date().toLocaleString()
+        //fs.writeFileSync('./docker_log.txt', timestamp + '\n' + data);
+        fs.appendFileSync('./docker_log.txt', timestamp + '\n' + data);
         scriptOutput += data;
         if (scriptOutput.includes('###')) {
             // if round is defined - i.e that's not the first response we received from the client
@@ -244,9 +247,11 @@ const gameListen = () => {
             } catch (error) {
                 console.error(error);
                 try {
-                    fs.writeFileSync('./error.txt', error.toString());
-                    fs.writeFileSync('./error.txt', scriptOutput.toString());
-                    // file written successfully
+                    timestamp = new Date().toLocaleString()
+                    //fs.writeFileSync('./error.txt', error.toString());
+                    //fs.writeFileSync('./error.txt', scriptOutput.toString());
+                    fs.appendFileSync('./error.txt', timestamp + '\n' + error.toString() + '\n' + scriptOutput.toString());
+                // file written successfully
                 } catch (err) {
                     console.error(err);
                 }
@@ -286,8 +291,10 @@ const gameListen = () => {
         }, []);
     }
 
+
     function consumeParsed() {
 
+        
         parsedObj = parsed[0].reduce((prev, curr) => {
             if (typeof (curr) === 'string') {
                 return prev;
@@ -330,7 +337,6 @@ const gameListen = () => {
         })
 
         //var players = new Set(actors.filter(x => x['player']).map(x => x['player']['content'][1]['character_class']))
-
         playerProps = mapPlayer(actors.filter(x => x['player']));
         //var monsters = actors.filter(x => x['monster']).map(x => x['monster']['content'][0]['id']);
         monstersN = monsterProps.reduce((prev, curr) => prev += curr['instances'], 0);
@@ -363,7 +369,9 @@ const gameListen = () => {
                 }
                 let mult;
                 mult = (curr.type === 'Elite') ? ELITE_MODIFIER : 1; // multiplyer for elites
-                mult += parseFloat(curr.difficullty);
+                if (curr.difficullty !== undefined) {
+                    mult += parseFloat(curr.difficullty);
+                }
                 return mult * (parseInt(curr.hp) / parseInt(curr.hp_max));
             });
         })
@@ -381,6 +389,7 @@ const gameListen = () => {
         out = Math.round(out);
         if (boss) out = 10;
         else out = Math.max(Math.min(9, out), 1);
+
         mainWindow.webContents.send("intensity_change", out);
         console.log("Intensity set: " + out)
     }
@@ -436,7 +445,12 @@ const gameListen = () => {
         // if the container is running kill it and retry
         console.log('closing code: ' + code);
         if (code === 125 || code === '125') {
-            container.kill();
+            try {
+                container.kill();
+            }
+            catch (e) {
+                console.error(e);
+            }
             child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
         }
         //console.log('Full output of script: ', scriptOutput);
