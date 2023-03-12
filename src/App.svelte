@@ -94,11 +94,12 @@
 			},
 		}),
 	};
+
 	var btn_sfx = {
 		menu: new Howl({
 			preload: true,
-			volume: $isSfx ? 1 : 0,
-			src: ["Menu_Select_00.mp3"],
+			volume: $isSfx ? 1 : 0, // check if sfx sounds are enabled
+			src: ["Menu_Select_00.mp3"], // the sound file path
 		}),
 		page: new Howl({
 			preload: true,
@@ -109,6 +110,14 @@
 			preload: true,
 			volume: $isSfx ? 1 : 0,
 			src: ["click1.wav"],
+		}),
+	};
+
+	var general_sfx = {
+		doom: new Howl({
+			preload: true,
+			volume: 1, // check if sfx sounds are enabled
+			src: ["doom.mp3"], // the sound file path
 		}),
 	};
 
@@ -149,6 +158,11 @@
 		}
 	});
 
+	ipc.on("playEffect", function (event, arg) {
+		console.log(arg);
+		general_sfx[arg].play();
+	});
+
 	// on folder change we receive an event from the electron main so we update our store, and we use the passed path to build the list
 	ipc.on("file_path", function (event, arg) {
 		createPlaylist(arg);
@@ -160,20 +174,23 @@
 
 	ipc.on("intensity_change", function (event, arg) {
 		// if the current track is less than half done, or if there is more than 1 minute left
-		//if ($trackProgress < 50 || timerLeft > 60) {
-		if (
-			currentIntensityPlaylist.name === "victory" ||
-			currentIntensityPlaylist.name === "defeat"
-		) {
-			return;
-		}
-		// if there is more than 60 sec left, change intensity immediately
-		if (timerLeft > 60) {
-			handleIntensityChange(
-				new CustomEvent("play_message", { detail: "intensity " + arg })
-			);
-		} else {
-			intensityChange = "intensity " + arg;
+		if ($trackProgress < 50 || timerLeft > 60) {
+			if (
+				currentIntensityPlaylist.name === "victory" ||
+				currentIntensityPlaylist.name === "defeat"
+			) {
+				return;
+			}
+			// if there is more than 60 sec left, change intensity immediately TODO: check this
+			if (timerLeft > 60) {
+				handleIntensityChange(
+					new CustomEvent("play_message", {
+						detail: "intensity " + arg,
+					})
+				);
+			} else {
+				intensityChange = "intensity " + arg;
+			}
 		}
 	});
 

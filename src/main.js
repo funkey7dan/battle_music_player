@@ -13,13 +13,16 @@ const Docker = require('dockerode');
 const parser = require("./parser");
 const MonsterName = require("./constants").MonsterName;
 const MonsterRating = require("./constants").MonsterRating;
+// writes logs to AppData\Roaming\BMIR\logs
 const log = require('electron-log');
+const { count } = require('console');
 log.info('Log from the main process');
 
 var dockerStarted;
 var scenLevel;
 var parsed;
 var parsedObj;
+var old_parsedObj;
 var docker = new Docker();
 var child;
 var container;
@@ -31,7 +34,7 @@ var monstersN;
 var playersN;
 var round;
 var isSfx;
-var currIntensity;
+var currIntensity = 0;
 // client object that will be sent to the docker container, contains the host and port of the client aquired from the config file
 var client =
 {
@@ -260,6 +263,7 @@ const gameListen = () => {
                     //fs.writeFileSync('./error.txt', error.toString());
                     //fs.writeFileSync('./error.txt', scriptOutput.toString());
                     fs.writeFileSync('./error.txt', timestamp + '\n' + error.toString() + '\n' + scriptOutput.toString());
+                    log.error(error);
                     // file written successfully
                 } catch (err) {
                     console.error(err);
@@ -267,6 +271,33 @@ const gameListen = () => {
                 return;
             }
             parsed[0] = Array.from(new Set(parsed[0]));
+
+            parsedObj = parsed[0].reduce((accumulator, curr) => {
+                if (typeof (curr) === 'string') {
+                    return accumulator;
+                }
+                //get the key of the object
+                let k = Object.keys(curr)[0];
+
+                // if the key is already in the accumulator, merge the values
+                if (!(k in accumulator)) {
+                    accumulator[k] = [curr[k]]
+                }
+                else {
+                    if (!(Array.isArray(accumulator[k]))) {
+                        accumulator[k] = [accumulator[k]];
+                    }
+                    //if (!(accumulator[k].includes(curr[k]))) accumulator[k].push(curr[k]);
+                    if (!accumulator[k].some(val => JSON.stringify(val) === JSON.stringify(curr[k]))) {
+                        accumulator[k].push(curr[k]);
+                    }
+                }
+                return accumulator;
+            }, {});
+
+            compareParsed();
+            old_parsedObj = parsedObj;
+
             consumeParsed();
             scriptOutput = "";
             calculateIntensity();
@@ -300,16 +331,78 @@ const gameListen = () => {
         }, []);
     }
 
+    function deepDiff(obj1, obj2) {
+        const differences = {};
+
+        // Check for properties in obj1 that are not in obj2
+        for (const prop in obj1) {
+            if (!(prop in obj2)) {
+                differences[prop] = { obj1: obj1[prop], obj2: undefined };
+            }
+        }
+
+        // Check for properties in obj2 that are not in obj1
+        for (const prop in obj2) {
+            if (!(prop in obj1)) {
+                differences[prop] = { obj1: undefined, obj2: obj2[prop] };
+            }
+        }
+
+        // Check for properties that have different values
+        for (const prop in obj1) {
+            if (prop in obj2) {
+                if (typeof obj1[prop] === "object" && typeof obj2[prop] === "object") {
+                    // Recurse on nested objects
+                    const nestedDiff = deepDiff(obj1[prop], obj2[prop]);
+                    if (Object.keys(nestedDiff).length > 0) {
+                        differences[prop] = nestedDiff;
+                    }
+                } else if (obj1[prop] !== obj2[prop]) {
+                    differences[prop] = { obj1: obj1[prop], obj2: obj2[prop] };
+                }
+            }
+        }
+
+        return differences;
+    }
+
+
+    function compareParsed() {
+        // if there is a previous parsed object and it's not the same as the current one
+        if (old_parsedObj && parsedObj != old_parsedObj) {
+            // diff will contain the differences between the two objects as a nested object, 
+            // with the keys being the changed value, and the values being the old and new values
+            diff = deepDiff(old_parsedObj, parsedObj)
+            // if a monster instance was changed
+            if ('instance' in diff) {
+                // iterate over the instances that changed
+                for (i in diff['instance']) {
+                    // if there are new conditions added in this instance
+                    if (diff['instance'][i][5]
+                        && diff['instance'][i][5]['list']
+                        && parsedObj['instance'][i][5]['list'].length > old_parsedObj['instance'][i][5]['list'].length) {
+                        let counter = 0
+                        // iterate over the changed conditions
+                        for (j in diff['instance'][i][5]['list']) {
+                            if (diff['instance'][i][5]['list'][j]['obj2'] == 'value13') {
+                                counter++;
+                            }
+                            if (diff['instance'][i][5]['list'][j]['obj1'] == 'value13') {
+                                counter--;
+                            }
+                        }
+                        // if the number of occurences is odd, it was added
+                        if (counter % 2 == 1) {
+                            // play sound
+                            mainWindow.webContents.send("playEffect", 'doom');
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     function consumeParsed() {
-        parsedObj = parsed[0].reduce((prev, curr) => {
-            if (typeof (curr) === 'string') {
-                return prev;
-            }
-            let k = Object.keys(curr)[0];
-            prev[k] = curr[k];
-            return prev;
-        }, {});
 
         var actors = parsed[0]
             .filter(element => element["actor"])
@@ -356,7 +449,7 @@ const gameListen = () => {
 
         if (monstersN == 0) {
             mainWindow.webContents.send("intensity_change", 1);
-            console.log("Intensity set: " + 1); log.info("Intensity set: " + 1)
+            console.log("No Enemies,Intensity set: " + 1); log.info("No Enemies,Intensity set: " + 1)
             return;
         }
         scenLevel = parseInt(parsedObj['scen lvl']);
@@ -396,8 +489,9 @@ const gameListen = () => {
         out = Math.round(out);
         if (boss) out = 10;
         else out = Math.max(Math.min(9, out), 1);
-
+        if (out === currIntensity) return;
         mainWindow.webContents.send("intensity_change", out);
+        currIntensity = out;
         console.log("Intensity set: " + out); log.info("Intensity set: " + out)
     }
 
@@ -451,12 +545,13 @@ const gameListen = () => {
         //Here you can get the exit code of the script
         // if the container is running kill it and retry
         console.log('closing code: ' + code); log.info('closing code: ' + code);
-        while (code === 125 || code === '125') {
+        if (code === 125 || code === '125') {
+
             try {
                 container.kill();
             }
             catch (e) {
-                console.error(e);
+                console.error(e); log.error(e);
             }
             //child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
             child = docker_run();

@@ -4,6 +4,16 @@ start
 any 
 = (class / pair / value) + eoi
 
+
+conditions =_ cond:condition_types _ number:value _ list:(value __) *
+{ 
+let jsonObj = {};
+jsonObj[cond] = number
+jsonObj["list"] = list.map(item => item[0])
+return jsonObj }
+
+condition_types = ("conditions:"/"conditions current_turn:"/"conditions expired:")
+
 pair 
 = _ key:value ":" _ data:(value/object) _ {
 let k = key;
@@ -15,7 +25,8 @@ return jsonObj;
 
 // and object with properties
 object
-= opencurl result:(innerpair / value) * closecurl {
+= opencurl result:(conditions/ innerpair / value ) * closecurl {
+
 return result }
 
 // starts with a "title" pair or a value and description of properties
@@ -23,7 +34,6 @@ return result }
 class 
 = foo:pair_or_value _ content:object _
 {
-console.log(typeof(foo));
 let k;
 let jsonObj = {};
 if(typeof(foo) === 'object'){
@@ -40,6 +50,7 @@ return jsonObj;
 
 pair_or_value
 = (foo:pair/ foo:value)
+
 
 // a pair inside an object
 innerpair
