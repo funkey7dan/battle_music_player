@@ -32,9 +32,11 @@ var monsterProps;
 var playerProps;
 var monstersN;
 var playersN;
+var scenario_number;
 var round;
 var isSfx;
 var currIntensity = 0;
+
 // client object that will be sent to the docker container, contains the host and port of the client aquired from the config file
 var client =
 {
@@ -59,6 +61,7 @@ if (isDev) {
 }
 
 var musicPath // the path of the music library
+var narrationPath // the path of the narration library
 var filelist // list of all intensity folders
 let mainWindow
 
@@ -86,6 +89,11 @@ const template = [
             {
                 label: 'Folder', accelerator: 'CommandOrControl+o', click: function () {
                     openFolderDialog();
+                }
+            },
+            {
+                label: 'Narration', accelerator: 'CommandOrControl+n', click: function () {
+                    openNarrationDialog();
                 }
             },
             { role: 'quit' }
@@ -403,7 +411,10 @@ const gameListen = () => {
     }
 
     function consumeParsed() {
-
+        if (scenario_number != parsedObj["scen nr"]) {
+            scenario_number = parsedObj["scen nr"][0];
+            if (scenario_number) mainWindow.webContents.send("scenario", scenario_number);
+        }
         var actors = parsed[0]
             .filter(element => element["actor"])
             .map(x => x['actor'])
@@ -566,6 +577,11 @@ const loadSettings = () => {
         console.log("loaded folder path from storage" + musicPath); log.info("loaded folder path from storage" + musicPath)
         mainWindow.webContents.send("file_path", musicPath)
     }
+    if (store.has('narration')) {
+        narrationPath = store.get('narration')
+        console.log("loaded narration path from storage" + narrationPath); log.info("loaded narration path from storage" + narrationPath)
+        mainWindow.webContents.send("narration_path", narrationPath)
+    }
 }
 
 // function for the open folder menu item
@@ -577,6 +593,16 @@ const openFolderDialog = () => {
     //storage.set('folder', musicPath)
     mainWindow.webContents.send("file_path", musicPath)
 
+}
+
+// function for the open folder menu item
+const openNarrationDialog = () => {
+    if (!(narrationPath = dialog.showOpenDialogSync({ properties: ['openDirectory'] }))) return;// if canceled or didn't choose
+    else narrationPath = narrationPath[0];
+    //console.log(musicPath); log.info(musicPath)
+    store.set('narration', narrationPath);
+    //storage.set('folder', musicPath)
+    mainWindow.webContents.send("narration_path", narrationPath)
 }
 
 // This method will be called when Electron has finished

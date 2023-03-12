@@ -6,6 +6,7 @@
         ListGroupItem,
         NavItem,
         Col,
+        ButtonGroup,
     } from "sveltestrap";
     const ipc = require("electron").ipcRenderer;
     import { createEventDispatcher } from "svelte/internal";
@@ -106,6 +107,35 @@
                     <!-- Differentiate between the battle controls and the city mode -->
                     {#if $state === "battle"}
                         <ListGroupItem style="border:none">
+                            <!--TODO: Make this pretty!-->
+                            <ButtonGroup>
+                                <Button
+                                    on:click={() => {
+                                        dispatch("play_message", "Narration");
+                                        dispatch("key_press", "click");
+                                    }}
+                                >
+                                    Narration1
+                                </Button>
+                                <Button
+                                    on:click={() => {
+                                        dispatch("play_message", "Narration");
+                                        dispatch("key_press", "click");
+                                    }}
+                                >
+                                    Narration2
+                                </Button>
+                                <Button
+                                    on:click={() => {
+                                        dispatch("play_message", "Narration");
+                                        dispatch("key_press", "click");
+                                    }}
+                                >
+                                    Narration3
+                                </Button>
+                            </ButtonGroup>
+                        </ListGroupItem>
+                        <ListGroupItem style="border:none">
                             <Button
                                 on:click={() => {
                                     dispatch("play_message", "Preparation");
@@ -163,6 +193,7 @@
                 >
             {/if}
         </div>
+        <!--TODO: Add a button to play the narration, and make it pretty-->
     </div>
 </main>
 

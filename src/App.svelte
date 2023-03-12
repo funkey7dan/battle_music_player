@@ -28,10 +28,12 @@
 	Howler.preload = true;
 	const store = new Store();
 	let barWidth; // the width of the progress bar
+	let narration_path; // the path to the narration folder
 	let nameWidth; // the width of the trackname
 	let currentIntensityPlaylist; // a 'pointer' to the currently chosen intesityPlaylist
 	let currentVolume; // save the currently set volume
 	let intensityChange = ""; // a stack holding the intensity change pushes from the main app
+	let scenario = 'default'; // the current scenario
 	let isOpen = false; // boolean for notfications
 	if (store.has("volume")) {
 		currentVolume = store.get("volume");
@@ -45,7 +47,20 @@
 		ms = 200;
 		store.set("fade-ms", ms);
 	}
+	if (store.has("fade-ms")) {
+		ms = store.get("fade-ms");
+	} else {
+		ms = 200;
+		store.set("fade-ms", ms);
+	}
+	if (store.has("scenario")) {
+		scenario = store.get("scenario");
+	}
+	if (store.has("narration")) {
+		narration_path = store.get("narration");
+	}
 	var filelist; // a list of intesityPlaylists that we populate
+	var narrationFilelist; // a list of narration files
 	filelist_store.set(filelist); // svelte store to listen for changes in file list value
 
 	/**
@@ -166,6 +181,29 @@
 	// on folder change we receive an event from the electron main so we update our store, and we use the passed path to build the list
 	ipc.on("file_path", function (event, arg) {
 		createPlaylist(arg);
+	});
+
+	//on narration folder change we receive an event from the electron main so we update our store
+	ipc.on("narration_path", function (event, arg) {
+		console.log("narration path " + arg);
+		narration_path = arg;
+		store.set("narration", arg);
+	});
+
+	// on scenario number change we receive an event from the electron main so we update our store, and we use the passed path to build the list
+	ipc.on("scenario", function (event, arg) {
+		console.log("scenario " + arg);
+		scenario = arg;
+		store.set("scenario", arg);
+		if (narration_path) {
+			console.log(arg);
+			let folder;
+			if (arg.length < 10) folder = "Campaign_00" + arg;
+			else if (arg.length >= 10 && arg.length < 100)
+				folder = "Campaign_0" + arg;
+			else folder = "Campaign_" + arg;
+			createNarrationPlaylist(path.join(narration_path, folder));
+		}
 	});
 
 	ipc.on("toast", function (event, arg) {
@@ -445,12 +483,27 @@
 		return filelist;
 	}
 
+	// This function creates a playlist of music files found in a given directory path
 	function createPlaylist(musicPath) {
+		// Initialize a collator object with options for sorting filenames
 		var collator = new Intl.Collator(undefined, {
 			numeric: true,
 			sensitivity: "base",
 		});
-		filelist = walkSync(null, musicPath).sort((a, b) => {
+		// Call a function to recursively traverse the directory structure and return a list of file objects
+		filelist = walkSync(null, musicPath)
+			// Sort the list of file objects using the collator object's compare() method
+			.sort((a, b) => {
+				return collator.compare(a.name, b.name);
+			});
+	}
+
+	function createNarrationPlaylist(narrationPath) {
+		var collator = new Intl.Collator(undefined, {
+			numeric: true,
+			sensitivity: "base",
+		});
+		narrationFilelist = walkSync(null, narrationPath).sort((a, b) => {
 			return collator.compare(a.name, b.name);
 		});
 	}
