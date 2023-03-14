@@ -11,7 +11,7 @@
     const ipc = require("electron").ipcRenderer;
     import { createEventDispatcher } from "svelte/internal";
     import { get_current_component } from "svelte/internal";
-    import { filelist_store, state } from "./stores";
+    import { filelist_store, state, narrationFilelist_store } from "./stores";
     const component = get_current_component();
     const svelteDispatch = createEventDispatcher();
     const dispatch = (name, detail) => {
@@ -35,11 +35,14 @@
     };
     //const dispatch = createEventDispatcher();
     var filelist;
+    var narrationFilelist;
     let buttons = [];
     let toIgnore = ["town", "defeat", "victory", "Preparation"];
     //let state = $gameState;
     $state = "battle";
     filelist_store.subscribe((value) => (filelist = value));
+    // subscribe to changes in the store, and on change update the variable narrationFilelist
+    narrationFilelist_store.subscribe((value) => (narrationFilelist = value));
     ipc.send("request_files");
     ipc.on("music_files", function (event, arg) {
         console.log(event);
@@ -108,32 +111,14 @@
                     {#if $state === "battle"}
                         <ListGroupItem style="border:none">
                             <!--TODO: Make this pretty!-->
-                            <ButtonGroup>
-                                <Button
-                                    on:click={() => {
-                                        dispatch("play_message", "Narration");
-                                        dispatch("key_press", "click");
-                                    }}
-                                >
-                                    Narration1
-                                </Button>
-                                <Button
-                                    on:click={() => {
-                                        dispatch("play_message", "Narration");
-                                        dispatch("key_press", "click");
-                                    }}
-                                >
-                                    Narration2
-                                </Button>
-                                <Button
-                                    on:click={() => {
-                                        dispatch("play_message", "Narration");
-                                        dispatch("key_press", "click");
-                                    }}
-                                >
-                                    Narration3
-                                </Button>
-                            </ButtonGroup>
+                            <Button
+                                on:click={() => {
+                                    dispatch("key_press", "click");
+                                    $state = "narration";
+                                }}
+                            >
+                                Narration
+                            </Button>
                         </ListGroupItem>
                         <ListGroupItem style="border:none">
                             <Button
@@ -164,22 +149,51 @@
                         {/each}
                     {:else if $state === "town"}
                         Just chilling...
+                    {:else if $state === "narration"}
+                        {#each narrationFilelist as item, i}
+                            {#if !toIgnore.includes(item.name)}
+                                <ListGroupItem style="border:none">
+                                    <Button
+                                        bind:inner={buttons[
+                                            (i + 1) % narrationFilelist.length
+                                        ]}
+                                        on:click={() => {
+                                            dispatch("key_press", "click");
+                                            dispatch(
+                                                "play_narration",
+                                                item.name
+                                            );
+                                        }}
+                                    >
+                                        {item.name}
+                                    </Button>
+                                </ListGroupItem>
+                            {/if}
+                        {/each}
+                        <Button
+                            on:click={() => {
+                                dispatch("key_press", "click");
+                                $state = "battle";
+                            }}>Go Back</Button
+                        >
                     {/if}
                 {/if}
-                <ListGroupItem style="border:none">
-                    <Button
-                        on:click={() => {
-                            if ($state === "town") $state = "battle";
-                            else if ($state === "battle") {
-                                $state = "town";
-                                dispatch("key_press", "click");
-                                dispatch("play_message", "town");
-                            }
-                        }}
-                    >
-                        {$state === "town" ? "To Battle!" : "Back to town"}
-                    </Button>
-                </ListGroupItem>
+                {#if $state != "narration"}
+                    <ListGroupItem style="border:none">
+                        <Button
+                            on:click={() => {
+                                if ($state === "town") $state = "battle";
+                                else if ($state === "battle") {
+                                    $state = "town";
+                                    dispatch("key_press", "click");
+                                    dispatch("play_message", "town");
+                                }
+                            }}
+                        >
+                            {$state === "town" ? "To Battle!" : "Back to town"}
+                        </Button>
+                    </ListGroupItem>
+                {/if}
             </ListGroup>
         </div>
         <div class="col-4">

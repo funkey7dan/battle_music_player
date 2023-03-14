@@ -199,6 +199,7 @@ const createWindow = () => {
         },
         //icon: path.join(__dirname + '../public/bard.ico')
     })
+    mainWindow.webContents.openDevTools()
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, '../public/index.html'));
     // Open the DevTools.
@@ -386,7 +387,8 @@ const gameListen = () => {
                 // iterate over the instances that changed
                 for (i in diff['instance']) {
                     // if there are new conditions added in this instance
-                    if (diff['instance'][i][5]
+                    if (diff['instance'][i]
+                        && diff['instance'][i][5]
                         && diff['instance'][i][5]['list']
                         && parsedObj['instance'][i][5]['list'].length > old_parsedObj['instance'][i][5]['list'].length) {
                         let counter = 0
@@ -413,8 +415,8 @@ const gameListen = () => {
     function consumeParsed() {
         if (scenario_number != parsedObj["scen nr"]) {
             scenario_number = parsedObj["scen nr"][0];
-            if (scenario_number) mainWindow.webContents.send("scenario", scenario_number);
         }
+        if (scenario_number) mainWindow.webContents.send("scenario", parseInt(scenario_number));
         var actors = parsed[0]
             .filter(element => element["actor"])
             .map(x => x['actor'])

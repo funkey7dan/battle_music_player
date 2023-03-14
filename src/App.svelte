@@ -14,7 +14,15 @@
 	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
 	import { writable } from "svelte/store";
 	import { get } from "svelte/store";
-	import { filelist_store, current_howl, state, isSfx } from "./stores";
+	import {
+		filelist_store,
+		current_howl,
+		current_narration_playlist,
+		current_narration, // The current narration playlist of type narrationPlaylist
+		state,
+		isSfx,
+		narrationFilelist_store,
+	} from "./stores";
 	import { Howl, Howler } from "howler";
 	import Marquee from "svelte-fast-marquee";
 	import Control from "./Control.svelte";
@@ -33,7 +41,7 @@
 	let currentIntensityPlaylist; // a 'pointer' to the currently chosen intesityPlaylist
 	let currentVolume; // save the currently set volume
 	let intensityChange = ""; // a stack holding the intensity change pushes from the main app
-	let scenario = 'default'; // the current scenario
+	let scenario = "default"; // the current scenario
 	let isOpen = false; // boolean for notfications
 	if (store.has("volume")) {
 		currentVolume = store.get("volume");
@@ -55,12 +63,18 @@
 	}
 	if (store.has("scenario")) {
 		scenario = store.get("scenario");
+		console.log("FROM STORE: Scenario set to " + scenario);
 	}
+	// the path to the base folder containing the narration files
 	if (store.has("narration")) {
 		narration_path = store.get("narration");
+		console.log("FROM STORE: Narration path set to " + narration_path);
 	}
+
 	var filelist; // a list of intesityPlaylists that we populate
 	var narrationFilelist; // a list of narration files
+	narrationFilelist = get(narrationFilelist_store);
+	// svelte store to listen for changes in file list value
 	filelist_store.set(filelist); // svelte store to listen for changes in file list value
 
 	/**
@@ -72,6 +86,19 @@
 			this.name = name;
 			this.trackList = trackList;
 			this.index = getRandomInt(0, trackList.length - 1);
+			this.played = [];
+		}
+	}
+
+	/**
+	 * A class to represent an narration element(Outro,Intro etc..)
+	 *
+	 */
+	class narrationPlaylist {
+		constructor(name, trackList) {
+			this.name = name;
+			this.trackList = trackList;
+			this.index = 0;
 			this.played = [];
 		}
 	}
@@ -192,17 +219,23 @@
 
 	// on scenario number change we receive an event from the electron main so we update our store, and we use the passed path to build the list
 	ipc.on("scenario", function (event, arg) {
-		console.log("scenario " + arg);
+		if (scenario == arg) return;
+		console.log("Received scenario push " + arg);
 		scenario = arg;
 		store.set("scenario", arg);
 		if (narration_path) {
 			console.log(arg);
 			let folder;
-			if (arg.length < 10) folder = "Campaign_00" + arg;
-			else if (arg.length >= 10 && arg.length < 100)
-				folder = "Campaign_0" + arg;
-			else folder = "Campaign_" + arg;
+			if (arg < 10) folder = "Campaign_00" + arg.toString();
+			else if (arg >= 10 && arg < 100)
+				folder = "Campaign_0" + arg.toString();
+			else folder = "Campaign_" + arg.toString();
 			createNarrationPlaylist(path.join(narration_path, folder));
+			store.set("narration_folder", folder);
+			console.log(
+				"Creating Narration Playlist from " +
+					path.join(narration_path, folder)
+			);
 		}
 	});
 
@@ -237,6 +270,16 @@
 		createPlaylist(store.get("music-path"));
 	}
 
+	if (store.has("narration") && store.has("scenario") && !narrationFilelist) {
+		let folder;
+		let arg = parseInt(store.get("scenario"));
+		if (arg < 10) folder = "Campaign_00" + arg.toString();
+		else if (arg >= 10 && arg < 100) folder = "Campaign_0" + arg.toString();
+		else folder = "Campaign_" + arg.toString();
+		// check if the folder path includes the scenario number - which means it's correct
+		createNarrationPlaylist(path.join(store.get("narration"), folder));
+	}
+
 	/**##################### FUNCTIONS ######################*/
 
 	function mod(n, m) {
@@ -251,22 +294,6 @@
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
-
-	// function crossfadeTracks(old, next) {
-	// 	if (old === next) {
-	// 		return;
-	// 	}
-	// 	isPlaying = false;
-	// 	old.fade(currentVolume, 0, ms);
-	// 	setTimeout(() => {
-	// 		old.stop();
-	// 		old.volume(currentVolume);
-	// 	}, ms);
-	// 	next.volume(currentVolume);
-	// 	sound.howl = next;
-	// 	playSound();
-	// 	next.fade(0, currentVolume, ms);
-	// }
 
 	function crossfadeTracks(old, next, src) {
 		if (old === next) {
@@ -293,8 +320,9 @@
 		return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 	}
 
-	function playSound() {
+	function playSound(to_play = sound) {
 		//console.log(sound);
+		sound = to_play;
 		$current_howl = sound.howl;
 		$current_howl.volume(currentVolume);
 		$current_howl.on("play", function () {
@@ -302,21 +330,23 @@
 				requestAnimationFrame(updateProgress);
 			}, 300);
 		});
-		$current_howl.on("end", function () {
-			$trackProgress = 100;
-			clearInterval(updateInterval);
-			changeTrack(1);
-		});
-		console.log(sound.howl);
+		if ($state == "battle") {
+			$current_howl.on("end", function () {
+				$trackProgress = 100;
+				clearInterval(updateInterval);
+				changeTrack(1);
+			});
+		}
+		console.log($current_howl);
+		console.log("prevID = " + prevId);
 		prevId = $current_howl.play();
 		isPlaying = true;
-		console.log("prevID = " + prevId);
 	}
 
 	function pauseSound() {
 		isPlaying = false;
 		$current_howl.pause();
-		get(current_howl).pause();
+		//get(current_howl).pause();
 	}
 
 	// change the track in the current intesity tracklist according to the passed value
@@ -386,6 +416,53 @@
 		btn_sfx.click.play();
 	}
 
+	function handleNarration(event) {
+		console.log("Handling Narration"); // find the narration block with the same name as the received event, for example "Outro"
+		let currentNarration = narrationFilelist.find((s) => {
+			return s.name === event.detail;
+		});
+		console.log("Current Narration is: " + currentNarration);
+		current_narration_playlist.set(currentNarration);
+		playNextNarration();
+	}
+
+	function playNextNarration(index_change = 0) {
+		if ($current_narration_playlist) {
+			if (
+				$current_narration_playlist.index >=
+				$current_narration_playlist.trackList.length
+			) {
+				console.log(
+					"Narration Ended, Index is: " +
+						$current_narration_playlist.index +
+						"Out of " +
+						$current_narration_playlist.trackList.length
+				);
+				return;
+			}
+			// advance the index of the current playlist
+			$current_narration_playlist.index += index_change;
+			// prevent index from going below 0
+			$current_narration_playlist.index = Math.max(
+				$current_narration_playlist.index,
+				0
+			);
+			var src =
+				$current_narration_playlist.trackList[
+					$current_narration_playlist.index
+				];
+			console.log("Narration index " + $current_narration_playlist.index);
+
+			console.log("Set src to " + src.name);
+			console.log("Playing src " + src.name);
+			if (isPlaying) {
+				$current_howl.stop();
+			}
+			playSound(src);
+			//src.play();
+		}
+	}
+
 	// received intesity change event push from controller
 	function handleIntensityChange(event) {
 		if (currentIntensityPlaylist != null) {
@@ -417,7 +494,7 @@
 			return;
 		}
 
-		if (event.detail === "town") {
+		if (event.tail === "town") {
 			$state = "town";
 		} else {
 			$state = "battle";
@@ -434,17 +511,26 @@
 		$current_howl = sound.howl;
 	}
 
-	function walkSync(filelist, dir) {
+	function walkSync(filelist_arg, dir, mode = "intensity") {
 		var files = fs.readdirSync(dir);
-		var filelist = filelist || [];
+		var filelist = filelist_arg || [];
 		files.forEach(function (file) {
 			let filepath = path.join(dir, file);
 			if (fs.statSync(filepath).isDirectory()) {
 				//console.log(file);
-				let temp = new intensityPlaylist(
-					file,
-					walkSync(null, filepath)
-				);
+				let temp;
+				if (mode == "intensity") {
+					temp = new intensityPlaylist(
+						file,
+						walkSync(null, filepath)
+					);
+				}
+				if (mode == "narration") {
+					temp = new narrationPlaylist(
+						file,
+						walkSync(null, filepath)
+					);
+				}
 				filelist.push(temp);
 			} else {
 				if (
@@ -454,22 +540,40 @@
 					file.endsWith(".ogg")
 				) {
 					//console.log(path.join(dir, file));
-					let temp = new Howl({
-						src: [path.join(dir, encodeURIComponent(file))],
-						html5: true,
-						preload: false,
-						onend: function () {
-							$trackProgress = 100;
-							clearInterval(updateInterval);
-							changeTrack(1);
-						},
-						onplay: function () {
-							console.log("onplay");
-							updateInterval = setInterval(() => {
-								requestAnimationFrame(updateProgress);
-							}, 100);
-						},
-					});
+					let temp;
+
+					// if we are creating the narration playlist, we need to create a Howl object for each file which will be played in sequence
+					if (mode == "narration") {
+						temp = new Howl({
+							src: [path.join(dir, encodeURIComponent(file))],
+							html5: true,
+							preload: false,
+							onend: function () {
+								setTimeout(() => {
+									playNextNarration(1);
+								}, 500);
+							},
+						});
+						// if we are creating music, we need to create a Howl object for each file which will be played in sequence from global playlist
+					} else {
+						temp = new Howl({
+							src: [path.join(dir, encodeURIComponent(file))],
+							html5: true,
+							preload: false,
+							onend: function () {
+								$trackProgress = 100;
+								clearInterval(updateInterval);
+								changeTrack(1);
+							},
+							onplay: function () {
+								console.log("onplay");
+								updateInterval = setInterval(() => {
+									requestAnimationFrame(updateProgress);
+								}, 100);
+							},
+						});
+					}
+
 					filelist.push(
 						new musicTrack(file, path.join(dir, file), temp)
 					);
@@ -479,12 +583,12 @@
 		if (filelist.length === 1) {
 			filelist[0].howl.loop(true);
 		}
-		filelist_store.set(filelist);
 		return filelist;
 	}
 
 	// This function creates a playlist of music files found in a given directory path
 	function createPlaylist(musicPath) {
+		console.log("Creating Playlist");
 		// Initialize a collator object with options for sorting filenames
 		var collator = new Intl.Collator(undefined, {
 			numeric: true,
@@ -496,16 +600,95 @@
 			.sort((a, b) => {
 				return collator.compare(a.name, b.name);
 			});
+		filelist_store.set(filelist);
+	}
+
+	// helper function to sort the narration tracks by name in a specific order
+	function narrationSort(a, b) {
+		a = a.name.toLowerCase();
+		b = b.name.toLowerCase();
+		// Sort by "intro"
+		if (a.includes("intro") && !b.includes("intro")) {
+			return -1;
+		} else if (!a.includes("intro") && b.includes("intro")) {
+			return 1;
+		}
+
+		// Sort by "room"
+		if (a.includes("room") && !b.includes("room")) {
+			return -1;
+		} else if (!a.includes("room") && b.includes("room")) {
+			return 1;
+		}
+
+		// Sort by "success"
+		if (a.includes("success") && !b.includes("success")) {
+			return -1;
+		} else if (!a.includes("success") && b.includes("success")) {
+			return 1;
+		}
+
+		// Sort by "outro"
+		if (a.includes("outro") && !b.includes("outro")) {
+			return 1;
+		} else if (!a.includes("outro") && b.includes("outro")) {
+			return -1;
+		}
+
+		// Sort alphabetically
+		return a.localeCompare(b);
+	}
+
+	// This function creates a narration playlist object out of the existing list
+	function mergeNarrationTracks() {
+		let temp_filelist = [];
+		// we create an object where the key is the "type of the track", and the value is an array of all the tracks relevant
+		// for example Campaign_057_Room_3_1,Campaign_057_Room_3_2 should be {Room_3 : [...Room_3_1,...Room_3_2]}
+		let temp_dict = {};
+		const re = /(Campaign_[0-9]{3})_(Room_[0-9]|[a-zA-Z]+)/;
+		narrationFilelist.forEach((narr_track) => {
+			// find the match to the regex
+			let found = narr_track.name.match(re);
+			// the part of the track is the second match, e.g. "intro", "room", "success", "outro"
+			let track_name = found[2];
+			console.log(track_name);
+			if (!(track_name in temp_dict)) {
+				temp_dict[track_name] = [narr_track];
+			} else {
+				temp_dict[track_name].push(narr_track);
+			}
+		});
+
+		for (const [key, value] of Object.entries(temp_dict)) {
+			temp_filelist.push(new narrationPlaylist(key, value));
+		}
+
+		narrationFilelist = temp_filelist;
 	}
 
 	function createNarrationPlaylist(narrationPath) {
+		console.log("Creating narration playlist from path " + narrationPath);
 		var collator = new Intl.Collator(undefined, {
 			numeric: true,
 			sensitivity: "base",
 		});
-		narrationFilelist = walkSync(null, narrationPath).sort((a, b) => {
+		narrationFilelist = walkSync(
+			narrationFilelist,
+			narrationPath,
+			"narration"
+		).sort((a, b) => {
 			return collator.compare(a.name, b.name);
 		});
+		narrationFilelist.sort(narrationSort);
+		mergeNarrationTracks();
+
+		//after we have created the playlist, we set the store to the new playlist
+		narrationFilelist_store.set(narrationFilelist);
+		current_narration_playlist.set(narrationFilelist[0]);
+		console.log(
+			"current_narration_playlist set to " + narrationFilelist[0]
+		);
+		console.log("Narration playlist created");
 	}
 
 	function seekToClick(e) {
@@ -572,13 +755,20 @@
 						</Col>
 						<Col sm="1" xs="1">{timeFormatter(timerLeft)}</Col>
 					</Row>
+					<Row class="justify-content-center">
+						Scenario number: {scenario}
+					</Row>
 
 					<br />
 					<ButtonGroup>
+						<!-- PREV button-->
 						<Button
 							on:click={function () {
-								changeTrack(-1);
+								$state == "narration"
+									? playNextNarration(-1)
+									: changeTrack(-1);
 								btn_sfx.click.play();
+								console.log("prev button clicked");
 							}}>Prev</Button
 						>
 						{#if isPlaying}
@@ -586,9 +776,11 @@
 								on:click={function () {
 									btn_sfx.click.play();
 									pauseSound();
+									console.log("pause button clicked");
 								}}>Pause</Button
 							>
 						{:else}
+							<!-- PLAY button-->
 							<Button
 								on:click={function () {
 									btn_sfx.click.play();
@@ -596,10 +788,14 @@
 								}}>Play</Button
 							>
 						{/if}
+						<!-- NEXT button-->
 						<Button
 							on:click={function () {
-								changeTrack(1);
+								$state == "narration"
+									? playNextNarration(1)
+									: changeTrack(1);
 								btn_sfx.click.play();
+								console.log("next button clicked");
 							}}>Next</Button
 						>
 					</ButtonGroup>
@@ -630,8 +826,10 @@
 			</Container>
 
 			<br />
+			<!-- -->
 			<Row>
 				<Control
+					on:play_narration={handleNarration}
 					on:play_message={handleIntensityChange}
 					on:key_press={handleButtonClick}
 				/>
