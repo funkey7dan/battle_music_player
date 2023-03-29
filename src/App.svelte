@@ -41,7 +41,7 @@
 	let currentIntensityPlaylist; // a 'pointer' to the currently chosen intesityPlaylist
 	let currentVolume; // save the currently set volume
 	let intensityChange = ""; // a stack holding the intensity change pushes from the main app
-	let scenario = "default"; // the current scenario
+	let scenario; // the current scenario
 	let isOpen = false; // boolean for notfications
 	if (store.has("volume")) {
 		currentVolume = store.get("volume");
@@ -252,7 +252,7 @@
 			) {
 				return;
 			}
-			// if there is more than 60 sec left, change intensity immediately TODO: check this
+			// if there is more than 60 sec left, change intensity immediately
 			if (timerLeft > 60) {
 				handleIntensityChange(
 					new CustomEvent("play_message", {
@@ -452,13 +452,15 @@
 					$current_narration_playlist.index
 				];
 			console.log("Narration index " + $current_narration_playlist.index);
-
-			console.log("Set src to " + src.name);
-			console.log("Playing src " + src.name);
-			if (isPlaying) {
-				$current_howl.stop();
+			if (src) {
+				console.log("Set src to " + src.name);
+				console.log("Playing src " + src.name);
+				if (isPlaying) {
+					$current_howl.stop();
+				}
+				playSound(src);
 			}
-			playSound(src);
+			// TODO: check what to do when the playlist is over(undefined)
 			//src.play();
 		}
 	}
@@ -612,6 +614,12 @@
 			return -1;
 		} else if (!a.includes("intro") && b.includes("intro")) {
 			return 1;
+		} else if (a.includes("intro") && b.includes("intro")) {
+			if (a.includes("travel") && !b.includes("travel")) {
+				return -1;
+			} else if (!a.includes("travel") && b.includes("travel")) {
+				return 1;
+			}
 		}
 
 		// Sort by "room"
@@ -633,6 +641,12 @@
 			return 1;
 		} else if (!a.includes("outro") && b.includes("outro")) {
 			return -1;
+		} else if (a.includes("outro") && b.includes("outro")) {
+			if (a.includes("travel") && !b.includes("travel")) {
+				return -1;
+			} else if (!a.includes("travel") && b.includes("travel")) {
+				return 1;
+			}
 		}
 
 		// Sort alphabetically
@@ -667,6 +681,7 @@
 	}
 
 	function createNarrationPlaylist(narrationPath) {
+		narrationFilelist = [];
 		console.log("Creating narration playlist from path " + narrationPath);
 		var collator = new Intl.Collator(undefined, {
 			numeric: true,

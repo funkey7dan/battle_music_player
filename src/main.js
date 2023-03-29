@@ -36,6 +36,7 @@ var scenario_number;
 var round;
 var isSfx;
 var currIntensity = 0;
+var roundChanged = false;
 
 // client object that will be sent to the docker container, contains the host and port of the client aquired from the config file
 var client =
@@ -340,6 +341,12 @@ const gameListen = () => {
         }, []);
     }
 
+    /**
+     * Compares the old and new parsed objects, and updates the intensity object accordingly
+     * @param {*} obj1 the old parsed object
+     * @param {*} obj2 the new parsed object
+     * @returns object with the differences between the two objects,where the key is the property, and the value is an object with the values of the property in the two objects
+     */
     function deepDiff(obj1, obj2) {
         const differences = {};
 
@@ -379,21 +386,26 @@ const gameListen = () => {
     function compareParsed() {
         // if there is a previous parsed object and it's not the same as the current one
         if (old_parsedObj && parsedObj != old_parsedObj) {
-            // diff will contain the differences between the two objects as a nested object, 
+            // diff will contain the differences between the two objects as a nested object,
+
             // with the keys being the changed value, and the values being the old and new values
             diff = deepDiff(old_parsedObj, parsedObj)
+
             // if a monster instance was changed
             if ('instance' in diff) {
                 // iterate over the instances that changed
                 for (i in diff['instance']) {
+
                     // if there are new conditions added in this instance
                     if (diff['instance'][i]
                         && diff['instance'][i][5]
                         && diff['instance'][i][5]['list']
                         && parsedObj['instance'][i][5]['list'].length > old_parsedObj['instance'][i][5]['list'].length) {
+                        // count the number of occurences of the value we're looking for
                         let counter = 0
                         // iterate over the changed conditions
                         for (j in diff['instance'][i][5]['list']) {
+                            // value13 is the "doom" condition
                             if (diff['instance'][i][5]['list'][j]['obj2'] == 'value13') {
                                 counter++;
                             }
@@ -401,13 +413,17 @@ const gameListen = () => {
                                 counter--;
                             }
                         }
+
                         // if the number of occurences is odd, it was added
-                        if (counter % 2 == 1) {
+                        if (counter > 0 && counter % 2 == 1) {
                             // play sound
                             mainWindow.webContents.send("playEffect", 'doom');
                         }
                     }
                 }
+            }
+            if ('round' in diff) {
+                roundChanged = true;
             }
         }
     }
@@ -503,9 +519,12 @@ const gameListen = () => {
         if (boss) out = 10;
         else out = Math.max(Math.min(9, out), 1);
         if (out === currIntensity) return;
-        mainWindow.webContents.send("intensity_change", out);
-        currIntensity = out;
-        console.log("Intensity set: " + out); log.info("Intensity set: " + out)
+        if (roundChanged) {
+            mainWindow.webContents.send("intensity_change", out);
+            currIntensity = out;
+            console.log("Intensity set: " + out); log.info("Intensity set: " + out)
+            roundChanged = false;
+        }
     }
 
     // function calculateIntensity() {
