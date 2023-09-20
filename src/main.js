@@ -244,6 +244,25 @@ const gameListen = () => {
     child = docker_run();
     container = docker.getContainer('temp');
     dockerStarted = true;
+
+    child.on('close', function (code) {
+        //Here you can get the exit code of the script
+        // if the container is running kill it and retry
+        console.log('closing code: ' + code); log.info('closing code: ' + code);
+        if (code === 125 || code === '125') {
+
+            try {
+                container.kill();
+            }
+            catch (e) {
+                console.error(e); log.error(e);
+            }
+            //child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
+            child = docker_run();
+        }
+        //console.log('Full output of script: ', scriptOutput); log.info('Full output of script: ', scriptOutput);
+    });
+    
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', function (data) {
         //Here is where the output goes
@@ -254,14 +273,7 @@ const gameListen = () => {
         fs.appendFileSync('./docker_log.txt', timestamp + '\n' + data);
         scriptOutput += data;
         if (scriptOutput.includes('###')) {
-            // if round is defined - i.e that's not the first response we received from the client
-            if (round) {
-                // if the round didn't change - we received push because of some values change, drop the push(no impact on intensity)
-                if (scriptOutput.match(/round ([0-9]+)/)[1] === round) {
-                    //scriptOutput = "";
-                    //return
-                }
-            }
+
             scriptOutput = scriptOutput.replace(/monster ability deck: id: ([0-9]+)/g, "monster ability deck: id $1")
             //parsed = parse(scriptOutput);
             try {
@@ -280,8 +292,14 @@ const gameListen = () => {
                 }
                 return;
             }
+            // pegjs returns an array of arrays, the first array contains the parsed objects, the second contains a counter
+            // we remove the duplicates from the first array
             parsed[0] = Array.from(new Set(parsed[0]));
 
+            // we now have a list of objects, and some strings.
+            // we need to reduce the list of objects to a single object, where the keys are the properties, and the values are arrays of the values of the property
+            // Accumulator is the object we're building, curr is the current object in the list, 
+            // the pairs are for example 'actor' : {type:'player', properties: {...}}
             parsedObj = parsed[0].reduce((accumulator, curr) => {
                 if (typeof (curr) === 'string') {
                     return accumulator;
@@ -304,10 +322,11 @@ const gameListen = () => {
                 }
                 return accumulator;
             }, {});
-
+            // we compare the saved old parsed object to the new one, to see if there are any changes. Here we can also monitor specific changes (for example, if a monster is DOOMED)
             compareParsed();
             old_parsedObj = parsedObj;
 
+            // we consume the parsed object, and calculate the intensity based on it
             consumeParsed();
             scriptOutput = "";
             calculateIntensity();
@@ -429,10 +448,13 @@ const gameListen = () => {
     }
 
     function consumeParsed() {
+        // if the scenario number changed or wasn't, update the scenario number to be displayed
         if (scenario_number != parsedObj["scen nr"]) {
             scenario_number = parsedObj["scen nr"][0];
         }
         if (scenario_number) mainWindow.webContents.send("scenario", parseInt(scenario_number));
+
+        // the actors aren't always in the same order, so we need to filter them by type, and then map them to an array of objects
         var actors = parsed[0]
             .filter(element => element["actor"])
             .map(x => x['actor'])
@@ -441,35 +463,40 @@ const gameListen = () => {
                 obj[x['type']] = x['properties'];
                 return obj;
             }
-            )
+        )
+        // wind all the types of monsters in the scenario
         var monsterIndices = getAllIndexes(parsed[0], 'monster');
+        // for each monster type, get an object with the number of instances, and an array of the instances
         monsterProps = monsterIndices.map(x => {
             let i = 2;
             let arr = [];
 
             let ID = parsed[0][x]['monster']['properties']['content'][0]['id'];
             let monsterName = MonsterName.values[ID];
-            while (parsed[0][x + i]['instance']) {
+            
 
-                //const [number, type, is_new, hp, hp_max] = parsed[0][x + i]['instance'];
-                var yourObject = Object.assign({}, ...parsed[0][x + i]['instance']);
+            while (parsed[0][x + i]['instance']) {
+                // takes all the properties of the instance object, and puts them in a new object
+                var yourObject = Object.assign({}, ...parsed[0][x + i]['instance']); //
+                // load the difficulty of the monster from the constants file
                 yourObject['difficullty'] = MonsterRating[monsterName];
-                //arr.push(parsed[0][x + i]['instance']);
+                //
                 arr.push(yourObject);
                 i++;
 
             }
+            // create an object with the number of instances of the monster, and the array of the instances
             let obj = {}
             obj['instances'] = (i - 2);
             obj[monsterName] = arr;
             return obj;
         })
 
-        //var players = new Set(actors.filter(x => x['player']).map(x => x['player']['content'][1]['character_class']))
         playerProps = mapPlayer(actors.filter(x => x['player']));
-        //var monsters = actors.filter(x => x['monster']).map(x => x['monster']['content'][0]['id']);
+        // get actor counts
         monstersN = monsterProps.reduce((prev, curr) => prev += curr['instances'], 0);
         playersN = playerProps.length;
+        // find the round number from the round string
         round = parsed[0].find(x => { if (typeof (x) === 'string' && x.includes('round')) return x; }).match(/round ([0-9]+)/)[1]
     }
 
@@ -489,22 +516,24 @@ const gameListen = () => {
         //generate an array on ratios of monster hp weight, if monster is elite increase value
         let monsterRatios = monsterProps.map(curr => {
 
+            // get the key of the monster object, which is the monster name
             let k = Object.keys(curr)[1];
+            // get the array of instances of the monster
             let instanceArr = curr[k];
-
+            // map the array of instances to an array of "how badly hurt is this monster"
             return instanceArr.map((curr, index, arr) => {
                 if (curr.type === 'Boss') {
                     boss = true;
                 }
                 let mult;
-                mult = (curr.type === 'Elite') ? ELITE_MODIFIER : 1; // multiplyer for elites
+                mult = (curr.type === 'Elite') ? ELITE_MODIFIER : 1; // apply multiplier for elites
                 if (curr.difficullty !== undefined) {
                     mult += parseFloat(curr.difficullty);
                 }
                 return mult * (parseInt(curr.hp) / parseInt(curr.hp_max));
             });
         })
-        //generate an array on ratios of monster hp
+        //generate an array on ratios of player hp
         let playerRatios = playerProps.map(curr => {
             return (parseInt(curr.hp) / parseInt(curr.hp_max));
         })
@@ -513,12 +542,17 @@ const gameListen = () => {
 
         let monstersVar = monsterRatios.reduce((p, c) =>
             p += (c.reduce((p, c) => p += c, 0)), 0) / monstersN;
-
+        
+        // evil floating point bit level hacking
+        // what the fuck?
         out = 0.1 * (1.2 ** round) + 0.4 * (12 - 10 * playersVar) + 0.5 * (1.2 * monstersVar ** 1.75);
         out = Math.round(out);
+        // if a boss is present, the intensity is 10 automatically
         if (boss) out = 10;
+        // the intensity is at least 1
         else out = Math.max(Math.min(9, out), 1);
         if (out === currIntensity) return;
+        
         if (roundChanged) {
             mainWindow.webContents.send("intensity_change", out);
             currIntensity = out;
@@ -527,69 +561,7 @@ const gameListen = () => {
         }
     }
 
-    // function calculateIntensity() {
-
-    //     if (monstersN == 0) {
-    //         mainWindow.webContents.send("intensity_change", 1);
-    //         console.log("Intensity set: " + 1); log.info("Intensity set: " + 1)
-    //         return;
-    //     }
-    //     scenLevel = parseInt(parsedObj['scen lvl']);
-    //     let out = scenLevel;
-    //     let base = scenLevel;
-    //     let boss = false;
-    //     let AVG_ROUNDS = 12;
-    //     let ELITE_MODIFIER = 1.25;
-
-
-    //     //generate an array on ratios of monster hp weight, if monster is elite increase value
-    //     let monsterRatios = monsterProps.map(curr => {
-
-    //         let k = Object.keys(curr)[1];
-    //         let instanceArr = curr[k];
-
-    //         return instanceArr.map((curr, index, arr) => {
-    //             if (curr.type === 'Boss') {
-    //                 boss = true;
-    //             }
-    //             let mult;
-    //             mult = (curr.type === 'Elite') ? ELITE_MODIFIER : 1; // multiplyer for elites
-    //             mult += parseFloat(curr.difficullty);
-    //             return mult * (parseInt(curr.hp) / parseInt(curr.hp_max));
-    //         });
-    //     })
-    //     //generate an array on ratios of monster hp
-    //     let playerRatios = playerProps.map(curr => {
-    //         return (parseInt(curr.hp) / parseInt(curr.hp_max));
-    //     })
-    //     out -= playerRatios.reduce((p, c) => p += (c), base);
-    //     out += monsterRatios.reduce((p, c) =>
-    //         p += (c.reduce((p, c) => p += (c), 0) / monstersN), base);
-    //     out *= 0.5 + (round / AVG_ROUNDS)
-    //     out = Math.floor(out);
-    //     if (boss) out = 10;
-    //     else out = Math.max(Math.min(9, out), 1);
-    //     mainWindow.webContents.send("intensity_change", out);
-    //     console.log("Intensity set: " + out); log.info("Intensity set: " + out)
-    // }
-
-    child.on('close', function (code) {
-        //Here you can get the exit code of the script
-        // if the container is running kill it and retry
-        console.log('closing code: ' + code); log.info('closing code: ' + code);
-        if (code === 125 || code === '125') {
-
-            try {
-                container.kill();
-            }
-            catch (e) {
-                console.error(e); log.error(e);
-            }
-            //child = spawn('docker', ['run', '--rm', '--name', 'temp', 'myvimage', "bash", "-c", "python3 -u my_test.py"]);
-            child = docker_run();
-        }
-        //console.log('Full output of script: ', scriptOutput); log.info('Full output of script: ', scriptOutput);
-    });
+    
 }
 
 const loadSettings = () => {
