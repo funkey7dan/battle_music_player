@@ -64,7 +64,17 @@ docker pull funkey7dan/myvimage
 ```
 
 If you want to start docker through the app, change the path in the main.js.
+*Note: the music track changes immediately if the current track has more than 60 seconds left to prevent jarring transitions.
+## Demo
 
+<vid>
+  
+After the round finishes (We press "next round" in GloomhavenHelper) the new intensity is calculated.
+In the video we jump from 4 to 7 and the music changes accordingly.
+ 
+https://github.com/funkey7dan/battle_music_player/assets/72495653/af346ce3-3878-41cd-818b-e8559eba4b8f
+
+</vid>
 
 ## Get started
 
