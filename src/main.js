@@ -196,11 +196,11 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
             enableRemoteModule: true,
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
+            devTools: isDev,
         },
         //icon: path.join(__dirname + '../public/bard.ico')
     })
-    mainWindow.webContents.openDevTools()
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, '../public/index.html'));
     // Open the DevTools.
@@ -262,7 +262,7 @@ const gameListen = () => {
         }
         //console.log('Full output of script: ', scriptOutput); log.info('Full output of script: ', scriptOutput);
     });
-    
+
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', function (data) {
         //Here is where the output goes
@@ -463,7 +463,7 @@ const gameListen = () => {
                 obj[x['type']] = x['properties'];
                 return obj;
             }
-        )
+            )
         // wind all the types of monsters in the scenario
         var monsterIndices = getAllIndexes(parsed[0], 'monster');
         // for each monster type, get an object with the number of instances, and an array of the instances
@@ -473,7 +473,7 @@ const gameListen = () => {
 
             let ID = parsed[0][x]['monster']['properties']['content'][0]['id'];
             let monsterName = MonsterName.values[ID];
-            
+
 
             while (parsed[0][x + i]['instance']) {
                 // takes all the properties of the instance object, and puts them in a new object
@@ -542,7 +542,7 @@ const gameListen = () => {
 
         let monstersVar = monsterRatios.reduce((p, c) =>
             p += (c.reduce((p, c) => p += c, 0)), 0) / monstersN;
-        
+
         // evil floating point bit level hacking
         // what the fuck?
         out = 0.1 * (1.2 ** round) + 0.4 * (12 - 10 * playersVar) + 0.5 * (1.2 * monstersVar ** 1.75);
@@ -552,7 +552,7 @@ const gameListen = () => {
         // the intensity is at least 1
         else out = Math.max(Math.min(9, out), 1);
         if (out === currIntensity) return;
-        
+
         if (roundChanged) {
             mainWindow.webContents.send("intensity_change", out);
             currIntensity = out;
@@ -561,7 +561,7 @@ const gameListen = () => {
         }
     }
 
-    
+
 }
 
 const loadSettings = () => {

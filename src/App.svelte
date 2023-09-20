@@ -42,7 +42,7 @@
 	let currentVolume; // save the currently set volume
 	let intensityChange = ""; // a stack holding the intensity change pushes from the main app
 	let scenario; // the current scenario
-	let isOpen = false; // boolean for notfications
+	let isOpen = false; // boolean for notifications
 	if (store.has("volume")) {
 		currentVolume = store.get("volume");
 	} else {
